@@ -1,6 +1,6 @@
 import toast from "react-hot-toast"; 
 
-const host = process.env.NODE_ENV === "production" ? "" : "//localhost:3000/";
+const host =  "//localhost:8080/";
 
 interface RequestOptions {
   method: string;

@@ -8,12 +8,14 @@ import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
-    <Routes>
-      {/* assign crop pot */}
-      <Route path="/" element={<HomePage />} />
-      <Route path="/cropPots/assign" element={<AddCropPot />} />
+    <>
+      <Routes>
+        {/* assign crop pot */}
+        <Route path="/" element={<HomePage />} />
+        <Route path="/cropPots/assign" element={<AddCropPot />} />
+      </Routes>
       <Toaster />
-    </Routes>
+    </>
   );
 }
 
