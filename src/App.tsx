@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 
 import { AddCropPot } from "./Pages/AddCropPot/AddCropPot";
 import { HomePage } from "./Pages/Home/Home";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       {/* assign crop pot */}
       <Route path="/" element={<HomePage />} />
       <Route path="/cropPots/assign" element={<AddCropPot />} />
+      <Toaster />
     </Routes>
   );
 }

@@ -3,6 +3,7 @@ import { Card } from "../../components/ui/card";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { Button } from "../../components/ui/button";
 import { ChevronRight } from "lucide-react";
+import { CropPotScene } from "./components/cropPotScene";
 
 export const AddCropPot = () => {
   const { user } = useUser();
@@ -13,6 +14,8 @@ export const AddCropPot = () => {
         <h1 className="text-3xl font-mono">Plant Care</h1>
         <p>Add Crop-Pot</p>
       </div>
+
+      <CropPotScene />
       <SignedOut>
         <SignUp forceRedirectUrl={"void:0"} />
       </SignedOut>
