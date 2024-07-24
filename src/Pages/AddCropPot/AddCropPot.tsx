@@ -16,27 +16,29 @@ export const AddCropPot = () => {
   const currentUrl = window.location.href;
 
   return (
-    <div className="flex flex-col gap-[2%] h-full py-[5%]  items-center">
+    <div className="flex flex-col gap-[2%] h-full py-[5%] items-center">
       <div>
         <h1 className="text-3xl font-mono">Plant Care</h1>
         <p>Add Crop-Pot</p>
       </div>
 
       <SignedOut>
-        <SignUp
-          redirectUrl={currentUrl}
-          forceRedirectUrl={currentUrl}
-          fallbackRedirectUrl={currentUrl}
-        />
+        <SignUp redirectUrl={currentUrl} />
       </SignedOut>
       <SignedIn>
-        <div className="w-[80%] h-full gap-[5%] items-center flex flex-col">
-          <div className="w-full h-fit flex flex-col">
+        <div className="w-[80%] h-full gap-[5%] items-center flex flex-col ">
+          <div className="w-full h-[20%] flex flex-col">
             <p className="p-0 text-left font-semibold pl-2">Signed in as:</p>
-            <Card className="w-full h-fit p-[2%] flex gap-[5%]">
-              <Avatar asChild className="sm:w-[20%] md:w-[10%] rounded-full">
-                <AvatarImage src={user?.imageUrl} />
-              </Avatar>
+            <Card className="w-full h-full p-[2%] flex gap-[5%]">
+              <div className="h-full aspect-square flex justify-center items-center">
+                <Avatar asChild>
+                  <AvatarImage
+                    src={user?.imageUrl}
+                    className="h-full w-full rounded-full"
+                  />
+                </Avatar>
+              </div>
+
               <div className="flex flex-col text-left w-full">
                 <h2 className="font-semibold">
                   {user?.firstName} {user?.lastName}
@@ -50,9 +52,9 @@ export const AddCropPot = () => {
             </Card>
           </div>
 
-          <div className="flex justify-between items-start w-full h-max">
-            <Card className="p-4 h-[88%]">
-              <p>
+          <div className="flex sm:flex-col lg:flex-row justify-between sm:gap-[5%] md:gap-[1%] items-start w-full h-full">
+            <Card className="p-4 h-4/5 lg:h-[88%] sm:w-full lg:w-2/3">
+              <p className="text-xl">
                 Would you like to{" "}
                 <span className="font-semibold font-mono">
                   assign new <span className="uppercase">crop pot</span>
@@ -60,12 +62,10 @@ export const AddCropPot = () => {
                 to your account?
               </p>
 
-              <h2>ID: </h2>
-
               <CropPotScene />
             </Card>
 
-            <Button className="flex items-center justify-between py-[2%] w-1/3 mt-[2.5%]">
+            <Button className="flex items-center justify-between sm:text-xl sm:py-[5%] lg:py-[2%] sm:w-full lg:w-1/3 sm:mt-0 lg:mt-[2.5%]">
               Continue <ChevronRight />
             </Button>
           </div>
