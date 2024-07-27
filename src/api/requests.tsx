@@ -1,14 +1,11 @@
-import * as api from "./api"
+// apiFunctions.ts
+import apiService from "./api";
 
 const endPoints = {
+  cropPots: (token: string) => `cropPots/assign/${token}`,
+};
 
-
-    assignCropPot: ""
-}
-
-
-export const assignCropPot = () => {
-    return api.post(endPoints.assignCropPot)
-}
-
+export const assignCropPot = (token: string) => {
+  return apiService.post(endPoints.cropPots(token));
+};
 

@@ -4,16 +4,39 @@ import {
   SignUp,
   useUser,
   SignOutButton,
+  useAuth,
 } from "@clerk/clerk-react";
-import { Card, CardContent, CardDescription } from "../../components/ui/card";
+import { Card } from "../../components/ui/card";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { Button } from "../../components/ui/button";
 import { ChevronRight } from "lucide-react";
 import { CropPotScene } from "./components/cropPotScene";
+import { useParams } from "react-router-dom";
+import { assignCropPot } from "../../api/requests";
+import toast from "react-hot-toast";
+
 
 export const AddCropPot = () => {
   const { user } = useUser();
   const currentUrl = window.location.href;
+
+  const { token } = useParams();
+  const {getToken} = useAuth()
+
+  const assignPotHandler = async () => {
+    if (!token) {
+    
+      return;
+    }
+
+    const clerkToken = await getToken()
+    console.log(clerkToken);
+    
+
+    const result = await assignCropPot(token);
+    toast(result)
+    console.log(result);
+  };
 
   return (
     <div className="flex flex-col gap-[2%] h-full py-[5%] items-center">
@@ -65,7 +88,10 @@ export const AddCropPot = () => {
               <CropPotScene />
             </Card>
 
-            <Button className="flex items-center justify-between sm:text-xl sm:py-[5%] lg:py-[2%] sm:w-full lg:w-1/3 sm:mt-0 lg:mt-[2.5%]">
+            <Button
+              className="flex items-center justify-between sm:text-xl sm:py-[5%] lg:py-[2%] sm:w-full lg:w-1/3 sm:mt-0 lg:mt-[2.5%]"
+              onClick={assignPotHandler}
+            >
               Continue <ChevronRight />
             </Button>
           </div>

@@ -1,95 +1,74 @@
-import toast from "react-hot-toast"; 
+// api.ts
+import toast from "react-hot-toast";
+import { useAuth } from "@clerk/clerk-react";
+import { useEffect, useState } from "react";
 
-const host =  "//localhost:8080/";
+const host = "http://localhost:8080/api/v1/";
 
 interface RequestOptions {
   method: string;
   headers: {
-    "Access-Control-Allow-Origin": string;
     "content-type"?: string;
     Authorization?: string;
   };
   body?: string | FormData;
 }
 
-const request = async (
-  method: string,
-  url: string,
-  data?: any,
-  type?: string
-): Promise<any> => {
-  const options: RequestOptions = {
-    method,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-    },
-  };
+class ApiService {
+  token: string | null = null;
 
-  if (type === "formData") {
-    const formData = new FormData();
+  constructor() {
+    this.initializeToken();
+  }
 
-    for (const key in data) {
-      if (
-        Array.isArray(data[key]) &&
-        data[key].every((x: any) => x instanceof File)
-      ) {
-        // If the value is an array of Files, append each file
-        data[key].forEach((file: File) => {
-          formData.append(key, file);
-        });
-      } else if (
-        typeof data[key] === "object" &&
-        !(data[key] instanceof File)
-      ) {
+  async initializeToken() {
+    const { getToken } = useAuth();
+    this.token = await getToken();
+  }
 
-        Object.keys(data[key]).map((x) => {
-            formData.append(x, data[key][x])
-        })
-      } else {
-        // Otherwise, append as usual
-        formData.append(key, data[key]);
-      }
+  async request(method: string, url: string, data?: any): Promise<any> {
+    if (!this.token) {
+      throw new Error("Token is not ready yet");
     }
 
-    options.body = formData;
-  } else {
-    options.headers["content-type"] = "application/json";
-    options.body = JSON.stringify(data);
-  }
+    const options: RequestOptions = {
+      method,
+      headers: {
+        "content-type": "application/json",
+        Authorization: this.token ? `Bearer ${this.token}` : "",
+      },
+      body: JSON.stringify(data),
+    };
 
-  if (localStorage["Authorization"]) {
-    options.headers["Authorization"] = JSON.parse(
-      localStorage.Authorization
-    ).token;
-  }
+    try {
+      const res = await fetch(host + url, options);
+      const responseData = await res.json();
 
-  try {
-    const res = await fetch(host + url, options);
-    const responseData = await res.json();
-
-    if (!res.ok) {
-      if (res.status === 401) {
-        toast.error("Session expired, please log in again.");
-      } else {
-        if (Array.isArray(responseData.message)) {
-          toast(responseData.message.toString());
-          throw new Error(responseData.message.toString());
+      if (!res.ok) {
+        if (res.status === 401) {
+          toast.error("Session expired, please log in again.");
+        } else {
+          if (Array.isArray(responseData.message)) {
+            toast(responseData.message.toString());
+            throw new Error(responseData.message.toString());
+          }
+          toast(responseData.message);
+          throw new Error(responseData.message);
         }
-        toast(responseData.message);
-        throw new Error(responseData.message);
       }
+
+      return responseData;
+    } catch (error: any) {
+      throw new Error(error.message);
     }
-
-    return responseData;
-  } catch (error: any) {
-    throw new Error(error.message);
   }
-};
 
-const get = request.bind(null, "GET");
-const post = request.bind(null, "POST");
-const put = request.bind(null, "PUT");
-const patch = request.bind(null, "PATCH");
-const del = request.bind(null, "DELETE");
+  get = this.request.bind(this, "GET");
+  post = this.request.bind(this, "POST");
+  put = this.request.bind(this, "PUT");
+  patch = this.request.bind(this, "PATCH");
+  delete = this.request.bind(this, "DELETE");
+}
 
-export { get, post, put, patch, del };
+const apiService = new ApiService();
+export default apiService;

@@ -4,7 +4,7 @@ import { Button } from "../../components/ui/button"
 export const HomePage = () => {
     return(
         <div className="flex flex-col justify-center">
-            <h2 className="text-3xl font-mono">Plant Care</h2>
+            <h2 className="text-3xl font-mono">Plants Care</h2>
             
             <div>
                 

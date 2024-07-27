@@ -1,0 +1,45 @@
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+  UserButton,
+} from "@clerk/clerk-react";
+import { Button } from "./ui/button";
+import { Link } from "react-router-dom";
+
+export const Header = () => {
+  return (
+    <div className="flex justify-between h-[6%] overflow-hidden bg-white border-b shadow-sm px-2">
+      <div className="h-full flex gap-1 items-center">
+        <div className="h-full">
+          <img src="/icons/icon_transparent.png" className="h-full" />
+        </div>
+        <h2 className="text-2xl">Plants-Care</h2>
+      </div>
+
+      <div className="flex gap-4 items-center">
+        <SignedIn>
+          <ul className="flex gap-2 items-center">
+            <li>
+              <Link to="/dashboard">
+                <Button variant="blue">Dashboard</Button>
+              </Link>
+            </li>
+          </ul>
+          <UserButton />
+        </SignedIn>
+        <SignedOut>
+          <ul className="flex gap-2 items-center">
+            <Button variant="secondary">
+              <SignInButton />
+            </Button>
+            <Button>
+              <SignUpButton />
+            </Button>
+          </ul>
+        </SignedOut>
+      </div>
+    </div>
+  );
+};
