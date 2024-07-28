@@ -6,10 +6,10 @@ import { PinnedPot } from "./components/PinnedPot/PinnedPot";
 
 export const Dashboard = () => {
   return (
-    <div className="w-full h-full flex gap-4">
+    <div className="w-full h-full flex">
       <Sidebar />
 
-      <div className="flex flex-col w-full h-full">
+      <div className="flex flex-col w-full h-full p-4">
         <PotsSelect />
 
         <PinnedPot />
