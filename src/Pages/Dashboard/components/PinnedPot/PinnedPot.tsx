@@ -9,11 +9,11 @@ import { Card, CardContent, CardTitle } from "../../../../components/ui/card";
 
 export const PinnedPot = () => {
   return (
-    <Card className="w-full h-[75%] p-2 flex flex-col  gap-4">
+    <Card className="w-full min-h-[75%] p-2 pb-4 flex flex-col  gap-4">
       <CardTitle className="pl-6 flex gap-1"><Pin className="fill-[#F9E400] hover:cursor-pointer"/>Pinned Pot</CardTitle>
 
       <CardContent className="flex w-full h-full gap-2 justify-between">
-        <div className="flex w-[60%] flex-col gap-4">
+        <div className="flex w-[60%] h-full flex-col gap-4">
           <div className="flex gap-4">
             <WaterTankCard percentageFull={78} />
             <TemperatureCard potTemperature={25} />

@@ -19,16 +19,6 @@ export const Header = () => {
       </div>
 
       <div className="flex gap-4 items-center">
-        <SignedIn>
-          <ul className="flex gap-2 items-center">
-            <li>
-              <Link to="/dashboard">
-                <Button variant="blue">Dashboard</Button>
-              </Link>
-            </li>
-          </ul>
-          <UserButton />
-        </SignedIn>
         <SignedOut>
           <ul className="flex gap-2 items-center">
             <Button variant="secondary">

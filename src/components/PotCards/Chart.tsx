@@ -41,18 +41,21 @@ interface ChartData {
 }
 
 const generateMockData = (type: ChartDataTypes) => {
-  const now = new Date();
-  const data: ChartData[] = [];
-  for (let i = 0; i < 12; i++) {
-    const date = new Date(now.getTime() - i * 60 * 60 * 1000);
-    const value = Math.floor(Math.random() * 100);
-    data.push({
-      time: date.toISOString().slice(11, 16),
-      value: type === ChartDataTypes.temperature ? value : value, // Keep value as number
-    });
-  }
-  return data.reverse();
-};
+    const now = new Date();
+    const data: ChartData[] = [];
+    for (let i = 0; i < 12; i++) {
+      const date = new Date(now.getTime() - i * 60 * 60 * 1000);
+      const value = Math.floor(Math.random() * 100);
+      const hours = date.getHours() % 12 || 12; // Convert to 12-hour format
+      const period = date.getHours() < 12 ? 'AM' : 'PM'; // AM or PM period
+      const time = `${hours} ${period}`;
+      data.push({
+        time,
+        value: type === ChartDataTypes.temperature ? value : value, // Keep value as number
+      });
+    }
+    return data.reverse();
+  };
 
 const chartConfigs: Record<ChartDataTypes, ChartConfig> = {
   [ChartDataTypes.waterTankCapacity]: {
@@ -87,7 +90,7 @@ export const Chart = () => {
 
 
   return (
-    <Card className="h-full">
+    <Card className="h-full flex flex-col justify-between">
       <CardHeader>
         <Select
           onValueChange={(value: string) => setType(value as ChartDataTypes)}
