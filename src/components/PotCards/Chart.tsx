@@ -124,20 +124,6 @@ export const Chart = () => {
               })}
             </SelectContent>
           </CardTitle>
-          <SelectContent>
-            {Object.keys(chartConfigs).map((key: string) => {
-              const config = chartConfigs[key as ChartDataTypes];
-              const Icon = config.icon;
-              return (
-                <SelectItem value={key} key={key}>
-                  <div className="flex items-center gap-2">
-                    {Icon && <Icon className="h-4 w-4" />}
-                    <p>{config.label}</p>
-                  </div>
-                </SelectItem>
-              );
-            })}
-          </SelectContent>
         </Select>
         <CardDescription>Last 12 Hours</CardDescription>
       </CardHeader>

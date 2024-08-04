@@ -24,7 +24,7 @@ export const PinnedPot = () => {
           <Chart/>
         </div>
 
-        <div className="w-[25%] h-full">
+        <div className="w-1/3 aspect-square">
           <PhotoCard
             imgUrl={
               "https://www.thompson-morgan.com/static-images/tandm/static-articles/top-10-crops-pots/20220324_tm_mint_container.jpg"
