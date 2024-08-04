@@ -26,10 +26,6 @@ export const Sidebar = () => {
 
           <div className="flex flex-col h-full justify-between pb-10">
             <div></div>
-
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
           </div>
         </div>
       )}

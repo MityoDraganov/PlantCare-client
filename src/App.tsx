@@ -25,7 +25,7 @@ function App() {
   return (
     <>
       <Header />
-      <div className="h-[100dvh] overflow-hidden">
+
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/cropPots/assign/:token" element={<AddCropPot />} />
@@ -33,7 +33,7 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
         <Toaster />
-      </div>
+
     </>
   );
 }
