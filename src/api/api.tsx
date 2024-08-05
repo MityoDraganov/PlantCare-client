@@ -1,74 +1,58 @@
-// api.ts
-import toast from "react-hot-toast";
-import { useAuth } from "@clerk/clerk-react";
-import { useEffect, useState } from "react";
-
-const host = "http://localhost:8080/api/v1/";
+const host = process.env.NODE_ENV === "production" ? "" : "//localhost:8080/api/v1/";
 
 interface RequestOptions {
-  method: string;
-  headers: {
-    "content-type"?: string;
-    Authorization?: string;
-  };
-  body?: string | FormData;
+    method: string;
+    headers: {
+        "content-type"?: string;
+        Authorization?: string;
+    };
+    body?: string | FormData;
 }
 
-class ApiService {
-  token: string | null = null;
-
-  constructor() {
-    this.initializeToken();
-  }
-
-  async initializeToken() {
-    const { getToken } = useAuth();
-    this.token = await getToken();
-  }
-
-  async request(method: string, url: string, data?: any): Promise<any> {
-    if (!this.token) {
-      throw new Error("Token is not ready yet");
-    }
-
+const request = async (
+    method: string,
+    url: string,
+    data?: any,
+    type?: string
+): Promise<any> => {
     const options: RequestOptions = {
-      method,
-      headers: {
-        "content-type": "application/json",
-        Authorization: this.token ? `Bearer ${this.token}` : "",
-      },
-      body: JSON.stringify(data),
+        method,
+        headers: {},
     };
 
-    try {
-      const res = await fetch(host + url, options);
-      const responseData = await res.json();
+    options.headers["content-type"] = "application/json";
+    options.body = JSON.stringify(data);
 
-      if (!res.ok) {
-        if (res.status === 401) {
-          toast.error("Session expired, please log in again.");
-        } else {
-          if (Array.isArray(responseData.message)) {
-            toast(responseData.message.toString());
-            throw new Error(responseData.message.toString());
-          }
-          toast(responseData.message);
-          throw new Error(responseData.message);
-        }
-      }
+    const token = localStorage.getItem("clerkFetchedToken");
 
-      return responseData;
-    } catch (error: any) {
-      throw new Error(error.message);
+    if (token) {
+        options.headers["Authorization"] = `Bearer ${token}`;
     }
-  }
 
-  get = this.request.bind(this, "GET");
-  post = this.request.bind(this, "POST");
-  put = this.request.bind(this, "PUT");
-  patch = this.request.bind(this, "PATCH");
-  delete = this.request.bind(this, "DELETE");
-}
+    try {
+        const res = await fetch(host + url, options);
+        const responseData = await res.json();
 
-const apiService = new ApiService();
-export default apiService;
+        if (!res.ok) {
+            if (res.status === 401) {
+            } else {
+                if (Array.isArray(responseData.message)) {
+                    throw new Error(responseData.message.toString());
+                }
+                throw new Error(responseData.message);
+            }
+        }
+
+        return responseData;
+    } catch (error: any) {
+        throw new Error(error.message);
+    }
+};
+
+const get = request.bind(null, "GET");
+const post = request.bind(null, "POST");
+const put = request.bind(null, "PUT");
+const patch = request.bind(null, "PATCH");
+const del = request.bind(null, "DELETE");
+
+export { get, post, put, patch, del };
