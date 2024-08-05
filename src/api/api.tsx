@@ -1,52 +1,52 @@
-const host = process.env.NODE_ENV === "production" ? "" : "//localhost:8080/api/v1/";
+import toast from "react-hot-toast";
+
+const host =
+	process.env.NODE_ENV === "production" ? "" : "//localhost:8080/api/v1/";
 
 interface RequestOptions {
-    method: string;
-    headers: {
-        "content-type"?: string;
-        Authorization?: string;
-    };
-    body?: string | FormData;
+	method: string;
+	headers: {
+		"content-type"?: string;
+		Authorization?: string;
+	};
+	body?: string | FormData;
 }
 
 const request = async (
-    method: string,
-    url: string,
-    data?: any,
-    type?: string
+	method: string,
+	url: string,
+	data?: any
 ): Promise<any> => {
-    const options: RequestOptions = {
-        method,
-        headers: {},
-    };
+	const options: RequestOptions = {
+		method,
+		headers: {},
+	};
 
-    options.headers["content-type"] = "application/json";
-    options.body = JSON.stringify(data);
+	options.headers["content-type"] = "application/json";
+	options.body = JSON.stringify(data);
 
-    const token = localStorage.getItem("clerkFetchedToken");
+	const token = localStorage.getItem("clerkFetchedToken");
 
-    if (token) {
-        options.headers["Authorization"] = `Bearer ${token}`;
-    }
+	if (token) {
+		options.headers["Authorization"] = `Bearer ${token}`;
+	}
 
-    try {
-        const res = await fetch(host + url, options);
-        const responseData = await res.json();
+	try {
+		const res = await fetch(host + url, options);
+		const responseData = await res.json();
 
-        if (!res.ok) {
-            if (res.status === 401) {
-            } else {
-                if (Array.isArray(responseData.message)) {
-                    throw new Error(responseData.message.toString());
-                }
-                throw new Error(responseData.message);
-            }
-        }
+		if (!res.ok) {
+			if (Array.isArray(responseData.error)) {
+				throw new Error(responseData.error.toString());
+			}
+			toast.error(responseData.error);
+			throw new Error(responseData.error);
+		}
 
-        return responseData;
-    } catch (error: any) {
-        throw new Error(error.message);
-    }
+		return responseData;
+	} catch (error: any) {
+		throw new Error(error.message);
+	}
 };
 
 const get = request.bind(null, "GET");

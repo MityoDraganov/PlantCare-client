@@ -9,22 +9,21 @@ import { Header } from "./components/Header";
 import { Dashboard } from "./Pages/Dashboard/Dashboard";
 
 function App() {
-    return (
-        <>
-            <Header />
+	return (
+		<>
+			<Header />
+			<Routes>
+				<Route path="/" element={<HomePage />} />
+				<Route
+					path="/cropPots/assign/:token"
+					element={<AddCropPot />}
+				/>
 
-            <Routes>
-                <Route path="/" element={<HomePage />} />
-                <Route
-                    path="/cropPots/assign/:token"
-                    element={<AddCropPot />}
-                />
-
-                <Route path="/dashboard" element={<Dashboard />} />
-            </Routes>
-            <Toaster />
-        </>
-    );
+				<Route path="/dashboard" element={<Dashboard />} />
+			</Routes>
+			<Toaster />
+		</>
+	);
 }
 
 export default App;

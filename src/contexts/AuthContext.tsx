@@ -1,8 +1,7 @@
-import React, {
+import {
     createContext,
     FunctionComponent,
     ReactNode,
-    useContext,
     useEffect,
     useState,
 } from "react";
