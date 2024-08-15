@@ -1,12 +1,10 @@
-
+import { Card } from "../../../components/ui/card";
 import { AddPotPlaceholder } from "./AddPotPlaceholder";
 
 export const PotsSelect = () => {
-  return (
-      <div className="flex gap-4 overflow-scroll w-full h-max p-2">
-        <AddPotPlaceholder />
-      </div>
-
-
-  );
+	return (
+		<Card className="flex gap-4 overflow-auto w-full h-max py-2 pl-2 pr-10">
+			<AddPotPlaceholder />
+		</Card>
+	);
 };

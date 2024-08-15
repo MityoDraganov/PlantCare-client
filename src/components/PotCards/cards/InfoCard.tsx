@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import { Card, CardContent, CardTitle } from "../ui/card";
-import { cn } from "../../lib/utils";
+import { Card, CardContent, CardTitle } from "../../ui/card";
+import { cn } from "../../../lib/utils";
 
 interface InfoCardProps {
   icon?: ReactNode;

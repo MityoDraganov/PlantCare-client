@@ -7,6 +7,8 @@ import { HomePage } from "./Pages/Home/Home";
 import { Toaster } from "react-hot-toast";
 import { Header } from "./components/Header";
 import { Dashboard } from "./Pages/Dashboard/Dashboard";
+import {Layout} from "./Pages/Dashboard/Layout";
+import { CropPots } from "./Pages/Dashboard/pages/CropPots";
 
 function App() {
 	return (
@@ -19,7 +21,10 @@ function App() {
 					element={<AddCropPot />}
 				/>
 
-				<Route path="/dashboard" element={<Dashboard />} />
+				<Route path="/dashboard" element={<Layout />}>
+					<Route index element={<Dashboard />} />
+					<Route path="pots" element={<CropPots />} />
+				</Route>
 			</Routes>
 			<Toaster />
 		</>

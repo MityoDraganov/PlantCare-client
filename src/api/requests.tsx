@@ -2,10 +2,15 @@
 import * as api from "./api";
 
 const endPoints = {
-  cropPots: (token: string) => `cropPots/assign/${token}`,
+  assignPot: (token: string) => `cropPots/assign/${token}`,
+  cropPots: "cropPots"
 };
 
 export const assignCropPot = (token: string) => {
-  return api.post(endPoints.cropPots(token));
+  return api.post(endPoints.assignPot(token));
 };
+
+export const getAllPots = () => {
+  return api.get(endPoints.cropPots)
+}
 

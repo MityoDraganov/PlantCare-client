@@ -1,5 +1,5 @@
 import { BatteryMedium } from "lucide-react";
-import { InfoCard } from "../InfoCard";
+import { InfoCard } from "./InfoCard";
 
 export const BatteryLevelCard = ({ percentageCharged }: { percentageCharged: number }) => {
   return (  

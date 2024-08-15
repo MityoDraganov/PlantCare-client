@@ -35,7 +35,7 @@ export const AddCropPot = () => {
             </div>
 
             <SignedOut>
-                <SignUp redirectUrl={currentUrl} />
+                <SignUp forceRedirectUrl={currentUrl} signInForceRedirectUrl={currentUrl} />
             </SignedOut>
             <SignedIn>
                 <div className="w-[80%] h-full gap-[5%] items-center flex flex-col ">

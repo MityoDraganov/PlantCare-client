@@ -29,7 +29,8 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
             const fetchedToken = await getToken();
             if (fetchedToken) {
                 setToken(fetchedToken);
-
+                console.log(fetchedToken);
+                
                 localStorage.setItem("clerkFetchedToken", fetchedToken);
             }
         };
@@ -38,7 +39,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
     }, [getToken]);
 
     // Optionally, you can show a loading state while the token is being fetched
-    if (token === null) {
+    if (token === null && window.location.pathname !== "/") {
         return <div>Loading...</div>;
     }
 

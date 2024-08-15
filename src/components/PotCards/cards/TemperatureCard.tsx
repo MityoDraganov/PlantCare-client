@@ -1,5 +1,5 @@
 import { Thermometer } from "lucide-react";
-import { InfoCard } from "../InfoCard";
+import { InfoCard } from "./InfoCard";
 import {
   Select,
   SelectContent,

@@ -1,5 +1,5 @@
 import { Beaker } from "lucide-react";
-import { InfoCard } from "../InfoCard";
+import { InfoCard } from "./InfoCard";
 
 export const WaterTankCard = ({ percentageFull }: { percentageFull: number }) => {
   return (  
