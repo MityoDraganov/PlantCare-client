@@ -2,7 +2,6 @@ import {
 	Bar,
 	BarChart,
 	CartesianGrid,
-	ResponsiveContainer,
 	XAxis,
 	YAxis,
 } from "recharts";
@@ -16,7 +15,6 @@ import {
 import {
 	Card,
 	CardContent,
-	CardDescription,
 	CardHeader,
 	CardTitle,
 } from "../../ui/card";
@@ -30,7 +28,7 @@ import {
 import { Beaker, Droplets, SunMedium, Thermometer } from "lucide-react";
 import { SensorDataResponseDto } from "../../../dtos/SensorData.dto";
 
-export enum ChartDataTypes {
+enum ChartDataTypes {
 	Temperature = 0,
 	Moisture = 1,
 	WaterLevel = 2,
@@ -74,7 +72,7 @@ export const Chart = ({ sensorData }: ChartProps) => {
 	const [chartData, setChartData] = useState<ChartData[]>([]);
 
 	useEffect(() => {
-		const processedData = sensorData.map((data, index) => {
+		const processedData = sensorData.map((data) => {
       const date = new Date(data.createdAt)
 			const hours = date.getHours() % 12 || 12; // 12-hour format
 			const period = date.getHours() < 12 ? "AM" : "PM";
@@ -100,8 +98,8 @@ export const Chart = ({ sensorData }: ChartProps) => {
 	const Icon = chartConfig.icon;
 
 	return (
-		<Card className="h-full flex flex-col justify-between">
-			<CardHeader>
+		<Card className="h-full flex flex-col p-0">
+			<CardHeader className="p-3">
 				<Select
 					onValueChange={(value: string) =>
 						setType(parseInt(value) as ChartDataTypes)
@@ -111,7 +109,7 @@ export const Chart = ({ sensorData }: ChartProps) => {
 						<SelectTrigger className="w-fit">
 							<SelectValue
 								placeholder={
-									<p className="flex gap-2 text-lg p-1">
+									<p className="flex gap-2 p-1">
 										<span className="flex gap-2 items-baseline">
 											{Icon && (
 												<Icon className="h-4 w-4" />
@@ -146,23 +144,22 @@ export const Chart = ({ sensorData }: ChartProps) => {
 						</SelectContent>
 					</CardTitle>
 				</Select>
-				<CardDescription>Last 12 Hours</CardDescription>
 			</CardHeader>
-			<CardContent className="h-1/2">
-				<ChartContainer config={chartConfig} className="w-full h-1/4">
-					<ResponsiveContainer width="100%" height="100%">
+			<CardContent className="h-[90%] my-auto">
+				<ChartContainer config={chartConfig} className="w-full min-h-1/4 max-h-[90%]">
+				
 						<BarChart data={chartData}>
-							<CartesianGrid vertical={false} />
+							<CartesianGrid vertical={true} />
 							<XAxis
 								dataKey="time"
 								tickLine={false}
 								tickMargin={10}
-								axisLine={false}
+								axisLine={true}
 							/>
 							<YAxis tickLine={false} axisLine={false} />
 							<ChartTooltip
 								cursor={false}
-								content={<ChartTooltipContent hideLabel />}
+								content={<ChartTooltipContent />}
 							/>
 							<Bar
 								dataKey="value"
@@ -170,7 +167,7 @@ export const Chart = ({ sensorData }: ChartProps) => {
 								fill={chartConfig.color}
 							/>
 						</BarChart>
-					</ResponsiveContainer>
+					
 				</ChartContainer>
 			</CardContent>
 		</Card>
