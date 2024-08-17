@@ -11,20 +11,20 @@ import {
 	ChartTooltip,
 	ChartTooltipContent,
 	ChartConfig,
-} from "../../ui/chart";
+} from "../../../components/ui/chart";
 import {
 	Card,
 	CardContent,
 	CardHeader,
 	CardTitle,
-} from "../../ui/card";
+} from "../../../components/ui/card";
 import {
 	Select,
 	SelectContent,
 	SelectItem,
 	SelectTrigger,
 	SelectValue,
-} from "../../ui/select";
+} from "../../../components/ui/select";
 import { Beaker, Droplets, SunMedium, Thermometer } from "lucide-react";
 import { SensorDataResponseDto } from "../../../dtos/SensorData.dto";
 
@@ -100,13 +100,15 @@ export const Chart = ({ sensorData }: ChartProps) => {
 	return (
 		<Card className="h-full flex flex-col p-0">
 			<CardHeader className="p-3">
+				<CardTitle>
 				<Select
 					onValueChange={(value: string) =>
 						setType(parseInt(value) as ChartDataTypes)
 					}
+
+					
 				>
-					<CardTitle>
-						<SelectTrigger className="w-fit">
+						<SelectTrigger className="w-full md:w-fit">
 							<SelectValue
 								placeholder={
 									<p className="flex gap-2 p-1">
@@ -142,8 +144,8 @@ export const Chart = ({ sensorData }: ChartProps) => {
 								}
 							)}
 						</SelectContent>
-					</CardTitle>
 				</Select>
+					</CardTitle>
 			</CardHeader>
 			<CardContent className="h-[90%] my-auto">
 				<ChartContainer config={chartConfig} className="w-full min-h-1/4 max-h-[90%]">

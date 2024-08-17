@@ -1,10 +1,10 @@
 import { Pin } from "lucide-react";
-import { BatteryLevelCard } from "../../../../components/PotCards/cards/BatteryLevelCard";
-import { PotGalleryCard } from "../../../../components/PotCards/cards/PotGalleryCard";
-import { TemperatureCard } from "../../../../components/PotCards/cards/TemperatureCard";
-import { WaterTankCard } from "../../../../components/PotCards/cards/WaterTankCard";
-import { Chart } from "../../../../components/PotCards/cards/Chart";
-import { PhotoCard } from "../../../../components/PotCards/cards/PhotoCard";
+import { BatteryLevelCard } from "../../../PotCards/cards/BatteryLevelCard";
+import { PotGalleryCard } from "../../../PotCards/cards/PotGalleryCard";
+import { TemperatureCard } from "../../../PotCards/cards/TemperatureCard";
+import { WaterTankCard } from "../../../PotCards/cards/WaterTankCard";
+import { Chart } from "../../../PotCards/cards/Chart";
+import { PhotoCard } from "../../../PotCards/cards/PhotoCard";
 import { Card, CardContent, CardTitle } from "../../../../components/ui/card";
 import { useEffect, useState } from "react";
 import { CropPotResponseDto } from "../../../../dtos/CropPot.dto";
@@ -29,28 +29,28 @@ export const PinnedPot = () => {
 	}, []);
 
 	return (
-		<Card className="w-full md:h-1/4 p-2 pb-4 flex flex-col gap-4">
+		<Card className="w-full lg:h-1/4 p-2 pb-4 flex flex-col gap-4">
 			<CardTitle className="pl-6 flex gap-1">
 				<Pin className="fill-[#F9E400] hover:cursor-pointer" />
 				Pinned Pot
 			</CardTitle>
 
-			<CardContent className="flex flex-col md:flex-row w-full md:h-3/4 gap-2 justify-between">
-				<div className="flex w-full md:w-[60%] md:h-1/3 flex-col gap-4">
-					<div className="flex flex-col md:flex-row gap-4">
+			<CardContent className="flex flex-col lg:flex-row w-full lg:h-3/4 gap-2 justify-between">
+				<div className="flex w-full lg:w-[60%] lg:h-1/3 flex-col gap-4">
+					<div className="flex flex-col lg:flex-row gap-4">
 						<WaterTankCard percentageFull={78} />
 						<TemperatureCard potTemperature={25} />
 						<BatteryLevelCard percentageCharged={99} />
 						<PotGalleryCard />
 					</div>
 					{pots?.length && (
-						<div className="md:h-[40dvh]">
+						<div className="lg:h-[40dvh]">
 							<Chart sensorData={pots[0].sensorData} />
 						</div>
 					)}
 				</div>
 
-				<div className="w-full md:w-1/3 aspect-square">
+				<div className="w-full lg:w-1/3 aspect-square">
 					<PhotoCard
 						imgUrl={
 							"https://www.thompson-morgan.com/static-images/tandm/static-articles/top-10-crops-pots/20220324_tm_mint_container.jpg"

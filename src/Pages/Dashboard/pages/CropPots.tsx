@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getAllPots } from "../../../api/requests";
 import { CropPotResponseDto } from "../../../dtos/CropPot.dto";
 import toast from "react-hot-toast";
-import { PotCard } from "../../../components/PotCards/PotCard";
+import { PotCard } from "../../PotCards/PotCard";
 
 export const CropPots = () => {
 	const [pots, setPots] = useState<CropPotResponseDto[]>();
@@ -24,7 +24,7 @@ export const CropPots = () => {
 	}, []);
 
 	return (
-		<div className="h-full w-full grid grid-cols-3 gap-6">
+		<div className="h-full w-full grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-6">
 			{pots?.length ? pots.map((x: CropPotResponseDto) => <PotCard {...x}/>) : <p>No pots available</p>}
 
 		</div>
