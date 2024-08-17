@@ -18,7 +18,7 @@ export const InfoCard = ({
   className
 }: InfoCardProps) => {
   return (
-    <Card className={cn("w-[25%] flex flex-col items-center gap-4 pt-2", className)}>
+    <Card className={cn("w-full md:w-[25%] flex flex-col items-center gap-4 pt-2", className)}>
       <CardTitle className="text-sm flex items-center gap-1">
         {icon}
         <p>{title}</p>

@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 export const Header = () => {
   return (
-    <div className="flex justify-between h-[6%] overflow-hidden bg-white border-b shadow-sm px-2">
+    <div className="flex justify-between h-[5dvh] overflow-hidden bg-white border-b shadow-sm px-2">
       <Link to="/" className="h-full flex gap-1 items-center">
         <div className="h-full">
           <img src="/icons/icon_transparent.png" className="h-full" />
