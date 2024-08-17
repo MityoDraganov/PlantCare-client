@@ -16,8 +16,8 @@ export const Sidebar = () => {
 	};
 
 	return (
-		<div className="md:h-screen">
-			<div className="h-screen hidden md:block">
+		<div className="md:h-full ">
+			<div className="h-[94dvh] hidden md:block">
 				{!isSidebarOpen ? (
 					<div className="ml-2 pt-2 pr-1 h-full border-r">
 						<PanelLeftOpen
@@ -50,7 +50,7 @@ export const Sidebar = () => {
 			</div>
 
 			<Sheet>
-				<SheetTrigger className="mt-2 ml-2">
+				<SheetTrigger className="mt-2 ml-2 md:hidden">
 					<PanelLeftOpen
 						onClick={toggleSidebar}
 						className="text-muted-foreground hover:text-black hover:cursor-pointer"

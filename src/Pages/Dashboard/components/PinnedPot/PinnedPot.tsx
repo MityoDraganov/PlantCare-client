@@ -35,7 +35,7 @@ export const PinnedPot = () => {
 				Pinned Pot
 			</CardTitle>
 
-			<CardContent className="flex flex-col md:flex-row w-full md:h-3/4 gap-2 justify-between  overflow-auto">
+			<CardContent className="flex flex-col md:flex-row w-full md:h-3/4 gap-2 justify-between">
 				<div className="flex w-full md:w-[60%] md:h-1/3 flex-col gap-4">
 					<div className="flex flex-col md:flex-row gap-4">
 						<WaterTankCard percentageFull={78} />
