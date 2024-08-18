@@ -38,7 +38,8 @@ export const WebhookSettings = () => {
 	});
 
 	const handleParentCheckboxChange = (parentKey: string) => {
-		const isParentSelected = webHooksData.subscribedEvents.includes(parentKey);
+		const isParentSelected =
+			webHooksData.subscribedEvents.includes(parentKey);
 		let updatedSubscribedEvents;
 
 		if (isParentSelected) {
@@ -65,7 +66,8 @@ export const WebhookSettings = () => {
 	};
 
 	const handleChildCheckboxChange = (childKey: string) => {
-		const isChildSelected = webHooksData.subscribedEvents.includes(childKey);
+		const isChildSelected =
+			webHooksData.subscribedEvents.includes(childKey);
 		let updatedSubscribedEvents;
 
 		if (isChildSelected) {
@@ -82,10 +84,11 @@ export const WebhookSettings = () => {
 		}
 
 		// If all children are selected, select the parent
-		const allChildrenSelected =
-			["temperature", "temperature.measured", "moisture"].every((key) =>
-				updatedSubscribedEvents.includes(key)
-			);
+		const allChildrenSelected = [
+			"temperature",
+			"temperature.measured",
+			"moisture",
+		].every((key) => updatedSubscribedEvents.includes(key));
 
 		if (allChildrenSelected) {
 			updatedSubscribedEvents = [...updatedSubscribedEvents, "sensors"];
@@ -193,8 +196,12 @@ export const WebhookSettings = () => {
 							<div className="flex items-center space-x-2">
 								<Checkbox
 									id="sensors"
-									checked={webHooksData.subscribedEvents.includes("sensors")}
-									onChange={() => handleParentCheckboxChange("sensors")}
+									checked={webHooksData.subscribedEvents.includes(
+										"sensors"
+									)}
+									onChange={() =>
+										handleParentCheckboxChange("sensors")
+									}
 								/>
 								<label
 									htmlFor="sensors"
@@ -207,8 +214,14 @@ export const WebhookSettings = () => {
 								<div className="flex items-center space-x-2">
 									<Checkbox
 										id="temperature"
-										checked={webHooksData.subscribedEvents.includes("temperature")}
-										onChange={() => handleChildCheckboxChange("temperature")}
+										checked={webHooksData.subscribedEvents.includes(
+											"temperature"
+										)}
+										onChange={() =>
+											handleChildCheckboxChange(
+												"temperature"
+											)
+										}
 									/>
 									<label
 										htmlFor="temperature"
@@ -221,8 +234,14 @@ export const WebhookSettings = () => {
 									<div className="flex items-center space-x-2">
 										<Checkbox
 											id="temperature.measured"
-											checked={webHooksData.subscribedEvents.includes("temperature.measured")}
-											onChange={() => handleChildCheckboxChange("temperature.measured")}
+											checked={webHooksData.subscribedEvents.includes(
+												"temperature.measured"
+											)}
+											onChange={() =>
+												handleChildCheckboxChange(
+													"temperature.measured"
+												)
+											}
 										/>
 										<label
 											htmlFor="temperature.measured"
@@ -235,8 +254,14 @@ export const WebhookSettings = () => {
 								<div className="flex items-center space-x-2">
 									<Checkbox
 										id="moisture"
-										checked={webHooksData.subscribedEvents.includes("moisture")}
-										onChange={() => handleChildCheckboxChange("moisture")}
+										checked={webHooksData.subscribedEvents.includes(
+											"moisture"
+										)}
+										onChange={() =>
+											handleChildCheckboxChange(
+												"moisture"
+											)
+										}
 									/>
 									<label
 										htmlFor="moisture"
