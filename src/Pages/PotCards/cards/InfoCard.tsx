@@ -28,5 +28,5 @@ export const InfoCard = ({
         <span className="uppercase text-xs">{subContent}</span>
       </CardContent>
     </Card>
-  );
+);
 };

@@ -1,4 +1,4 @@
-import { Beaker, ChevronRight, Images } from "lucide-react";
+import { ChevronRight, Images } from "lucide-react";
 import { InfoCard } from "./InfoCard";
 
 export const PotGalleryCard = () => {

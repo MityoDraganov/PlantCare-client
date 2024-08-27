@@ -6,5 +6,5 @@ export interface potData {
 export interface potWebhookFields {
     endpointUrl: string;
     description?: string;
-    subscribedEvents: string[]
+    subscribedEventsSerialNums: string[]
 }

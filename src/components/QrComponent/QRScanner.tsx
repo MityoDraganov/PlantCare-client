@@ -11,7 +11,8 @@ export const QRScanner = ({
 	isScanned: boolean;
 }) => {
 	const videoElementRef = useRef<HTMLVideoElement | null>(null);
-
+	console.log(	isScanned,);
+	
 	useEffect(() => {
 		const video = videoElementRef.current;
 

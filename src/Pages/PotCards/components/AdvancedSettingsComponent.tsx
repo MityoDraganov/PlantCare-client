@@ -1,13 +1,14 @@
 import { ArrowLeft } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../../components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
 import { WebhookSettings } from "./WebhookSettings";
+import { CropPotResponseDto } from "../../../dtos/CropPot.dto";
 
 
 export const AdvancedSettingsComponent = ({
 	returnHandler,
+	potData
 }: {
 	returnHandler: () => void;
+	potData: CropPotResponseDto;
 }) => {
 
 	return (
@@ -18,27 +19,7 @@ export const AdvancedSettingsComponent = ({
 				size={28}
 			/>
 
-			<Card className="w-full">
-				<CardHeader>
-					<CardTitle>Webhooks</CardTitle>
-				</CardHeader>
-				<CardContent>
-					<Tabs defaultValue="endpoints" className="w-full flex flex-col gap-2">
-						<TabsList className="w-full">
-							<TabsTrigger value="endpoints" className="flex-1">
-								Endpoints
-							</TabsTrigger>
-							<TabsTrigger value="eventCatalog" className="flex-1">
-								Event Catalog
-							</TabsTrigger>
-						</TabsList>
-                        <WebhookSettings />
-						<TabsContent value="eventCatalog">
-							Change your password here.
-						</TabsContent>
-					</Tabs>
-				</CardContent>
-			</Card>
+			<WebhookSettings potData={potData}/>
 		</div>
 	);
 };

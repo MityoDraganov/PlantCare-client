@@ -25,98 +25,70 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "../../../components/ui/select";
-import { Beaker, Droplets, SunMedium, Thermometer } from "lucide-react";
-import { SensorDataResponseDto } from "../../../dtos/SensorData.dto";
-
-enum ChartDataTypes {
-	Temperature = 0,
-	Moisture = 1,
-	WaterLevel = 2,
-	SunExposure = 3,
-}
+import { SensorDataResponseDto } from "../../../dtos/sensors.dto";
 
 interface ChartData {
 	time: string;
 	value: number;
 }
 
-const chartConfigs: Record<ChartDataTypes, ChartConfig> = {
-	[ChartDataTypes.WaterLevel]: {
-		label: `Water Tank Level`,
-		color: "hsl(var(--chart-2))",
-		icon: Beaker,
-	},
-	[ChartDataTypes.Temperature]: {
-		label: "Temperature",
-		color: "hsl(var(--chart-1))",
-		icon: Thermometer,
-	},
-	[ChartDataTypes.Moisture]: {
-		label: "Moisture",
-		color: "hsl(var(--chart-6))",
-		icon: Droplets,
-	},
-	[ChartDataTypes.SunExposure]: {
-		label: "Sun Exposure",
-		color: "hsl(var(--chart-4))",
-		icon: SunMedium,
-	},
-};
-
 interface ChartProps {
-	sensorData: SensorDataResponseDto[]; // Array of sensor data
+	sensors: SensorDataResponseDto[]; // Array of sensor data
 }
 
-export const Chart = ({ sensorData }: ChartProps) => {
-	const [type, setType] = useState<ChartDataTypes>(ChartDataTypes.Moisture);
+export const Chart = ({ sensors }: ChartProps) => {
+	const [selectedSensor, setSelectedSensor] = useState<string | null>(sensors[0].alias);
 	const [chartData, setChartData] = useState<ChartData[]>([]);
 
 	useEffect(() => {
-		const processedData = sensorData.map((data) => {
-      const date = new Date(data.createdAt)
-			const hours = date.getHours() % 12 || 12; // 12-hour format
-			const period = date.getHours() < 12 ? "AM" : "PM";
-			const time = `${hours} ${period}`;
+		if (selectedSensor) {
+			const selectedSensorData = sensors.find(
+				(sensor) => sensor.alias === selectedSensor
+			);
 
-			return {
-				time,
-				value:
-					type === ChartDataTypes.Temperature
-						? data.temperature
-						: type === ChartDataTypes.Moisture
-						? data.moisture
-						: type === ChartDataTypes.WaterLevel
-						? data.waterLevel
-						: data.sunExposure,
-			};
-		});
+			if (selectedSensorData) {
+				const processedData = selectedSensorData.measurements.map((measurement) => {
+					const date = new Date(measurement.CreatedAt);
+					const hours = date.getHours() % 12 || 12; // 12-hour format
+					const period = date.getHours() < 12 ? "AM" : "PM";
+					const time = `${hours} ${period}`;
 
-		setChartData(processedData.reverse());
-	}, [type, sensorData]);
+					return {
+						time,
+						value: measurement.value,
+					};
+				});
 
-	const chartConfig = chartConfigs[type];
-	const Icon = chartConfig.icon;
+				setChartData(processedData.reverse());
+			}
+		}
+	}, [selectedSensor, sensors]);
+
+	const chartConfig: ChartConfig | undefined = selectedSensor
+		? {
+				label: selectedSensor,
+				color: "hsl(var(--chart-1))",
+		  }
+		: undefined;
+
+	console.log(sensors)
 
 	return (
 		<Card className="h-full flex flex-col p-0">
 			<CardHeader className="p-3">
 				<CardTitle>
-				<Select
-					onValueChange={(value: string) =>
-						setType(parseInt(value) as ChartDataTypes)
-					}
-
-					
-				>
+					<Select
+						onValueChange={(value: string) => setSelectedSensor(value)}
+					>
 						<SelectTrigger className="w-full md:w-fit">
 							<SelectValue
 								placeholder={
 									<p className="flex gap-2 p-1">
 										<span className="flex gap-2 items-baseline">
-											{Icon && (
-												<Icon className="h-4 w-4" />
+											{chartConfig?.icon && (
+												<chartConfig.icon className="h-4 w-4" />
 											)}
-											{chartConfig.label}
+											{chartConfig?.label}
 										</span>
 										<span className="font-normal pr-2">
 											Chart
@@ -126,30 +98,21 @@ export const Chart = ({ sensorData }: ChartProps) => {
 							/>
 						</SelectTrigger>
 						<SelectContent>
-							{Object.keys(chartConfigs).map(
-								(key: string, index: number) => {
-									const config = chartConfigs[parseInt(key) as ChartDataTypes];
-
-									const Icon = config.icon;
-									return (
-										<SelectItem value={index.toString()} key={key}>
-											<div className="flex items-center gap-2">
-												{Icon && (
-													<Icon className="h-4 w-4" />
-												)}
-												<p>{config.label}</p>
-											</div>
-										</SelectItem>
-									);
-								}
-							)}
+							{sensors.map((sensor) => (
+								<SelectItem value={sensor.alias} key={sensor.id}>
+									<div className="flex items-center gap-2">
+										{/* <sensor.icon className="h-4 w-4" /> */}
+										<p>{sensor.alias}</p>
+									</div>
+								</SelectItem>
+							))}
 						</SelectContent>
-				</Select>
-					</CardTitle>
+					</Select>
+				</CardTitle>
 			</CardHeader>
 			<CardContent className="h-[90%] my-auto">
-				<ChartContainer config={chartConfig} className="w-full min-h-1/4 max-h-[90%]">
-				
+				{chartConfig && (
+					<ChartContainer config={chartConfig} className="w-full min-h-1/4 max-h-[90%]">
 						<BarChart data={chartData}>
 							<CartesianGrid vertical={true} />
 							<XAxis
@@ -169,8 +132,8 @@ export const Chart = ({ sensorData }: ChartProps) => {
 								fill={chartConfig.color}
 							/>
 						</BarChart>
-					
-				</ChartContainer>
+					</ChartContainer>
+				)}
 			</CardContent>
 		</Card>
 	);

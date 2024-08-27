@@ -6,7 +6,7 @@ import { PotCard } from "../../PotCards/PotCard";
 
 export const CropPots = () => {
 	const [pots, setPots] = useState<CropPotResponseDto[]>();
-	const [loading, setLoading] = useState<boolean>(true);
+	const [_, setLoading] = useState<boolean>(true);
 	useEffect(() => {
 		(async () => {
 			try {

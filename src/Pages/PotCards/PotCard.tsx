@@ -54,7 +54,7 @@ export const PotCard = (pot: CropPotResponseDto) => {
 							</p>
 
 							<div className="h-max">
-								<Chart sensorData={pot.sensorData} />
+								<Chart sensors={pot.sensors} />
 							</div>
 						</div>
 						<div className="pl-3 flex flex-col justify-between h-full pb-5">
@@ -100,7 +100,7 @@ export const PotCard = (pot: CropPotResponseDto) => {
 						</div>
 					</div>
 				) : (
-					<AdvancedSettingsComponent returnHandler={returnHandler} />
+					<AdvancedSettingsComponent returnHandler={returnHandler} potData={pot}/>
 				)}
 			</DrawerContent>
 		</Drawer>

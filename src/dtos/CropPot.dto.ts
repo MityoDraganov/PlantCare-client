@@ -1,7 +1,7 @@
 import {
-	CustomSensorDataResponse,
 	SensorDataResponseDto,
-} from "./SensorData.dto";
+} from "./sensors.dto";
+import { WebhookResponse } from "./webhooks.dto";
 
 interface ControlSettingsResponseDTO {
 	WateringInterval: number;
@@ -12,8 +12,8 @@ export interface CropPotResponseDto {
 	id: number;
 	alias: string;
 	lastWateredAt: Date;
-	IsArchived: boolean;
+	isArchived: boolean;
 	controlSettings: ControlSettingsResponseDTO;
-	sensorData: SensorDataResponseDto[];
-	customSensorData: CustomSensorDataResponse[];
+	sensors: SensorDataResponseDto[]
+	webhooks?: WebhookResponse[]
 }

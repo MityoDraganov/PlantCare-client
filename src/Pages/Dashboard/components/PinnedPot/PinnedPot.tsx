@@ -45,7 +45,7 @@ export const PinnedPot = () => {
 					</div>
 					{pots?.length && (
 						<div className="lg:h-[40dvh]">
-							<Chart sensorData={pots[0].sensorData} />
+							<Chart sensors={pots[0].sensors} />
 						</div>
 					)}
 				</div>
