@@ -1,9 +1,8 @@
-import { MeasuremntDto } from "./measurements.dto";
-import { SensorDataResponseDto } from "./sensors.dto";
+import { SensorDto } from "./sensors.dto";
 
-export interface WebhookResponse {
-	sensor: SensorDataResponseDto;
-
-	measurement: MeasuremntDto;
-	IsOfficial: boolean;
+export interface WebhookDto {
+	id?: number;
+	endpointUrl: string;
+	description?: string;
+	subscribedEvents: SensorDto[]
 }

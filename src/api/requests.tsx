@@ -1,11 +1,16 @@
 // apiFunctions.ts
-import { potWebhookFields } from "../Interfaces/Pot.interface";
+import { WebhookDto } from "../dtos/webhooks.dto";
 import * as api from "./api";
 
 const endPoints = {
 	assignPot: (token: string) => `cropPots/assign/${token}`,
 	cropPots: "cropPots",
-	webhooks: (potId?: number) => (potId ? `webhooks/${potId}` : "webhooks"),
+	webhooks: (routeData?: { potId: number; webhookId?: number }) =>
+		!routeData
+			? "webhooks"
+			: !routeData.webhookId
+			? `webhooks/${routeData.potId}`
+			: `webhooks/${routeData.potId}/${routeData.webhookId}`,
 };
 
 export const assignCropPot = (token: string) => {
@@ -17,6 +22,18 @@ export const getAllPots = () => {
 };
 
 // --WEBHOOKS--
-export const addWebhook = (potId: number, webHookData: potWebhookFields) => {
-  return api.post(endPoints.webhooks(potId), webHookData)
+export const addWebhook = (potId: number, webHookData: WebhookDto) => {
+	return api.post(endPoints.webhooks({ potId }), webHookData);
+};
+
+export const updateWebhook = (
+	potId: number,
+	webhookId: number | undefined,
+	updatedField: Partial<WebhookDto>
+) => {
+	return api.put(endPoints.webhooks({ potId, webhookId }), updatedField);
+};
+
+export const deleteWebhook = (potId: number, webhookId: number) => {
+	return api.del(endPoints.webhooks({ potId, webhookId }));
 };

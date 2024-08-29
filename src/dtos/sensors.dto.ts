@@ -1,6 +1,6 @@
 import { MeasuremntDto } from "./measurements.dto";
 
-export interface SensorDataResponseDto {
+export interface SensorDto {
 	id: number;
 	serialNumber: string;
 	alias: string;
@@ -8,7 +8,10 @@ export interface SensorDataResponseDto {
 	measurements: MeasuremntDto[];
 	IsOfficial: boolean;
 }
-export interface CustomSensorDataResponse {
-	FieldAlias: string;
-	DataValue: number;
-}
+
+// export interface SensorWebhookDto {
+// 	serialNumber: string;
+// 	alias?: string;
+// 	description?: string;
+// 	IsOfficial: boolean;
+// }

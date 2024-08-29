@@ -1,4 +1,4 @@
-import { Tabs, TabsList, TabsTrigger } from "@radix-ui/react-tabs";
+
 import {
 	Card,
 	CardContent,
@@ -8,6 +8,7 @@ import {
 import { EndpointsTab } from "./tabs/EndpointsTab";
 import { EventCatalogTab } from "./tabs/EventCatalogTab";
 import { CropPotResponseDto } from "../../../dtos/CropPot.dto";
+import { Tabs, TabsList, TabsTrigger } from "../../../components/ui/tabs";
 
 
 export const WebhookSettings = ({potData}: {potData: CropPotResponseDto}) => {
@@ -16,7 +17,7 @@ export const WebhookSettings = ({potData}: {potData: CropPotResponseDto}) => {
 			<CardHeader>
 				<CardTitle>Webhooks</CardTitle>
 			</CardHeader>
-			<CardContent>
+			<CardContent className="w-full">
 				<Tabs
 					defaultValue="endpoints"
 					className="w-full flex flex-col gap-2"

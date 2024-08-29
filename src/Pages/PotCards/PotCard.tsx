@@ -36,7 +36,7 @@ export const PotCard = (pot: CropPotResponseDto) => {
 			<DrawerContent
 				className={`${
 					tab !== tabOptions.info ? "min-h-[75dvh]" : "min-h-[40dvh]"
-				} items-center text-left`}
+				} items-center text-left w-full`}
 			>
 				<DrawerHeader>
 					<DrawerTitle>{pot.alias}</DrawerTitle>

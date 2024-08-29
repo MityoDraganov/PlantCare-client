@@ -12,7 +12,7 @@ export const AdvancedSettingsComponent = ({
 }) => {
 
 	return (
-		<div className="w-2/3 ">
+		<div className="w-[95%]">
 			<ArrowLeft
 				className="absolute top-[2dvh] left-[2dvh] hover:cursor-pointer"
 				onClick={returnHandler}
