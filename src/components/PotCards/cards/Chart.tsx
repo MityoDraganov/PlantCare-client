@@ -25,7 +25,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "../../../components/ui/select";
-import { SensorDataResponseDto } from "../../../dtos/sensors.dto";
+import { SensorDto } from "../../../dtos/sensors.dto";
 
 interface ChartData {
 	time: string;
@@ -33,7 +33,7 @@ interface ChartData {
 }
 
 interface ChartProps {
-	sensors: SensorDataResponseDto[]; // Array of sensor data
+	sensors: SensorDto[]; // Array of sensor data
 }
 
 export const Chart = ({ sensors }: ChartProps) => {
@@ -70,8 +70,6 @@ export const Chart = ({ sensors }: ChartProps) => {
 				color: "hsl(var(--chart-1))",
 		  }
 		: undefined;
-
-	console.log(sensors)
 
 	return (
 		<Card className="h-full flex flex-col p-0">

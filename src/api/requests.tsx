@@ -1,4 +1,5 @@
 // apiFunctions.ts
+import { ControlSettingsDto } from "../dtos/CropPot.dto";
 import { WebhookDto } from "../dtos/webhooks.dto";
 import * as api from "./api";
 
@@ -11,6 +12,8 @@ const endPoints = {
 			: !routeData.webhookId
 			? `webhooks/${routeData.potId}`
 			: `webhooks/${routeData.potId}/${routeData.webhookId}`,
+
+	controlls: (controllSettingsId?: number) => `controlls/${controllSettingsId}`
 };
 
 export const assignCropPot = (token: string) => {
@@ -22,7 +25,7 @@ export const getAllPots = () => {
 };
 
 // --WEBHOOKS--
-export const addWebhook = (potId: number, webHookData: WebhookDto) => {
+export const createWebhook = (potId: number, webHookData: WebhookDto) => {
 	return api.post(endPoints.webhooks({ potId }), webHookData);
 };
 
@@ -37,3 +40,8 @@ export const updateWebhook = (
 export const deleteWebhook = (potId: number, webhookId: number) => {
 	return api.del(endPoints.webhooks({ potId, webhookId }));
 };
+
+//	--CONTROLLS--
+export const updateControllSetting = (controllSettingsId: number, updateData: ControlSettingsDto) => {
+	return api.put(endPoints.controlls(controllSettingsId), updateData)
+}

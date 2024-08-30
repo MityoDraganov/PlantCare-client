@@ -8,11 +8,8 @@ import {
 	BreadcrumbList,
 	BreadcrumbSeparator,
 } from "../../../../components/ui/breadcrumb";
-import { deleteWebhook, updateWebhook } from "../../../../api/requests";
 import { CropPotResponseDto } from "../../../../dtos/CropPot.dto";
-import useLoading from "../../../../hooks/useLoading";
 import { NewEndpoint } from "../breadCrumbs/NewEndpoint";
-import { WebhookDto } from "../../../../dtos/webhooks.dto";
 import { Endpoints } from "../breadCrumbs/Endpoints";
 
 enum tabOptions {
@@ -22,14 +19,6 @@ enum tabOptions {
 
 export const EndpointsTab = ({ potData }: { potData: CropPotResponseDto }) => {
 	const [tab, setTab] = useState<tabOptions>(tabOptions.endpoints);
-	const { beginLoading, endLoading } = useLoading();
-
-	const handleRemoveWebhook = async (webhookId: number) => {
-		beginLoading();
-		await deleteWebhook(potData.id, webhookId);
-		endLoading();
-	};
-
 
 	return (
 		<TabsContent value="endpoints" className="w-full h-full">

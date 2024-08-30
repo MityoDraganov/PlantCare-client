@@ -6,6 +6,7 @@ import {
     useState,
 } from "react";
 import { useAuth } from "@clerk/clerk-react";
+import { Spinner } from "../components/spinner";
 
 interface AuthContextProps {
     token: string | null;
@@ -29,8 +30,6 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
             const fetchedToken = await getToken();
             if (fetchedToken) {
                 setToken(fetchedToken);
-                console.log(fetchedToken);
-                
                 localStorage.setItem("clerkFetchedToken", fetchedToken);
             }
         };
@@ -40,7 +39,7 @@ export const AuthProvider: FunctionComponent<AuthProviderProps> = ({
 
     // Optionally, you can show a loading state while the token is being fetched
     if (token === null && window.location.pathname !== "/") {
-        return <div>Loading...</div>;
+        return <Spinner />;
     }
 
     return (

@@ -1,15 +1,16 @@
 import { Pin } from "lucide-react";
-import { BatteryLevelCard } from "../../../PotCards/cards/BatteryLevelCard";
-import { PotGalleryCard } from "../../../PotCards/cards/PotGalleryCard";
-import { TemperatureCard } from "../../../PotCards/cards/TemperatureCard";
-import { WaterTankCard } from "../../../PotCards/cards/WaterTankCard";
-import { Chart } from "../../../PotCards/cards/Chart";
-import { PhotoCard } from "../../../PotCards/cards/PhotoCard";
+
 import { Card, CardContent, CardTitle } from "../../../../components/ui/card";
 import { useEffect, useState } from "react";
 import { CropPotResponseDto } from "../../../../dtos/CropPot.dto";
 import { getAllPots } from "../../../../api/requests";
 import toast from "react-hot-toast";
+import { WaterTankCard } from "../../../../components/PotCards/cards/WaterTankCard";
+import { TemperatureCard } from "../../../../components/PotCards/cards/TemperatureCard";
+import { BatteryLevelCard } from "../../../../components/PotCards/cards/BatteryLevelCard";
+import { PotGalleryCard } from "../../../../components/PotCards/cards/PotGalleryCard";
+import { Chart } from "../../../../components/PotCards/cards/Chart";
+import { PhotoCard } from "../../../../components/PotCards/cards/PhotoCard";
 
 export const PinnedPot = () => {
 	const [pots, setPots] = useState<CropPotResponseDto[]>();

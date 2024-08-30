@@ -1,13 +1,14 @@
-import { Checkbox } from "@radix-ui/react-checkbox";
 import { InputGroup } from "../../../../components/InputGroup";
 import { TextAreaGroup } from "../../../../components/TextAreaGroup";
 import { Button } from "../../../../components/ui/button";
 import useFormData from "../../../../hooks/useForm";
 import { WebhookDto } from "../../../../dtos/webhooks.dto";
 import useLoading from "../../../../hooks/useLoading";
-import { addWebhook } from "../../../../api/requests";
+import { createWebhook } from "../../../../api/requests";
 import { CropPotResponseDto } from "../../../../dtos/CropPot.dto";
-import { SensorWebhookDto } from "../../../../dtos/sensors.dto";
+import { SensorDto } from "../../../../dtos/sensors.dto";
+import usePotStateUpdate from "../../../../hooks/usePotStateUpdate";
+import { Checkbox } from "../../../ui/checkbox";
 
 export const NewEndpoint = ({ potData }: { potData: CropPotResponseDto }) => {
 	const [webHookData, setWebHookData] = useFormData<WebhookDto>({
@@ -16,39 +17,51 @@ export const NewEndpoint = ({ potData }: { potData: CropPotResponseDto }) => {
 		subscribedEvents: [],
 	});
 
+	const { addWebhook } = usePotStateUpdate();
+
 	const { beginLoading, endLoading } = useLoading();
 
 	const handleSubmitWebhook = async () => {
 		beginLoading();
-		await addWebhook(potData.id, webHookData);
+		const result = await createWebhook(potData.id, webHookData);
+		addWebhook(potData.id, result);
 		endLoading();
 	};
 
-	const handleCheckboxChange = (childKey: string) => {
-		console.log(webHookData.subscribedEvents);
-
-		const isChildSelected = webHookData.subscribedEvents.some(
-			(x) => x.serialNumber === childKey
-		);
-		let updatedSubscribedEvents: SensorWebhookDto[];
-
-		if (isChildSelected) {
-			// Remove the child from subscribedEvents
-			updatedSubscribedEvents = webHookData.subscribedEvents.filter(
-				(event) => event.serialNumber !== childKey
-			);
-		} else {
-			// Add the child to subscribedEvents
-			updatedSubscribedEvents = [
-				...webHookData.subscribedEvents,
-				{ serialNumber: childKey },
-			];
-		}
-
+	const updateCheckboxesState = (updatedSubscribedEvents: SensorDto[]) => {
 		setWebHookData({
 			id: "subscribedEvents",
 			value: updatedSubscribedEvents,
 		});
+	};
+
+	const handleCheckboxChange = (sensorSerialNumber: string) => {
+		const isChecked = webHookData?.subscribedEvents.some(
+			(event) => event.serialNumber === sensorSerialNumber
+		);
+		let updatedSubscribedEvents: SensorDto[];
+
+		if (isChecked) {
+			updatedSubscribedEvents = webHookData.subscribedEvents.filter(
+				(event) => event.serialNumber !== sensorSerialNumber
+			);
+		} else {
+			const selectedSensor = potData.sensors?.find(
+				(sensor) => sensor.serialNumber === sensorSerialNumber
+			);
+			if (selectedSensor) {
+				updatedSubscribedEvents = [
+					...webHookData.subscribedEvents,
+					selectedSensor,
+				];
+			} else {
+				return;
+			}
+		}
+
+		if (updateCheckboxesState) {
+			updateCheckboxesState(updatedSubscribedEvents);
+		}
 	};
 	return (
 		<div className="flex flex-col gap-6">
@@ -72,21 +85,25 @@ export const NewEndpoint = ({ potData }: { potData: CropPotResponseDto }) => {
 				<h4>Subscribe to events</h4>
 				<ul className="flex flex-col">
 					{potData.sensors?.map((x) => (
-						<li className="pl-2 flex items-center gap-2 pt-2">
+						<li
+							key={x?.serialNumber}
+							className="flex items-center gap-1 mt-1 pl-2"
+						>
 							<Checkbox
-								id={x.serialNumber}
-								checked={webHookData.subscribedEvents.some(
-									(w) => w.serialNumber === x.serialNumber
+								checked={webHookData?.subscribedEvents?.some(
+									(s) =>
+										s?.serialNumber === x?.serialNumber
 								)}
 								onClick={() =>
-									handleCheckboxChange(x.serialNumber)
+									handleCheckboxChange(x?.serialNumber)
 								}
+								id={x?.serialNumber}
 							/>
 							<label
-								htmlFor={x.serialNumber}
-								className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 hover:cursor-pointer"
+								className="text-sm font-medium hover:cursor-pointer"
+								htmlFor={x?.serialNumber}
 							>
-								{x.alias}
+								{x?.alias}
 							</label>
 						</li>
 					))}

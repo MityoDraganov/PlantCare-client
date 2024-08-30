@@ -1,10 +1,12 @@
 import { ChangeEvent, useState } from "react";
 
+// Define a type for the form data change event
 export type FormDataChangeEvent =
   | ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   | { id: string; value: any }
   | FileList;
 
+// Define the hook with an additional function for setting entire form data
 const useFormData = <T extends {}>(
   initialValues: T
 ): [
@@ -14,10 +16,12 @@ const useFormData = <T extends {}>(
       | ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
       | { id: string; value: any }
       | FileList
-  ) => void
+  ) => void,
+  (newValues: T) => void // New function to set the entire form data
 ] => {
   const [formData, setFormData] = useState(initialValues);
 
+  // Handle individual field changes
   const handleChange = (
     e:
       | ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -52,7 +56,12 @@ const useFormData = <T extends {}>(
     }
   };
 
-  return [formData, handleChange];
+  // Function to set the entire form data
+  const setFormDataValue = (newValues: T) => {
+    setFormData(newValues);
+  };
+
+  return [formData, handleChange, setFormDataValue];
 };
 
 export default useFormData;
