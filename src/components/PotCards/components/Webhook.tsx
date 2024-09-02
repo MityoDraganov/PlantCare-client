@@ -25,23 +25,30 @@ import {
 } from "../../../components/ui/alert-dialog";
 import useLoading from "../../../hooks/useLoading";
 import usePotStateUpdate from "../../../hooks/usePotStateUpdate";
+import { useContext, useState } from "react";
+import { PotContext } from "../../../contexts/potContext";
 
 export const Webhook = ({
 	webhook,
-	potData,
 }: {
 	webhook: WebhookDto;
-	potData: CropPotResponseDto;
 }) => {
 	const [updateData, setUpdateData] = useFormData<WebhookDto>(webhook);
 	const { beginLoading, endLoading } = useLoading();
 	const { removeWebhook } = usePotStateUpdate();
 
+	const {selectedPot} = useContext(PotContext)
+	if(!selectedPot){
+		return;
+	}
+
+	const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false)
+
 	const handleUpdateWebhook = async (
 		webhookId: number | undefined,
 		updatedField: Partial<WebhookDto>
 	) => {
-		await updateWebhook(potData.id, webhookId, updatedField);
+		await updateWebhook(selectedPot.id, webhookId, updatedField);
 	};
 
 	const updateCheckboxesState = (updatedSubscribedEvents: SensorDto[]) => {
@@ -58,16 +65,17 @@ export const Webhook = ({
 
 
 	const handleRemoveWebhook = async () => {
+		setIsDialogOpen(false)
 		beginLoading();
 		if (webhook.id) {
-			await deleteWebhook(potData.id, webhook.id);
+			await deleteWebhook(selectedPot.id, webhook.id);
 			removeWebhook(webhook.id);
 		}
 		endLoading();
 	};
 
 	return (
-		<Dialog>
+		<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 			<DialogTrigger className="w-full hover:cursor-pointer" asChild>
 				<TableRow key={webhook.id}>
 					<TableCell className="flex flex-col break-words whitespace-break-spaces font-medium w-full">
@@ -109,7 +117,7 @@ export const Webhook = ({
 					fieldName="subscribedEvents"
 					webhook={updateData}
 					onChange={setUpdateData}
-					sensors={potData.sensors}
+					sensors={selectedPot.sensors}
 					UpdateWebhook={() =>
 						handleUpdateWebhook(webhook.id, {
 							subscribedEvents: updateData.subscribedEvents,

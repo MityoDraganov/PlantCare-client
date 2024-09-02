@@ -5,12 +5,13 @@ import useFormData from "../../../../hooks/useForm";
 import { WebhookDto } from "../../../../dtos/webhooks.dto";
 import useLoading from "../../../../hooks/useLoading";
 import { createWebhook } from "../../../../api/requests";
-import { CropPotResponseDto } from "../../../../dtos/CropPot.dto";
 import { SensorDto } from "../../../../dtos/sensors.dto";
 import usePotStateUpdate from "../../../../hooks/usePotStateUpdate";
 import { Checkbox } from "../../../ui/checkbox";
+import { useContext } from "react";
+import { PotContext } from "../../../../contexts/potContext";
 
-export const NewEndpoint = ({ potData }: { potData: CropPotResponseDto }) => {
+export const NewEndpoint = ({ returnTab }: { returnTab: () => void }) => {
 	const [webHookData, setWebHookData] = useFormData<WebhookDto>({
 		endpointUrl: "",
 		description: "",
@@ -21,10 +22,16 @@ export const NewEndpoint = ({ potData }: { potData: CropPotResponseDto }) => {
 
 	const { beginLoading, endLoading } = useLoading();
 
+	const { selectedPot } = useContext(PotContext);
+	if (!selectedPot) {
+		return;
+	}
+
 	const handleSubmitWebhook = async () => {
 		beginLoading();
-		const result = await createWebhook(potData.id, webHookData);
-		addWebhook(potData.id, result);
+		returnTab();
+		const result = await createWebhook(selectedPot.id, webHookData);
+		addWebhook(selectedPot.id, result);
 		endLoading();
 	};
 
@@ -46,7 +53,7 @@ export const NewEndpoint = ({ potData }: { potData: CropPotResponseDto }) => {
 				(event) => event.serialNumber !== sensorSerialNumber
 			);
 		} else {
-			const selectedSensor = potData.sensors?.find(
+			const selectedSensor = selectedPot.sensors?.find(
 				(sensor) => sensor.serialNumber === sensorSerialNumber
 			);
 			if (selectedSensor) {
@@ -84,15 +91,14 @@ export const NewEndpoint = ({ potData }: { potData: CropPotResponseDto }) => {
 			<div>
 				<h4>Subscribe to events</h4>
 				<ul className="flex flex-col">
-					{potData.sensors?.map((x) => (
+					{selectedPot.sensors?.map((x) => (
 						<li
 							key={x?.serialNumber}
 							className="flex items-center gap-1 mt-1 pl-2"
 						>
 							<Checkbox
 								checked={webHookData?.subscribedEvents?.some(
-									(s) =>
-										s?.serialNumber === x?.serialNumber
+									(s) => s?.serialNumber === x?.serialNumber
 								)}
 								onClick={() =>
 									handleCheckboxChange(x?.serialNumber)

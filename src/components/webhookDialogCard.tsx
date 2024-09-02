@@ -41,10 +41,10 @@ export const WebhookDialogCard = <T extends keyof WebhookDto>({
 	const fieldValue = webhook[fieldName];
 
 	const handleCheckboxChange = (sensorSerialNumber: string) => {
-		console.log(webhook)
+		console.log(webhook);
 
-		console.log(sensors)
-		
+		console.log(sensors);
+
 		const isChecked = webhook?.subscribedEvents.some(
 			(event) => event.serialNumber === sensorSerialNumber
 		);
@@ -158,26 +158,30 @@ export const WebhookDialogCard = <T extends keyof WebhookDto>({
 						/>
 					)
 				) : (
-					<p>
+					<>
 						{!fieldValue ? (
-							`No "${
-								fieldName.charAt(0).toUpperCase() +
-								fieldName
-									.slice(1)
-									.split(/(?=[A-Z])/)
-									.join(" ")
-									.toLowerCase()
-							}"`
-						) : Array.isArray(fieldValue) ? (
-							fieldValue.length === 0 ? (
-								`No ${
-									fieldName.charAt(0).toUpperCase() +
+							<p>
+								`No "$
+								{fieldName.charAt(0).toUpperCase() +
 									fieldName
 										.slice(1)
 										.split(/(?=[A-Z])/)
 										.join(" ")
-										.toLowerCase()
-								}`
+										.toLowerCase()}
+								"`
+							</p>
+						) : Array.isArray(fieldValue) ? (
+							fieldValue.length === 0 ? (
+								<p>
+									`No $
+									{fieldName.charAt(0).toUpperCase() +
+										fieldName
+											.slice(1)
+											.split(/(?=[A-Z])/)
+											.join(" ")
+											.toLowerCase()}
+									`
+								</p>
 							) : (
 								<ul>
 									{fieldValue.map((item, index) => (
@@ -194,7 +198,7 @@ export const WebhookDialogCard = <T extends keyof WebhookDto>({
 						) : (
 							fieldValue
 						)}
-					</p>
+					</>
 				)}
 			</CardContent>
 		</Card>

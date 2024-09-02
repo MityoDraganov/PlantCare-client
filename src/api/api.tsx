@@ -33,6 +33,9 @@ const request = async (
 
 	try {
 		const res = await fetch(host + url, options);
+		if(res.status == 204){
+			return;
+		}
 		const responseData = await res.json();
 
 		if (!res.ok) {

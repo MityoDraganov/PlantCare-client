@@ -11,7 +11,7 @@ import { CropPotResponseDto } from "../../../dtos/CropPot.dto";
 import { Tabs, TabsList, TabsTrigger } from "../../../components/ui/tabs";
 
 
-export const WebhookSettings = ({potData}: {potData: CropPotResponseDto}) => {
+export const WebhookSettings = () => {
 	return (
 		<Card className="w-full">
 			<CardHeader>
@@ -30,7 +30,7 @@ export const WebhookSettings = ({potData}: {potData: CropPotResponseDto}) => {
 							Event Catalog
 						</TabsTrigger>
 					</TabsList>
-					<EndpointsTab potData={potData}/>
+					<EndpointsTab/>
 					<EventCatalogTab />
 				</Tabs>
 			</CardContent>

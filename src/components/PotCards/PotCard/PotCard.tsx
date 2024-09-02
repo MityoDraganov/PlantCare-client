@@ -7,9 +7,10 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from "../../ui/drawer";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { AdvancedSettingsComponent } from "../components/AdvancedSettingsComponent";
 import { InfoTab } from "./tabs/InfoTab";
+import { PotContext } from "../../../contexts/potContext";
 
 export enum tabOptions {
 	"info" = 0,
@@ -18,13 +19,14 @@ export enum tabOptions {
 
 export const PotCard = (pot: CropPotResponseDto) => {
 	const [tab, setTab] = useState<tabOptions>(tabOptions.info);
+	const {setSelectedPot} = useContext(PotContext)
 
 	const returnHandler = () => {
 		setTab(tabOptions.info);
 	};
 	return (
 		<Drawer key={pot.id}>
-			<DrawerTrigger>
+			<DrawerTrigger onClick={() => setSelectedPot(pot)}>
 				<Card className="hover:bg-primary-foreground hover:cursor-pointer shadow-sm">
 					<CardHeader>
 						<CardTitle>{pot.alias}</CardTitle>
@@ -44,7 +46,6 @@ export const PotCard = (pot: CropPotResponseDto) => {
 				) : (
 					<AdvancedSettingsComponent
 						returnHandler={returnHandler}
-						potData={pot}
 					/>
 				)}
 			</DrawerContent>

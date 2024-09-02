@@ -1,14 +1,11 @@
 import { ArrowLeft } from "lucide-react";
 import { WebhookSettings } from "./WebhookSettings";
-import { CropPotResponseDto } from "../../../dtos/CropPot.dto";
 
 
 export const AdvancedSettingsComponent = ({
 	returnHandler,
-	potData
 }: {
 	returnHandler: () => void;
-	potData: CropPotResponseDto;
 }) => {
 
 	return (
@@ -19,7 +16,7 @@ export const AdvancedSettingsComponent = ({
 				size={28}
 			/>
 
-			<WebhookSettings potData={potData}/>
+			<WebhookSettings/>
 		</div>
 	);
 };

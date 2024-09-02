@@ -26,6 +26,9 @@ function usePotStateUpdate() {
 				return cropPot;
 			});
 
+			console.log("updatedCropPots")
+			console.log(updatedCropPots)
+
 			return updatedCropPots;
 		});
 	};

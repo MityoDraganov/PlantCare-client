@@ -17,7 +17,7 @@ enum tabOptions {
 	"newEndpoint" = 1,
 }
 
-export const EndpointsTab = ({ potData }: { potData: CropPotResponseDto }) => {
+export const EndpointsTab = () => {
 	const [tab, setTab] = useState<tabOptions>(tabOptions.endpoints);
 
 	return (
@@ -67,11 +67,11 @@ export const EndpointsTab = ({ potData }: { potData: CropPotResponseDto }) => {
 				</Button>
 			</div>
 			{tab === tabOptions.endpoints && (
-				<Endpoints potData={potData}/>
+				<Endpoints/>
 			)}
 
 			{tab === tabOptions.newEndpoint && (
-				<NewEndpoint potData={potData} />
+				<NewEndpoint returnTab={() => setTab(tabOptions.endpoints)}/>
 			)}
 		</TabsContent>
 	);
