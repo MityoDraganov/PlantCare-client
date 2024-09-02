@@ -7,7 +7,6 @@ import {
 } from "../../../components/ui/card";
 import { EndpointsTab } from "./tabs/EndpointsTab";
 import { EventCatalogTab } from "./tabs/EventCatalogTab";
-import { CropPotResponseDto } from "../../../dtos/CropPot.dto";
 import { Tabs, TabsList, TabsTrigger } from "../../../components/ui/tabs";
 
 

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { HTMLInputTypeAttribute } from "react";
 import { ControlDto } from "../../../dtos/controls.dto";
 import { InputGroup, orientationOpts } from "../../InputGroup";
@@ -15,14 +16,52 @@ export const ControlCard = ({
 	editStateHandler: (serialNumber: string) => void;
 	updateControlValue: <K extends keyof ControlDtoWithEditing>(
 		serialNumber: string,
-		key: K,
+		path: string[],
 		value: ControlDtoWithEditing[K]
 	) => void;
 }) => {
+	const [tempValue, setTempValue] = useState<{ [key: string]: string }>({});
+
+	// Extracts only the time component (HH:mm:ss) from a Date object
+	const extractTime = (time: string) => {
+		const [hours, minutes] = time.split(":");
+		if (!hours || !minutes) {
+			return ""; // Return an empty string if the time is invalid
+		}
+		return `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}`;
+	};
+
+	// Formats time value as an ISO string for the backend
+	const formatTimeForBackend = (value: string) => {
+		const [hours, minutes, seconds] = value.split(":").map(Number);
+		const date = new Date();
+		date.setUTCHours(hours, minutes, seconds, 0);
+		return date.toISOString(); // Converts to ISO string format
+	};
+
+	const handleChange = (
+		key: string,
+		value: string,
+		inputType: HTMLInputTypeAttribute,
+		path: string[]
+	) => {
+		// Save intermediate values to state for time fields
+		setTempValue((prev) => ({ ...prev, [key]: value }));
+
+		if (isEditting) {
+			const formattedValue =
+				inputType === "time"
+					? formatTimeForBackend(value)
+					: value;
+			updateControlValue(control.serialNumber, path, formattedValue);
+		}
+	};
+
 	const renderControlProperty = (
 		key: keyof ControlDto,
 		value: any,
-		inputType: HTMLInputTypeAttribute = typeof value
+		inputType: HTMLInputTypeAttribute = typeof value,
+		path: string[]
 	) => {
 		if (value && typeof value === "object") {
 			return (
@@ -37,48 +76,38 @@ export const ControlCard = ({
 						:
 					</h5>
 					<div className="ml-2 flex flex-col gap-1">
-						{Object.entries(value).map(([subKey, subValue]) => {
-							let formattedValue = subValue;
-							if (typeof subValue === "string") {
-								// Try to parse the string as a Date
-								const parsedDate = new Date(subValue);
-								if (!isNaN(parsedDate.getTime())) {
-									// If the string is a valid date
-									const hours = parsedDate.getUTCHours();
-									const minutes = parsedDate.getUTCMinutes();
-									const hoursString = hours
-										.toString()
-										.padStart(2, "0");
-									const minutesString = minutes
-										.toString()
-										.padStart(2, "0");
-									formattedValue = `${hoursString}:${minutesString}`;
-								}
-							} else if (subValue instanceof Date) {
-								// Format Date object directly
-								const hours = subValue.getUTCHours();
-								const minutes = subValue.getUTCMinutes();
-								const hoursString = hours
-									.toString()
-									.padStart(2, "0");
-								const minutesString = minutes
-									.toString()
-									.padStart(2, "0");
-								formattedValue = `${hoursString}:${minutesString}`;
-							}
+						{Object.entries(value)
+							.filter(
+								([key]) =>
+									!["id", "valid"].includes(key.toLowerCase())
+							)
+							.map(([subKey, subValue]) => {
+								let formattedValue = subValue;
 
-							return renderControlProperty(
-								subKey as keyof ControlDto,
-								formattedValue,
-								typeof formattedValue === "string"
-									? "text"
-									: "number"
-							);
-						})}
+								if (typeof subValue === "string") {
+									formattedValue = extractTime(subValue);
+								} else if (subValue instanceof Date) {
+									formattedValue = extractTime(
+										subValue.toISOString().split("T")[1].substring(0, 5)
+									);
+								}
+
+								return renderControlProperty(
+									subKey as keyof ControlDto,
+									formattedValue,
+									"time",
+									[...path, subKey]
+								);
+							})}
 					</div>
 				</div>
 			);
 		} else {
+			const displayValue =
+				inputType === "time"
+					? tempValue[key as string] || extractTime(value)
+					: value;
+
 			return (
 				<InputGroup
 					key={key as string}
@@ -91,15 +120,16 @@ export const ControlCard = ({
 							.toLowerCase()
 					}
 					onChange={(e) =>
-						updateControlValue(
-							control.serialNumber,
-							key,
-							e.target.value
+						handleChange(
+							key as string,
+							e.target.value,
+							typeof e.target.value,
+							path
 						)
 					}
 					orientation={orientationOpts.horizontal}
 					type={inputType}
-					value={inputType === "number" ? Number(value) : value}
+					value={displayValue}
 					id={`${key}-${value}`}
 					isEditing={isEditting}
 				/>
@@ -139,12 +169,17 @@ export const ControlCard = ({
 								"updates",
 								"serialNumber",
 								"isEditing",
-								"id"
+								"id",
 							].includes(key)
 					)
-					.map(([key, value]) =>
-						renderControlProperty(key as keyof ControlDto, value)
-					)}
+					.map(([key, value]) => {
+						return renderControlProperty(
+							key as keyof ControlDto,
+							value,
+							typeof value,
+							[key]
+						);
+					})}
 			</div>
 		</li>
 	);

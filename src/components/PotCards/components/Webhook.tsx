@@ -9,7 +9,6 @@ import { WebhookDialogCard } from "../../../components/webhookDialogCard";
 import { WebhookDto } from "../../../dtos/webhooks.dto";
 import useFormData from "../../../hooks/useForm";
 import { deleteWebhook, updateWebhook } from "../../../api/requests";
-import { CropPotResponseDto } from "../../../dtos/CropPot.dto";
 import { SensorDto } from "../../../dtos/sensors.dto";
 import { Button } from "../../../components/ui/button";
 import {

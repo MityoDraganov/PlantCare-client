@@ -41,20 +41,36 @@ export const InfoTab = ({
 
 	const updateControlValue = <K extends keyof ControlDtoWithEditing>(
 		serialNumber: string,
-		key: K,
+		path: string[], // Array representing the path to the nested key
 		value: ControlDtoWithEditing[K]
 	) => {
-		// Convert to number if the key is "onCondition" or "offCondition"
-		const newValue =
-			key === "onCondition" || key === "offCondition"
-				? Number(value)
-				: value;
+		console.log(path)
+		console.log(value)
+		const newData = updateData.map((control) => {
+			if (control.serialNumber === serialNumber) {
+				let updatedControl = { ...control };
+				let currentLevel: any = updatedControl;
 	
-		const newData = updateData.map((control) =>
-			control.serialNumber === serialNumber
-				? { ...control, [key]: newValue }
-				: control
-		);
+				// Traverse the path to find the correct nested key
+				for (let i = 0; i < path.length - 1; i++) {
+					const key = path[i];
+					if (!currentLevel[key]) {
+						currentLevel[key] = {}; // Create the nested structure if it doesn't exist
+					}
+					currentLevel = currentLevel[key];
+				}
+	
+				// Attempt to parse the value as a number
+				const finalKey = path[path.length - 1];
+				const parsedValue = !isNaN(Number(value)) ? Number(value) : value;
+	
+				// Set the value at the final level
+				currentLevel[finalKey] = parsedValue;
+	
+				return updatedControl;
+			}
+			return control;
+		});
 	
 		setUpdateData(newData);
 	};

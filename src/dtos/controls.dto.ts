@@ -17,6 +17,7 @@ export interface Update {
 
 export interface ActivePeriod {
 	controlId: number;
-	start: Date;
-	end: Date;
+	id: number;
+	start: string;
+	end: string;
 }

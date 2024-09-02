@@ -7,7 +7,6 @@ import {
 	TableHeader,
 	TableRow,
 } from "../../../../components/ui/table";
-import { CropPotResponseDto } from "../../../../dtos/CropPot.dto";
 
 import { Webhook } from "../Webhook";
 import { PotContext } from "../../../../contexts/potContext";

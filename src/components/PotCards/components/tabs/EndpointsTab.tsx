@@ -1,4 +1,4 @@
-import { ChevronRight, Plus, X } from "lucide-react";
+import { ChevronRight, Plus } from "lucide-react";
 import { Button } from "../../../../components/ui/button";
 import { TabsContent } from "../../../../components/ui/tabs";
 import { useState } from "react";
@@ -8,7 +8,6 @@ import {
 	BreadcrumbList,
 	BreadcrumbSeparator,
 } from "../../../../components/ui/breadcrumb";
-import { CropPotResponseDto } from "../../../../dtos/CropPot.dto";
 import { NewEndpoint } from "../breadCrumbs/NewEndpoint";
 import { Endpoints } from "../breadCrumbs/Endpoints";
 
