@@ -88,6 +88,10 @@ export const InfoTab = ({
 
 	const saveUpdate = async () => {
 		await updateControllSetting(updateData);
+
+		const newData = updateData.map((x) => ({ ...x, isEditing: false }));
+
+		setUpdateData(newData);
 	};
 
 	return (

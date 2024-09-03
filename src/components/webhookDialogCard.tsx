@@ -161,26 +161,26 @@ export const WebhookDialogCard = <T extends keyof WebhookDto>({
 					<>
 						{!fieldValue ? (
 							<p>
-								`No "$
+								No {" "}
 								{fieldName.charAt(0).toUpperCase() +
 									fieldName
 										.slice(1)
 										.split(/(?=[A-Z])/)
 										.join(" ")
 										.toLowerCase()}
-								"`
+								
 							</p>
 						) : Array.isArray(fieldValue) ? (
 							fieldValue.length === 0 ? (
 								<p>
-									`No $
+									No {" "}
 									{fieldName.charAt(0).toUpperCase() +
 										fieldName
 											.slice(1)
 											.split(/(?=[A-Z])/)
 											.join(" ")
 											.toLowerCase()}
-									`
+									
 								</p>
 							) : (
 								<ul>

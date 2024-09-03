@@ -32,6 +32,7 @@ export const DaySelector = ({
             variant="default"
             animation={0.2}
             className="w-fit"
+            disabled={!isEditing}
         />
     );
 };
