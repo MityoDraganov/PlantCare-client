@@ -44,13 +44,14 @@ export const InfoTab = ({
 		path: string[], // Array representing the path to the nested key
 		value: ControlDtoWithEditing[K]
 	) => {
-		console.log(path)
-		console.log(value)
+		console.log(updateData);
+		console.log(path);
+		console.log(value);
 		const newData = updateData.map((control) => {
 			if (control.serialNumber === serialNumber) {
 				let updatedControl = { ...control };
 				let currentLevel: any = updatedControl;
-	
+
 				// Traverse the path to find the correct nested key
 				for (let i = 0; i < path.length - 1; i++) {
 					const key = path[i];
@@ -59,30 +60,35 @@ export const InfoTab = ({
 					}
 					currentLevel = currentLevel[key];
 				}
-	
+
 				// Attempt to parse the value as a number
 				const finalKey = path[path.length - 1];
-				const parsedValue = !isNaN(Number(value)) ? Number(value) : value;
-	
+				let parsedValue;
+
+				if (Array.isArray(value)) {
+					parsedValue = value;
+				} else {
+					parsedValue = !isNaN(Number(value)) ? Number(value) : value;
+				}
+
 				// Set the value at the final level
 				currentLevel[finalKey] = parsedValue;
-	
+
 				return updatedControl;
 			}
 			return control;
 		});
-	
+
 		setUpdateData(newData);
 	};
-	
 
 	useEffect(() => {
 		console.log(updateData);
 	}, [updateData]);
 
 	const saveUpdate = async () => {
-		await updateControllSetting(updateData)
-	}
+		await updateControllSetting(updateData);
+	};
 
 	return (
 		<div className="grid grid-cols-1 h-[90%] md:grid-cols-2 gap-2">
@@ -104,7 +110,7 @@ export const InfoTab = ({
 							<ControlCard
 								control={x}
 								key={x.serialNumber}
-								isEditting={x.isEditing}
+								isEditing={x.isEditing}
 								editStateHandler={editStateHandler}
 								updateControlValue={updateControlValue}
 							/>
@@ -124,7 +130,9 @@ export const InfoTab = ({
 						>
 							Cancel
 						</Button>
-						<Button variant="blue" onClick={saveUpdate}>Save</Button>
+						<Button variant="blue" onClick={saveUpdate}>
+							Save
+						</Button>
 					</div>
 				</div>
 

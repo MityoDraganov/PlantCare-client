@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { HTMLInputTypeAttribute } from "react";
-import { ControlDto } from "../../../dtos/controls.dto";
+import { ControlDto, Days } from "../../../dtos/controls.dto";
 import { InputGroup, orientationOpts } from "../../InputGroup";
 import { Pencil } from "lucide-react";
 import { ControlDtoWithEditing } from "../PotCard/tabs/InfoTab";
+import { DaySelector } from "../../DaySelector";
 
 export const ControlCard = ({
 	control,
-	isEditting,
+	isEditing,
 	editStateHandler,
 	updateControlValue,
 }: {
 	control: ControlDto;
-	isEditting: boolean;
+	isEditing: boolean;
 	editStateHandler: (serialNumber: string) => void;
 	updateControlValue: <K extends keyof ControlDtoWithEditing>(
 		serialNumber: string,
@@ -48,11 +49,9 @@ export const ControlCard = ({
 		// Save intermediate values to state for time fields
 		setTempValue((prev) => ({ ...prev, [key]: value }));
 
-		if (isEditting) {
+		if (isEditing) {
 			const formattedValue =
-				inputType === "time"
-					? formatTimeForBackend(value)
-					: value;
+				inputType === "time" ? formatTimeForBackend(value) : value;
 			updateControlValue(control.serialNumber, path, formattedValue);
 		}
 	};
@@ -63,7 +62,35 @@ export const ControlCard = ({
 		inputType: HTMLInputTypeAttribute = typeof value,
 		path: string[]
 	) => {
-		if (value && typeof value === "object") {
+		if (Array.isArray(value)) {
+			return (
+				<div
+					key={key as string}
+					className="flex items-center justify-between gap-2"
+				>
+					<h5>
+						{key.charAt(0).toUpperCase() +
+							key
+								.slice(1)
+								.split(/(?=[A-Z])/)
+								.join(" ")
+								.toLowerCase()}
+						:
+					</h5>
+					<DaySelector
+						selectedDays={value as Days[]}
+						onChange={(newDays: Days[]) =>
+							updateControlValue(
+								control.serialNumber,
+								path,
+								newDays
+							)
+						}
+						isEditing={isEditing}
+					/>
+				</div>
+			);
+		} else if (value && typeof value === "object") {
 			return (
 				<div key={key as string} className="flex flex-col gap-2 pl-2">
 					<h5>
@@ -84,11 +111,23 @@ export const ControlCard = ({
 							.map(([subKey, subValue]) => {
 								let formattedValue = subValue;
 
+								if (Array.isArray(subValue)) {
+									return renderControlProperty(
+										subKey as keyof ControlDto,
+										formattedValue,
+										"date",
+										[...path, subKey]
+									);
+								}
+
 								if (typeof subValue === "string") {
 									formattedValue = extractTime(subValue);
 								} else if (subValue instanceof Date) {
 									formattedValue = extractTime(
-										subValue.toISOString().split("T")[1].substring(0, 5)
+										subValue
+											.toISOString()
+											.split("T")[1]
+											.substring(0, 5)
 									);
 								}
 
@@ -131,7 +170,7 @@ export const ControlCard = ({
 					type={inputType}
 					value={displayValue}
 					id={`${key}-${value}`}
-					isEditing={isEditting}
+					isEditing={isEditing}
 				/>
 			);
 		}
@@ -152,7 +191,7 @@ export const ControlCard = ({
 							.toLowerCase()}
 					:
 				</p>
-				{!isEditting && (
+				{!isEditing && (
 					<Pencil
 						className="hover:cursor-pointer"
 						onClick={() => editStateHandler(control.serialNumber)}
