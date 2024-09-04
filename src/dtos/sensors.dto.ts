@@ -7,6 +7,7 @@ export interface SensorDto {
 	description?: string;
 	measurements: MeasuremntDto[];
 	IsOfficial: boolean;
+	measuremntInterval: string;
 }
 
 // export interface SensorWebhookDto {
