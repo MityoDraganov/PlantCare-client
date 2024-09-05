@@ -5,7 +5,7 @@ import {
 	DialogTrigger,
 } from "../../../components/ui/dialog";
 import { TableCell, TableRow } from "../../../components/ui/table";
-import { WebhookDialogCard } from "../../../components/webhookDialogCard";
+import { WebhookDialogCard } from "../../../components/dialogs/webhookDialogCard";
 import { WebhookDto } from "../../../dtos/webhooks.dto";
 import useFormData from "../../../hooks/useForm";
 import { deleteWebhook, updateWebhook } from "../../../api/requests";

@@ -20,10 +20,8 @@ import {
 	SelectValue,
 } from "../../../components/ui/select";
 import { SensorDto } from "../../../dtos/sensors.dto";
-import { Pencil } from "lucide-react";
-import { Input } from "../../ui/input";
-import useFormData from "../../../hooks/useForm";
-import { Button } from "../../ui/button";
+
+import { SensorDialog } from "../../dialogs/sensorDialog";
 
 interface ChartData {
 	time: string;
@@ -38,13 +36,9 @@ export const Chart = ({ sensors }: ChartProps) => {
 	const [selectedSensor, setSelectedSensor] = useState<SensorDto | undefined>(
 		sensors[0]
 	);
-	const [updateData, setPartialChange, setUpdateData] = useFormData(
-		sensors[0]
-	);
 
 	const [chartData, setChartData] = useState<ChartData[]>([]);
 
-	const [isEditingInterval, setIsEditingInterval] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (selectedSensor) {
@@ -66,15 +60,6 @@ export const Chart = ({ sensors }: ChartProps) => {
 		}
 	}, [selectedSensor, sensors]);
 
-	const saveUpdate = () => {
-		//await updateControllSetting(updateData);
-
-		//const newData = updateData.map((x) => ({ ...x, isEditing: false }));
-
-		//setUpdateData(newData);
-		setIsEditingInterval(false);
-	};
-
 	const chartConfig: ChartConfig | undefined = selectedSensor
 		? {
 				label: selectedSensor.alias,
@@ -94,23 +79,28 @@ export const Chart = ({ sensors }: ChartProps) => {
 							if (sensor) setSelectedSensor(sensor);
 						}}
 					>
-						<SelectTrigger className="w-full md:w-fit">
-							<SelectValue
-								placeholder={
-									<p className="flex gap-2 p-1">
-										<span className="flex gap-2 items-baseline">
-											{chartConfig?.icon && (
-												<chartConfig.icon className="h-4 w-4" />
-											)}
-											{chartConfig?.label}
-										</span>
-										<span className="font-normal pr-2">
-											Chart
-										</span>
-									</p>
-								}
-							/>
-						</SelectTrigger>
+						<div className="flex justify-between items-center w-full">
+							<SelectTrigger className="w-full md:w-fit">
+								<SelectValue
+									placeholder={
+										<p className="flex gap-2 p-1">
+											<span className="flex gap-2 items-baseline">
+												{chartConfig?.icon && (
+													<chartConfig.icon className="h-4 w-4" />
+												)}
+												{chartConfig?.label}
+											</span>
+											<span className="font-normal pr-2">
+												Chart
+											</span>
+										</p>
+									}
+								/>
+							</SelectTrigger>
+							{selectedSensor && (
+								<SensorDialog sensor={selectedSensor} />
+							)}
+						</div>
 						<SelectContent>
 							{sensors.map((sensor) => (
 								<SelectItem
@@ -125,61 +115,8 @@ export const Chart = ({ sensors }: ChartProps) => {
 							))}
 						</SelectContent>
 					</Select>
-					<div className="flex flex-col pl-2 pb-4">
-						<div>
-							<p
-								className={`text-base font-normal flex gap-2 items-center ${
-									!isEditingInterval
-										? "text-muted-foreground"
-										: ""
-								} pl-2 py-1`}
-							>
-								Sensor measures every{" "}
-								{isEditingInterval ? (
-									<Input
-										className="w-fit "
-										type="time"
-										value={updateData?.measuremntInterval}
-										onChange={setPartialChange}
-										id="measuremntInterval"
-									/>
-								) : (
-									<span className="font-semibold text-lg">
-										{updateData?.measuremntInterval}
-									</span>
-								)}
-								hours
-							</p>
-							{!isEditingInterval && (
-								<Pencil
-									onClick={() =>
-										setIsEditingInterval(!isEditingInterval)
-									}
-								/>
-							)}
-						</div>
 
-						<div
-							className={`flex gap-2 transition-opacity duration-300 ${
-								isEditingInterval ? "opacity-100" : "opacity-0"
-							}`}
-						>
-							<Button
-								variant="secondary"
-								onClick={() => {
-									if (selectedSensor)
-										setUpdateData(selectedSensor);
 
-									setIsEditingInterval(false);
-								}}
-							>
-								Cancel
-							</Button>
-							<Button variant="blue" onClick={saveUpdate}>
-								Save
-							</Button>
-						</div>
-					</div>
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="h-[90%] my-auto">

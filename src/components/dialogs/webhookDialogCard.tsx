@@ -1,10 +1,10 @@
 import { ChangeEvent, useState } from "react";
-import { WebhookDto } from "../dtos/webhooks.dto";
-import { Button } from "./ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import { Input } from "./ui/input";
-import { Checkbox } from "./ui/checkbox";
-import { SensorDto } from "../dtos/sensors.dto";
+import { WebhookDto } from "../../dtos/webhooks.dto";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
+import { Input } from "../ui/input";
+import { Checkbox } from "../ui/checkbox";
+import { SensorDto } from "../../dtos/sensors.dto";
 
 type WebhookDialogCardProps<T extends keyof WebhookDto> = {
 	webhook: WebhookDto;
