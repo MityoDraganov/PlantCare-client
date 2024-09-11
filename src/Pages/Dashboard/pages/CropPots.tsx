@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { CropPotResponseDto } from "../../../dtos/CropPot.dto";
 
-import { PotContext } from "../../../contexts/potContext";
+import { PotContext } from "../../../contexts/PotContext";
 import { PotCard } from "../../../components/PotCards/PotCard/PotCard";
 
 export const CropPots = () => {

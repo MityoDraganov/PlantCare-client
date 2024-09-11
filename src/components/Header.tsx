@@ -7,6 +7,8 @@ import {
 } from "@clerk/clerk-react";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
+import { Bell } from "lucide-react";
+import { Inbox } from "./dialogs/Inbox";
 
 export const Header = () => {
 	return (
@@ -39,6 +41,7 @@ export const Header = () => {
 				</SignedOut>
 
 				<SignedIn>
+					<Inbox />
 					<UserButton />
 				</SignedIn>
 			</div>

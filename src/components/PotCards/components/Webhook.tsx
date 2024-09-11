@@ -25,7 +25,7 @@ import {
 import useLoading from "../../../hooks/useLoading";
 import usePotStateUpdate from "../../../hooks/usePotStateUpdate";
 import { useContext, useState } from "react";
-import { PotContext } from "../../../contexts/potContext";
+import { PotContext } from "../../../contexts/PotContext";
 
 export const Webhook = ({
 	webhook,

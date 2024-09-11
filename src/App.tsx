@@ -9,7 +9,7 @@ import { Header } from "./components/Header";
 import { Dashboard } from "./Pages/Dashboard/Dashboard";
 import { Layout } from "./Pages/Dashboard/Layout";
 import { CropPots } from "./Pages/Dashboard/pages/CropPots";
-import { PotProvider } from "./contexts/potContext";
+import { PotProvider } from "./contexts/PotContext";
 import { Suspense } from "react";
 import { Spinner } from "./components/spinner";
 

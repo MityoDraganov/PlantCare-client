@@ -15,7 +15,7 @@ export const HomePage = () => {
 
 				<Suspense>
 					<SignedOut>
-						<SignUpButton mode="modal">
+						<SignUpButton mode="modal" forceRedirectUrl="/" signInForceRedirectUrl="/" >
 							<Button>Get started</Button>
 						</SignUpButton>
 					</SignedOut> 

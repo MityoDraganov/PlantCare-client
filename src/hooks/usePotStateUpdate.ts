@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { PotContext } from "../contexts/potContext";
+import { PotContext } from "../contexts/PotContext";
 import { WebhookDto } from "../dtos/webhooks.dto";
 
 function usePotStateUpdate() {

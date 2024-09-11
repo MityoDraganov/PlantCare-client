@@ -9,7 +9,7 @@ import { SensorDto } from "../../../../dtos/sensors.dto";
 import usePotStateUpdate from "../../../../hooks/usePotStateUpdate";
 import { Checkbox } from "../../../ui/checkbox";
 import { useContext } from "react";
-import { PotContext } from "../../../../contexts/potContext";
+import { PotContext } from "../../../../contexts/PotContext";
 
 export const NewEndpoint = ({ returnTab }: { returnTab: () => void }) => {
 	const [webHookData, setWebHookData] = useFormData<WebhookDto>({

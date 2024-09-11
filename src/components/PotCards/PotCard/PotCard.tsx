@@ -10,7 +10,7 @@ import {
 import { useContext, useState } from "react";
 import { AdvancedSettingsComponent } from "../components/AdvancedSettingsComponent";
 import { InfoTab } from "./tabs/InfoTab";
-import { PotContext } from "../../../contexts/potContext";
+import { PotContext } from "../../../contexts/PotContext";
 
 export enum tabOptions {
 	"info" = 0,

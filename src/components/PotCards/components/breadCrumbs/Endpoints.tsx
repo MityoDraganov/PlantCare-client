@@ -9,7 +9,7 @@ import {
 } from "../../../../components/ui/table";
 
 import { Webhook } from "../Webhook";
-import { PotContext } from "../../../../contexts/potContext";
+import { PotContext } from "../../../../contexts/PotContext";
 
 export const Endpoints = () => {
 	const {selectedPot} = useContext(PotContext)
