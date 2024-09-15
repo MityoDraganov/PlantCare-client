@@ -1,5 +1,5 @@
-import { Days } from "../dtos/controls.dto";
-import { MultiSelect } from "./ui/multi-select";
+import { Days } from "../../dtos/controls.dto";
+import { MultiSelect } from "../ui/multi-select";
 
 export const DaySelector = ({
     selectedDays,

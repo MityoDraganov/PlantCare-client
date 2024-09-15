@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { HTMLInputTypeAttribute } from "react";
-import { ControlDto, Days } from "../../../dtos/controls.dto";
+import { ActivePeriodDto, ControlDto, Days } from "../../../dtos/controls.dto";
 import { InputGroup, orientationOpts } from "../../InputGroup";
 import { Pencil } from "lucide-react";
 import { ControlDtoWithEditing } from "../PotCard/tabs/InfoTab";
-import { DaySelector } from "../../DaySelector";
+import { DaySelector } from "../../selectors/DaySelector";
+import { ConditionDto } from "../../../dtos/Condition.dto";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "../../ui/select";
+import { PotContext } from "../../../contexts/PotContext";
 
 export const ControlCard = ({
 	control,
@@ -22,22 +31,27 @@ export const ControlCard = ({
 	) => void;
 }) => {
 	const [tempValue, setTempValue] = useState<{ [key: string]: string }>({});
+	const { selectedPot } = useContext(PotContext);
 
-	// Extracts only the time component (HH:mm:ss) from a Date object
-	const extractTime = (time: string) => {
-		const [hours, minutes] = time.split(":");
-		if (!hours || !minutes) {
-			return ""; // Return an empty string if the time is invalid
+	const extractTime = (time: any) => {
+		if (typeof time !== "string") {
+			return "";
 		}
+
+		const parts = time.split(":");
+		if (parts.length !== 2) {
+			return "";
+		}
+
+		const [hours, minutes] = parts;
 		return `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}`;
 	};
 
-	// Formats time value as an ISO string for the backend
 	const formatTimeForBackend = (value: string) => {
 		const [hours, minutes, seconds] = value.split(":").map(Number);
 		const date = new Date();
 		date.setUTCHours(hours, minutes, seconds, 0);
-		return date.toISOString(); // Converts to ISO string format
+		return date.toISOString();
 	};
 
 	const handleChange = (
@@ -46,7 +60,6 @@ export const ControlCard = ({
 		inputType: HTMLInputTypeAttribute,
 		path: string[]
 	) => {
-		// Save intermediate values to state for time fields
 		setTempValue((prev) => ({ ...prev, [key]: value }));
 
 		if (isEditing) {
@@ -57,12 +70,12 @@ export const ControlCard = ({
 	};
 
 	const renderControlProperty = (
-		key: keyof ControlDto,
+		key: keyof ControlDto | keyof ActivePeriodDto | keyof ConditionDto,
 		value: any,
 		inputType: HTMLInputTypeAttribute = typeof value,
 		path: string[]
 	) => {
-		if (Array.isArray(value)) {
+		if (key === "dependentSensor") {
 			return (
 				<div
 					key={key as string}
@@ -77,19 +90,79 @@ export const ControlCard = ({
 								.toLowerCase()}
 						:
 					</h5>
-					<DaySelector
-						selectedDays={value as Days[]}
-						onChange={(newDays: Days[]) =>
-							updateControlValue(
-								control.serialNumber,
-								path,
-								newDays
-							)
-						}
-						isEditing={isEditing}
-					/>
+					<Select
+						disabled={!isEditing}
+						onValueChange={(value) => {
+							const selectedSensor = selectedPot?.sensors.find(
+								(sensor) => sensor.id === Number(value)
+							);
+							if (selectedSensor) {
+								updateControlValue(
+									control.serialNumber,
+									["condition"],
+									{
+										...control.condition,
+										dependentSensor: selectedSensor,
+									}
+								);
+							}
+						}}
+						defaultValue={value ? value.id.toString() : ""}
+					>
+						<SelectTrigger>
+							{control.condition.dependentSensor ? (
+								<SelectValue
+									placeholder={
+										control.condition.dependentSensor.alias
+									}
+								/>
+							) : (
+								<SelectValue placeholder="Select a sensor" />
+							)}
+						</SelectTrigger>
+						<SelectContent>
+							<SelectItem
+								key={"unselect"}
+								
+							>
+								Remove selection
+							</SelectItem>
+							{selectedPot?.sensors.map((sensor) => (
+								<SelectItem
+									key={sensor.id}
+									value={sensor.id.toString()}
+								>
+									{sensor.alias}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
 				</div>
 			);
+		}
+		if (Array.isArray(value)) {
+			if (key === "days")
+				return (
+					<div
+						key={key as string}
+						className="flex items-center justify-between gap-2"
+					>
+						<h5>
+							{key.charAt(0).toUpperCase() +
+								key
+									.slice(1)
+									.split(/(?=[A-Z])/)
+									.join(" ")
+									.toLowerCase()}
+							:
+						</h5>
+						<DaySelector
+							selectedDays={value as Days[]} // Type assertion if necessary
+							onChange={(newDays: Days[]) => console.log(newDays)}
+							isEditing={isEditing}
+						/>
+					</div>
+				);
 		} else if (value && typeof value === "object") {
 			return (
 				<div key={key as string} className="flex flex-col gap-2 pl-2">
@@ -105,36 +178,28 @@ export const ControlCard = ({
 					<div className="ml-2 flex flex-col gap-1">
 						{Object.entries(value)
 							.filter(
-								([key]) =>
-									!["id", "valid"].includes(key.toLowerCase())
+								([key]) => !["id"].includes(key.toLowerCase())
 							)
 							.map(([subKey, subValue]) => {
 								let formattedValue = subValue;
 
-								if (Array.isArray(subValue)) {
+								if (
+									typeof subValue === "string" &&
+									subValue.includes(":")
+								) {
+									formattedValue = extractTime(subValue);
 									return renderControlProperty(
 										subKey as keyof ControlDto,
 										formattedValue,
-										"date",
+										"time",
 										[...path, subKey]
-									);
-								}
-
-								if (typeof subValue === "string") {
-									formattedValue = extractTime(subValue);
-								} else if (subValue instanceof Date) {
-									formattedValue = extractTime(
-										subValue
-											.toISOString()
-											.split("T")[1]
-											.substring(0, 5)
 									);
 								}
 
 								return renderControlProperty(
 									subKey as keyof ControlDto,
 									formattedValue,
-									"time",
+									"number",
 									[...path, subKey]
 								);
 							})}
@@ -144,7 +209,10 @@ export const ControlCard = ({
 		} else {
 			const displayValue =
 				inputType === "time"
-					? tempValue[key as string] || extractTime(value)
+					? tempValue[key as string] ||
+					  (typeof value === "string" && value.includes(":")
+							? extractTime(value)
+							: value)
 					: value;
 
 			return (

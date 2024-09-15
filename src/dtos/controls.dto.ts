@@ -1,21 +1,17 @@
+import { ConditionDto } from "./Condition.dto";
+
 export interface ControlDto {
 	serialNumber: string;
 	alias: string;
 	description: string;
 	isofficial: boolean;
-
-	updates: Update[];
-	onCondition: number;
-	offCondition: number;
-
-	activePeriod: ActivePeriod;
+	condition: ConditionDto;
+	activePeriod: ActivePeriodDto;
 }
 
-export interface Update {
+export interface Update {}
 
-}
-
-export interface ActivePeriod {
+export interface ActivePeriodDto {
 	controlId: number;
 	id: number;
 	start: string;
@@ -30,5 +26,5 @@ export enum Days {
 	Thursday = 4,
 	Friday = 5,
 	Saturday = 6,
-	Sunday = 7
+	Sunday = 7,
 }

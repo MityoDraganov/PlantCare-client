@@ -15,7 +15,7 @@ import { Spinner } from "./components/spinner";
 
 function App() {
 	return (
-		<>
+		<div className="h-screen w-screen">
 			<Header />
 			<PotProvider>
 				<Suspense fallback={<Spinner />}>
@@ -34,7 +34,7 @@ function App() {
 				</Suspense>
 			</PotProvider>
 			<Toaster />
-		</>
+		</div>
 	);
 }
 

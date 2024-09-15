@@ -34,7 +34,7 @@ export const SensorDialog = ({ sensor }: { sensor: SensorDto }) => {
 			<DialogContent className="w-2/3 px-10 pt-10">
 				<div className="flex flex-col gap-4 pl-2 pb-4">
 					<h2 className="text-lg font-medium">
-						Edit Sensor Settings
+						Edit Sensor
 					</h2>
 					<div className="flex flex-col gap-2 ">
 						{Object.entries(updateData)

@@ -1,5 +1,5 @@
 import { ArrowLeft } from "lucide-react";
-import { WebhookSettings } from "./WebhookSettings";
+import { WebhookSettings } from "../../components/WebhookSettings";
 
 
 export const AdvancedSettingsComponent = ({

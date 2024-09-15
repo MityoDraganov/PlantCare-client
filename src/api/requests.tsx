@@ -1,11 +1,12 @@
 import { ControlDto } from "../dtos/controls.dto";
+import { CropPotRequestDto } from "../dtos/CropPot.dto";
 import { SensorDto } from "../dtos/sensors.dto";
 import { WebhookDto } from "../dtos/webhooks.dto";
 import * as api from "./api";
 
 const endPoints = {
 	assignPot: (token: string) => `cropPots/assign/${token}`,
-	cropPots: "cropPots",
+	cropPots: (id ?: number) => id ? `cropPots/${id}` : "cropPots",
 	webhooks: (routeData?: { potId: number; webhookId?: number }) =>
 		!routeData
 			? "webhooks"
@@ -25,8 +26,12 @@ export const assignCropPot = (token: string) => {
 };
 
 export const getAllPots = () => {
-	return api.get(endPoints.cropPots);
+	return api.get(endPoints.cropPots());
 };
+
+export const updatePot = (potId: number, potData: CropPotRequestDto) => {
+	return api.put(endPoints.cropPots(potId), potData)
+}
 
 // --WEBHOOKS--
 export const createWebhook = (potId: number, webHookData: WebhookDto) => {

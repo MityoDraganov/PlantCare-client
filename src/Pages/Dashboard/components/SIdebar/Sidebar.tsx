@@ -15,8 +15,8 @@ export const Sidebar = () => {
 	};
 
 	return (
-		<div className="md:h-full ">
-			<div className="h-[95dvh] hidden md:block">
+		<div className="md:h-full">
+			<div className="h-full hidden md:block">
 				{!isSidebarOpen ? (
 					<div className="ml-2 pt-2 pr-1 h-full border-r">
 						<PanelLeftOpen
@@ -30,7 +30,7 @@ export const Sidebar = () => {
 							onClick={toggleSidebar}
 							className="ml-auto text-muted-foreground hover:text-black hover:cursor-pointer mt-2 mr-2"
 						/>
-						<div className="flex flex-col h-full pb-10">
+						<div className="flex flex-col h-full pt-2 pb-10">
 							<Link
 								to={"/dashboard"}
 								className="text-muted-foreground text-md font-medium p-2 hover:text-green-700 hover:bg-green-200/50"

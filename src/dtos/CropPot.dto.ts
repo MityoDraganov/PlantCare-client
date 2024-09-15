@@ -12,3 +12,7 @@ export interface CropPotResponseDto {
 	sensors: SensorDto[]
 	webhooks?: WebhookDto[]
 }
+
+export interface CropPotRequestDto {
+	alias: string;
+}
