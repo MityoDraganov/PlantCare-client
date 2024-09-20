@@ -25,7 +25,7 @@ export const Sidebar = () => {
 						/>
 					</div>
 				) : (
-					<div className="z-10 w-[15dvw] h-full bg-white border-r shadow-sm">
+					<div className="z-10 w-[15dvw] h-full border-r shadow-sm">
 						<PanelLeftClose
 							onClick={toggleSidebar}
 							className="ml-auto text-muted-foreground hover:text-black hover:cursor-pointer mt-2 mr-2"
@@ -33,13 +33,13 @@ export const Sidebar = () => {
 						<div className="flex flex-col h-full pt-2 pb-10">
 							<Link
 								to={"/dashboard"}
-								className="text-muted-foreground text-md font-medium p-2 hover:text-green-700 hover:bg-green-200/50"
+								className=" text-md font-medium p-2  hover:bg-green-500/70 hover:text-white"
 							>
 								Dashboard
 							</Link>
 							<Link
 								to={"/dashboard/pots"}
-								className="text-muted-foreground text-md font-medium p-2 hover:text-green-700 hover:bg-green-200/50"
+								className=" text-md font-medium p-2  hover:bg-green-500/70 hover:text-white"
 							>
 								Crop Pots
 							</Link>

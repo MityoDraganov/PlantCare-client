@@ -7,12 +7,12 @@ import {
 } from "@clerk/clerk-react";
 import { Button } from "./ui/button";
 import { Link } from "react-router-dom";
-import { Bell } from "lucide-react";
 import { Inbox } from "./dialogs/Inbox";
+import { ModeToggle } from "./theme-switch";
 
-export const Header = () => {
+export const Header = ({messages}: {messages: any}) => {
 	return (
-		<div className="flex justify-between h-[5dvh] overflow-hidden bg-white border-b shadow-sm px-2">
+		<div className="flex justify-between h-[7dvh] overflow-hidden border-b shadow-sm py-1 px-2">
 			<Link to="/" className="h-full flex gap-1 items-center">
 				<div className="h-full">
 					<img src="/icons/icon_transparent.png" className="h-full" />
@@ -41,9 +41,11 @@ export const Header = () => {
 				</SignedOut>
 
 				<SignedIn>
-					<Inbox />
+					<Inbox messages={messages}/>
 					<UserButton />
 				</SignedIn>
+
+				<ModeToggle />
 			</div>
 		</div>
 	);

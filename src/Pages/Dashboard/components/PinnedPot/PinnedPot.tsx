@@ -15,9 +15,9 @@ export const PinnedPot = () => {
 
 	return (
 		<Card className="w-full lg:h-1/4 p-2 pb-4 flex flex-col gap-4">
-			<CardTitle className="pl-6 flex gap-1">
-				<Pin className="fill-[#F9E400] hover:cursor-pointer" />
+			<CardTitle className="pl-6 flex justify-between w-full pr-1 pt-2">
 				Pinned Pot
+				<Pin className="fill-[#F9E400] hover:cursor-pointer" />
 			</CardTitle>
 
 			<CardContent className="flex flex-col lg:flex-row w-full lg:h-3/4 gap-2 justify-between">

@@ -1,53 +1,55 @@
-import { useEffect, useState, useCallback } from "react";
+import { useState, useEffect, useRef } from 'react';
+import { Message } from '../Interfaces/websocket.interface';
 
-const SOCKET_SERVER_URL = import.meta.env.VITE_SOCKET_SERVER_URL;
+const useWebSocket = (url: string) => {
+  const [messages, setMessages] = useState<Message[]>([]);    // Stores received messages
+  const [isConnected, setIsConnected] = useState(false); // Connection status
+  const socketRef = useRef<WebSocket | null>(null);
 
-const useWebSocket = () => {
-	const [ws, setWs] = useState<WebSocket | null>(null); // Type the state as WebSocket or null
-	const [message, setMessage] = useState<string>("");
+  useEffect(() => {
+    // Create WebSocket connection
+    const socket = new WebSocket(url);
+    socketRef.current = socket;
 
-	useEffect(() => {
-		// Connect to the WebSocket server
-		const wsInstance = new WebSocket(SOCKET_SERVER_URL);
+    // When the connection is opened
+    socket.onopen = () => {
+      console.log('WebSocket connection established');
+      setIsConnected(true);
+    };
 
-		wsInstance.onopen = () => {
-			console.log("WebSocket connection established");
-		};
+    // Listen for messages
+    socket.onmessage = (event) => {
+      console.log('Message received:', event.data);
+      setMessages((prevMessages) => [...prevMessages, JSON.parse(event.data)]);
+    };
 
-		wsInstance.onmessage = (event) => {
-			console.log("Received message:", event.data);
-			setMessage(event.data);
-		};
+    // Handle WebSocket errors
+    socket.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
 
-		wsInstance.onclose = () => {
-			console.log("WebSocket connection closed");
-		};
+    // Handle connection close
+    socket.onclose = () => {
+      console.log('WebSocket connection closed');
+      setIsConnected(false);
+    };
 
-		wsInstance.onerror = (error) => {
-			console.error("WebSocket error:", error);
-		};
+    // Cleanup when component unmounts
+    return () => {
+      socket.close();
+    };
+  }, [url]);  // Reconnect only if the URL changes
 
-		setWs(wsInstance);
+  // Function to send a message
+  const sendMessage = (message: Message) => {
+    if (socketRef.current && isConnected) {
+		socketRef.current.send(JSON.stringify(message));
+    } else {
+      console.error('Cannot send message, WebSocket is not connected.');
+    }
+  };
 
-		// Clean up WebSocket connection on component unmount
-		return () => {
-			if (wsInstance) {
-				wsInstance.close();
-			}
-		};
-	}, [SOCKET_SERVER_URL]);
-
-	const sendMessage = useCallback(
-		(msg: string) => {
-			// Explicitly type msg as string
-			if (ws) {
-				ws.send(msg);
-			}
-		},
-		[ws]
-	);
-
-	return { message, sendMessage };
+  return { messages, sendMessage, isConnected };
 };
 
 export default useWebSocket;
