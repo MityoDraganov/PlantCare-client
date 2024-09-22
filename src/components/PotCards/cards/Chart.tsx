@@ -39,18 +39,32 @@ export const Chart = ({ sensors }: ChartProps) => {
 
 	const [chartData, setChartData] = useState<ChartData[]>([]);
 
-
 	useEffect(() => {
 		if (selectedSensor) {
+			let previousDate: string | null = null;
+
 			const processedData = selectedSensor.measurements.map(
 				(measurement) => {
 					const date = new Date(measurement.CreatedAt);
 					const hours = date.getHours() % 12 || 12; // 12-hour format
 					const period = date.getHours() < 12 ? "AM" : "PM";
+
+					// Format the date and time
+					const currentDate = date.toLocaleDateString(undefined, {
+						month: "short",
+						day: "numeric",
+					});
 					const time = `${hours} ${period}`;
 
+					// If the date has changed (new day), include the date in the label
+					let timeLabel = time;
+					if (previousDate !== currentDate) {
+						timeLabel = `${currentDate}, ${time}`;
+						previousDate = currentDate;
+					}
+
 					return {
-						time,
+						time: timeLabel,
 						value: measurement.value,
 					};
 				}
@@ -115,8 +129,6 @@ export const Chart = ({ sensors }: ChartProps) => {
 							))}
 						</SelectContent>
 					</Select>
-
-
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="h-[90%] my-auto">

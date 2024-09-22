@@ -7,7 +7,7 @@ export enum Event {
   export interface Message {
     event: Event;
     data: {
-        Message: string;
+        Message: string | any[];
     }
     timestamp: string;
 }

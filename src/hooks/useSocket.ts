@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { Message } from '../Interfaces/websocket.interface';
 
 const useWebSocket = (url: string) => {
-  const [messages, setMessages] = useState<Message[]>([]);    // Stores received messages
+  const [messages, setMessages] = useState<Message[]>([]); // Stores received messages
   const [isConnected, setIsConnected] = useState(false); // Connection status
   const socketRef = useRef<WebSocket | null>(null);
 
@@ -20,7 +19,9 @@ const useWebSocket = (url: string) => {
     // Listen for messages
     socket.onmessage = (event) => {
       console.log('Message received:', event.data);
-      setMessages((prevMessages) => [...prevMessages, JSON.parse(event.data)]);
+      const message = JSON.parse(event.data);
+      const parsedMessage = parseFields(message);
+      setMessages((prevMessages) => [...prevMessages, parsedMessage]);
     };
 
     // Handle WebSocket errors
@@ -38,12 +39,32 @@ const useWebSocket = (url: string) => {
     return () => {
       socket.close();
     };
-  }, [url]);  // Reconnect only if the URL changes
+  }, [url]); // Reconnect only if the URL changes
+
+  // Function to recursively parse fields
+  const parseFields = (data: any): any => {
+    if (data && typeof data === 'object') {
+      for (const key in data) {
+        if (typeof data[key] === 'string') {
+          try {
+            // Try to parse the string as JSON
+            data[key] = JSON.parse(data[key]);
+          } catch (e) {
+            // If parsing fails, do nothing
+          }
+        } else if (typeof data[key] === 'object') {
+          // Recur for nested objects
+          data[key] = parseFields(data[key]);
+        }
+      }
+    }
+    return data;
+  };
 
   // Function to send a message
   const sendMessage = (message: Message) => {
     if (socketRef.current && isConnected) {
-		socketRef.current.send(JSON.stringify(message));
+      socketRef.current.send(JSON.stringify(message));
     } else {
       console.error('Cannot send message, WebSocket is not connected.');
     }
@@ -53,3 +74,17 @@ const useWebSocket = (url: string) => {
 };
 
 export default useWebSocket;
+
+// Define the Event enum
+export enum Event {
+  ForecastAlert = "forecastAlert",
+}
+
+// Define the Message interface
+export interface Message {
+  event: Event;
+  data: {
+    Message: string;
+  };
+  timestamp: string;
+}
