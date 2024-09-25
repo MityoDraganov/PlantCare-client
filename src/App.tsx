@@ -40,7 +40,7 @@ function App() {
 
 					<Route path="/dashboard" element={<Layout />}>
 						<Route index element={<Dashboard />} />
-						<Route path="pots" element={<CropPots />} />
+						{/* <Route path="pots" element={<CropPots />} /> */}
 					</Route>
 				</Routes>
 				</Suspense>

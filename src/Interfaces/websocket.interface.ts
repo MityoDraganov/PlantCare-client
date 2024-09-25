@@ -1,6 +1,7 @@
 // Define the Event enum
 export enum Event {
     ForecastAlert = "forecastAlert",
+    SensorConnected = "SensorConnected"
   }
   
   // Define the Message interface

@@ -25,8 +25,8 @@ export const WebhookSettings = () => {
 						<TabsTrigger value="endpoints" className="flex-1">
 							Endpoints
 						</TabsTrigger>
-						<TabsTrigger value="eventCatalog" className="flex-1">
-							Event Catalog
+						<TabsTrigger value="eventCatalog" className="flex-1" disabled>
+							Event Catalog (coming soon)
 						</TabsTrigger>
 					</TabsList>
 					<EndpointsTab/>

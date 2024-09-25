@@ -8,11 +8,13 @@ export interface CropPotResponseDto {
 	id: number;
 	alias: string;
 	isArchived: boolean;
+	isPinned: boolean;
 	controls: ControlDto[];
 	sensors: SensorDto[]
 	webhooks?: WebhookDto[]
 }
 
 export interface CropPotRequestDto {
-	alias: string;
+	alias?: string;
+	isPinned?: boolean;
 }

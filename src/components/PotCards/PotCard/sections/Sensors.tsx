@@ -6,7 +6,7 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 		<div className="md:border-r h-full md:border-gray-300 md:pr-6">
 			<h2 className="text-lg font-medium flex gap-[1%] items-center border-b pb-2 mb-4  pl-2">
 				{" "}
-				Controls
+				Sensors
 			</h2>
 			<div className="h-max">
 				<Chart sensors={sensors} />

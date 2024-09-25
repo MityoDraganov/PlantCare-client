@@ -4,11 +4,13 @@ import {
 	FunctionComponent,
 	ReactNode,
 	SetStateAction,
+	useContext,
 	useEffect,
 	useState,
 } from "react";
 import { CropPotResponseDto } from "../dtos/CropPot.dto";
 import { getAllPots } from "../api/requests";
+import { AuthContext } from "./AuthContext";
 
 interface PotContextType {
 	cropPots: CropPotResponseDto[] | null;
@@ -27,21 +29,20 @@ export const PotContext = createContext<PotContextType>({
 interface PotProviderProps {
 	children: ReactNode;
 }
+// In PotProvider (inside PotContext.tsx)
+export const PotProvider: FunctionComponent<PotProviderProps> = ({ children }) => {
+	const authContext = useContext(AuthContext);
+	const token = authContext?.token; // Use optional chaining to safely access token
 
-export const PotProvider: FunctionComponent<PotProviderProps> = ({
-	children,
-}) => {
-	const token = localStorage.getItem("clerkFetchedToken");
 	const [cropPots, setCropPots] = useState<CropPotResponseDto[] | null>(null);
-
-	const [selectedPot, setSelectedPot] = useState<CropPotResponseDto | null>(
-		null
-	);
+	const [selectedPot, setSelectedPot] = useState<CropPotResponseDto | null>(null);
 
 	useEffect(() => {
 		(async () => {
-			const response = await getAllPots();
-			setCropPots(response);
+			if (token) {  // Ensure token exists before making API calls
+				const response = await getAllPots();
+				setCropPots(response);
+			}
 		})();
 	}, [token]);
 
