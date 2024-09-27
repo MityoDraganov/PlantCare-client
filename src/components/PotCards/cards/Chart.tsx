@@ -76,7 +76,9 @@ export const Chart = ({ sensors }: ChartProps) => {
 
 	const chartConfig: ChartConfig | undefined = selectedSensor
 		? {
-				label: selectedSensor.alias,
+				label: selectedSensor.alias
+					? selectedSensor.alias
+					: selectedSensor.serialNumber,
 				color: "hsl(var(--chart-1))",
 		  }
 		: undefined;
@@ -87,10 +89,19 @@ export const Chart = ({ sensors }: ChartProps) => {
 				<CardTitle>
 					<Select
 						onValueChange={(value: string) => {
-							const sensor = sensors.find(
-								(x) => x.alias === value
+							const sensor: SensorDto | undefined = sensors.find(
+								(x: SensorDto) =>
+									(x.alias ? x.alias : x.serialNumber) ===
+									value
 							);
-							if (sensor) setSelectedSensor(sensor);
+							console.log("sensor here");
+							console.log(sensor);
+
+							if (sensor) {
+								console.log('here');
+								
+								setSelectedSensor(sensor);
+							}
 						}}
 					>
 						<div className="flex justify-between items-center w-full">
@@ -118,12 +129,20 @@ export const Chart = ({ sensors }: ChartProps) => {
 						<SelectContent>
 							{sensors.map((sensor) => (
 								<SelectItem
-									value={sensor.alias}
+									value={
+										sensor.alias
+											? sensor.alias
+											: sensor.serialNumber
+									}
 									key={sensor.id}
 								>
 									<div className="flex items-center gap-2">
 										{/* <sensor.icon className="h-4 w-4" /> */}
-										<p>{sensor.alias}</p>
+										<p>
+											{sensor.alias
+												? sensor.alias
+												: sensor.serialNumber}
+										</p>
 									</div>
 								</SelectItem>
 							))}

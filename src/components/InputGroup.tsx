@@ -44,7 +44,7 @@ export const InputGroup = ({
 			</Label>
 			<Input
 				placeholder={placeHolder}
-				value={value}
+				value={value != null ? value : ""}
 				onChange={onChange}
         disabled={!isEditing && orientation === orientationOpts.horizontal}
 				className={`${
