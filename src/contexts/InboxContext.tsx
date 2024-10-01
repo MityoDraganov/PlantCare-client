@@ -7,14 +7,15 @@ import {
 	useEffect,
 	useState,
 } from "react";
-//import { CropInboxResponseDto } from "../dtos/CropInbox.dto";
 
 interface InboxContextType {
-	//cropInboxs: CropInboxResponseDto[] | null;
+	messages: any[];
+	setMessages: Dispatch<SetStateAction<any[]>>;
 }
 
 export const InboxContext = createContext<InboxContextType>({
-	cropInboxs: null,
+	messages: [],
+	setMessages: () => {},
 });
 
 interface InboxProviderProps {
@@ -24,16 +25,15 @@ interface InboxProviderProps {
 export const InboxProvider: FunctionComponent<InboxProviderProps> = ({
 	children,
 }) => {
+	const [messages, setMessages] = useState<any[]>([]);
 
-
-
-
-
+	useEffect(() => {
+		console.log(messages);
+		
+	}, [])
 	return (
-		<InboxContext.Provider
-			value={{ cropInboxs, setCropInboxs, selectedInbox, setSelectedInbox }}
-		>
+		<InboxContext.Provider value={{ messages, setMessages }}>
 			{children}
-		</InboxContext.Provider>
+		</InboxContext.Provider>	
 	);
 };

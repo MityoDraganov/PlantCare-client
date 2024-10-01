@@ -1,104 +1,129 @@
 import { Inbox as InboxIcon } from "lucide-react";
-import { Message } from "../../Interfaces/websocket.interface";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { InboxContext } from "../../contexts/InboxContext";
+import { useContext } from "react";
 
-export const Inbox = ({ messages }: { messages: Message[] }) => {
-    console.log(messages);
+enum bodyEntries {
+	title = "title",
+	text = "text",
+	action = "action"
+}
 
-    // Recursive function to render values
-    const renderValue = (value: any) => {
-        if (Array.isArray(value)) {
-            return (
-                <ul className="list-disc pl-5">
-                    {value.map((item, index) => (
-                        <li key={index}>{renderValue(item)}</li>
-                    ))}
-                </ul>
-            );
-        } else if (typeof value === "object" && value !== null) {
-            return (
-                <div className="pl-5">
-                    {Object.entries(value).map(([key, val]) => (
-                        <div key={key}>
-                            <span className="font-semibold">{key}:</span>{" "}
-                            {renderValue(val)}
-                        </div>
-                    ))}
-                </div>
-            );
-        } else {
-            return <span>{value}</span>; // For primitive values
-        }
-    };
+export const Inbox = () => {
+	const { messages } = useContext(InboxContext);
 
-    return (
-        <Popover>
-            <PopoverTrigger>
-                <InboxIcon />
-            </PopoverTrigger>
+	// Recursive function to render values as key-value pairs
+	const renderValue = (value: any) => {
+		if (Array.isArray(value)) {
+			return (
+				<ul className="list-disc pl-5">
+					{value.map((item, index) => (
+						<li key={index}>{renderValue(item)}</li>
+					))}
+				</ul>
+			);
+		} else if (typeof value === "object" && value !== null) {
+			return (
+				<div className="pl-5">
+					{Object.entries(value).map(([key, val]) => (
+						<div key={key}>
+							<span className="font-semibold">{key}:</span>{" "}
+							{renderValue(val)}
+						</div>
+					))}
+				</div>
+			);
+		} else {
+			return <span>{value.toString()}</span>; // For primitive values
+		}
+	};
 
-            <PopoverContent className="max-w-screen-sm max-h-96" align={"end"}>
-                <h2 className="h-min">Inbox</h2>
+	return (
+		<Popover>
+			<PopoverTrigger>
+				<InboxIcon />
+			</PopoverTrigger>
 
-                <div className="max-h-72 overflow-y-auto">
-                    {messages.length === 0 ? (
-                        <h2>No new notifications, yet!</h2>
-                    ) : (
-                        <ul className="mt-2 flex flex-col gap-4">
-                            {messages.map((x, index) => {
-                                const date = new Date(x.timestamp);
-                                const messageContent = x.data.Message;
+			<PopoverContent className="max-w-screen-sm max-h-96" align={"end"}>
+				<h2 className="h-min">Inbox</h2>
 
-                                return (
-                                    <li
-                                        key={index}
-                                        className="flex flex-col p-2 rounded-lg hover:bg-slate-50"
-                                    >
-                                        <div className="rounded-lg border bg-card text-card-foreground shadow-sm px-4 py-2">
-                                            {typeof messageContent === "string" ? (
-                                                messageContent
-                                            ) : (
-                                                <ul className="list-disc pl-5">
-                                                    {messageContent.map(
-                                                        (item: any, itemIndex: number) => (
-                                                            <li key={itemIndex}>
-                                                                <p>
-                                                                    <span className="font-semibold">
-                                                                        Event:
-                                                                    </span>{" "}
-                                                                    {x.event}
-                                                                </p>
-                                                                {renderValue(item)}
-                                                            </li>
-                                                        )
-                                                    )}
-                                                </ul>
-                                            )}
-                                        </div>
-                                        <div className="flex w-full justify-between">
-                                            <span>
-                                                {date.toLocaleString("en-US", {
-                                                    weekday: "long",
-                                                    hour: "numeric",
-                                                    minute: "numeric",
-                                                    hour12: true,
-                                                })}
-                                            </span>
-                                            <span>
-                                                {date.toLocaleString("en-US", {
-                                                    month: "short",
-                                                    day: "2-digit",
-                                                    year: "2-digit",
-                                                })}
-                                            </span>
-                                        </div>
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    )}
-                </div>
-            </PopoverContent>
-        </Popover>
-    );
+				<div className="max-h-72 overflow-y-auto">
+					{!messages || messages.length === 0 ? (
+						<h2>No new notifications, yet!</h2>
+					) : (
+						<ul className="mt-2 flex flex-col gap-4">
+							{messages.slice(1).reverse().map((message, index) => {
+								const date = new Date(message.timestamp);
+								
+								// Destructure data for easier access
+								const { data } = message;
+								const title = data[bodyEntries.title];
+								
+								return (
+									<li
+										key={index}
+										className="flex flex-col p-2 rounded-lg hover:bg-slate-50"
+									>
+										{/* Notification Box */}
+										<div className="rounded-lg border bg-card text-card-foreground shadow-sm px-4 py-2">
+											{/* Render title first if present */}
+											{title && (
+												<div className="font-bold">
+													{renderValue(title)}
+												</div>
+											)}
+											
+											{/* Render other key-value pairs */}
+											{Object.entries(data).map(([key, val], idx) => {
+												// Skip rendering the title again
+												if (key === bodyEntries.title) return null;
+
+												// Handle text rendering
+												if (key === bodyEntries.text) {
+													return (
+														<div key={idx}>
+															{renderValue(val)}
+														</div>
+													);
+												}
+
+												// For everything else (with key-value and padding)
+												return (
+													<div key={idx} className="pl-5">
+														<span className="font-semibold">
+															{key}:
+														</span>{" "}
+														{renderValue(val)}
+													</div>
+												);
+											})}
+										</div>
+
+										{/* Date Information */}
+										<div className="flex w-full justify-between mt-2 text-sm text-gray-500">
+											<span>
+												{date.toLocaleString("en-US", {
+													weekday: "long",
+													hour: "numeric",
+													minute: "numeric",
+													hour12: true,
+												})}
+											</span>
+											<span>
+												{date.toLocaleString("en-US", {
+													month: "short",
+													day: "2-digit",
+													year: "2-digit",
+												})}
+											</span>
+										</div>
+									</li>
+								);
+							})}
+						</ul>
+					)}
+				</div>
+			</PopoverContent>
+		</Popover>
+	);
 };

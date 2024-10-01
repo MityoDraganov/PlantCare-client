@@ -10,7 +10,8 @@ import { Link } from "react-router-dom";
 import { Inbox } from "./dialogs/Inbox";
 import { ModeToggle } from "./theme-switch";
 
-export const Header = ({messages}: {messages: any}) => {
+export const Header = () => {
+	
 	return (
 		<div className="flex justify-between h-[7dvh] overflow-hidden border-b shadow-sm py-1 px-2">
 			<Link to="/" className="h-full flex gap-1 items-center">
@@ -41,7 +42,7 @@ export const Header = ({messages}: {messages: any}) => {
 				</SignedOut>
 
 				<SignedIn>
-					<Inbox messages={messages}/>
+					<Inbox/>
 					<UserButton />
 				</SignedIn>
 

@@ -7,6 +7,7 @@ import * as api from "./api";
 const endPoints = {
 	assignPot: (token: string) => `cropPots/assign/${token}`,
 	cropPots: (id ?: number) => id ? `cropPots/${id}` : "cropPots",
+	inbox: "inbox",
 	webhooks: (routeData?: { potId: number; webhookId?: number }) =>
 		!routeData
 			? "webhooks"
@@ -18,6 +19,11 @@ const endPoints = {
 		controlId ? `controls/${controlId}` : "controls",
 	sensors: (sensorId?: number) =>
 		sensorId ? `sensors/${sensorId}` : "sensors",
+};
+
+// --INBOX
+export const getAllMessages = () => {
+	return api.get(endPoints.inbox);
 };
 
 // --CROP POTS--

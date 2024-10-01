@@ -1,7 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
+import { InboxContext } from '../contexts/InboxContext';
 
 const useWebSocket = (url: string) => {
-  const [messages, setMessages] = useState<Message[]>([]); // Stores received messages
+  const { setMessages } = useContext(InboxContext);
   const [isConnected, setIsConnected] = useState(false); // Connection status
   const socketRef = useRef<WebSocket | null>(null);
 
@@ -18,10 +19,16 @@ const useWebSocket = (url: string) => {
 
     // Listen for messages
     socket.onmessage = (event) => {
-      console.log('Message received:', event.data);
-      const message = JSON.parse(event.data);
-      const parsedMessage = parseFields(message);
-      setMessages((prevMessages) => [...prevMessages, parsedMessage]);
+      
+      try {
+        const message = JSON.parse(event.data);
+        const parsedMessage = parseFields(message); 
+    
+        // Ensure we append new messages correctly
+        setMessages((prevMessages) => [...prevMessages, parsedMessage]);
+      } catch (error) {
+        console.error('Error parsing message:', error);
+      }
     };
 
     // Handle WebSocket errors
@@ -45,12 +52,13 @@ const useWebSocket = (url: string) => {
   const parseFields = (data: any): any => {
     if (data && typeof data === 'object') {
       for (const key in data) {
-        if (typeof data[key] === 'string') {
+        if (typeof data[key] === 'string' && (data[key].startsWith('{') || data[key].startsWith('['))) {
+          // Only try to parse if the string looks like JSON (starts with { or [)
           try {
-            // Try to parse the string as JSON
             data[key] = JSON.parse(data[key]);
           } catch (e) {
-            // If parsing fails, do nothing
+            // If parsing fails, just log and move on
+            console.error(`Error parsing field '${key}':`, e);
           }
         } else if (typeof data[key] === 'object') {
           // Recur for nested objects
@@ -70,7 +78,7 @@ const useWebSocket = (url: string) => {
     }
   };
 
-  return { messages, sendMessage, isConnected };
+  return { sendMessage, isConnected };
 };
 
 export default useWebSocket;
