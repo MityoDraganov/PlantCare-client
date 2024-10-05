@@ -90,20 +90,6 @@ export const Controls = ({
 					))}
 				</ul>
 
-				<div
-					className={`flex gap-2 transition-opacity duration-300 ${
-						updateData.some((x) => x.isEditing)
-							? "opacity-100"
-							: "opacity-0"
-					}`}
-				>
-					<Button variant="secondary" onClick={cancelUpdate}>
-						Cancel
-					</Button>
-					<Button variant="blue" onClick={saveUpdate}>
-						Save
-					</Button>
-				</div>
 			</div>
 
 			<p

@@ -55,8 +55,6 @@ export const Chart = ({ sensors }: ChartProps) => {
 						day: "numeric",
 					});
 					const time = `${hours} ${period}`;
-
-					// If the date has changed (new day), include the date in the label
 					let timeLabel = time;
 					if (previousDate !== currentDate) {
 						timeLabel = `${currentDate}, ${time}`;
@@ -94,12 +92,7 @@ export const Chart = ({ sensors }: ChartProps) => {
 									(x.alias ? x.alias : x.serialNumber) ===
 									value
 							);
-							console.log("sensor here");
-							console.log(sensor);
-
 							if (sensor) {
-								console.log('here');
-								
 								setSelectedSensor(sensor);
 							}
 						}}
@@ -137,7 +130,6 @@ export const Chart = ({ sensors }: ChartProps) => {
 									key={sensor.id}
 								>
 									<div className="flex items-center gap-2">
-										{/* <sensor.icon className="h-4 w-4" /> */}
 										<p>
 											{sensor.alias
 												? sensor.alias

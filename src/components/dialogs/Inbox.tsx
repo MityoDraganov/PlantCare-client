@@ -11,6 +11,8 @@ enum bodyEntries {
 
 export const Inbox = () => {
 	const { messages } = useContext(InboxContext);
+	console.log(messages);
+	
 
 	// Recursive function to render values as key-value pairs
 	const renderValue = (value: any) => {
@@ -27,7 +29,7 @@ export const Inbox = () => {
 				<div className="pl-5">
 					{Object.entries(value).map(([key, val]) => (
 						<div key={key}>
-							<span className="font-semibold">{key}:</span>{" "}
+							<span >{key}:</span>{" "}
 							{renderValue(val)}
 						</div>
 					))}
@@ -62,7 +64,7 @@ export const Inbox = () => {
 								return (
 									<li
 										key={index}
-										className="flex flex-col p-2 rounded-lg hover:bg-slate-50"
+										className={`flex flex-col p-2 rounded-lg hover:bg-slate-50 ${!message.isRead ? "opacity-50" : ""}`}
 									>
 										{/* Notification Box */}
 										<div className="rounded-lg border bg-card text-card-foreground shadow-sm px-4 py-2">

@@ -6,7 +6,7 @@ import * as api from "./api";
 
 const endPoints = {
 	assignPot: (token: string) => `cropPots/assign/${token}`,
-	cropPots: (id ?: number) => id ? `cropPots/${id}` : "cropPots",
+	cropPots: (id?: number) => (id ? `cropPots/${id}` : "cropPots"),
 	inbox: "inbox",
 	webhooks: (routeData?: { potId: number; webhookId?: number }) =>
 		!routeData
@@ -36,8 +36,8 @@ export const getAllPots = () => {
 };
 
 export const updatePot = (potId: number, potData: CropPotRequestDto) => {
-	return api.put(endPoints.cropPots(potId), potData)
-}
+	return api.put(endPoints.cropPots(potId), potData);
+};
 
 // --WEBHOOKS--
 export const createWebhook = (potId: number, webHookData: WebhookDto) => {
@@ -62,6 +62,12 @@ export const updateControllSetting = (updateData: ControlDto[]) => {
 };
 
 //	--SENSORS--
-export const updateSensor = (sensorId: number, updateData: SensorDto) => {
-	return api.put(endPoints.sensors(sensorId), updateData);
+export const updateSensor = (
+	updateData: SensorDto | SensorDto[],
+	sensorId?: number
+) => {
+	return api.put(
+		sensorId ? endPoints.sensors(sensorId) : endPoints.sensors(),
+		updateData
+	);
 };

@@ -9,4 +9,5 @@ export interface SensorDto {
 	IsOfficial: boolean;
 	measurementInterval: string;
 	IsAttached:   boolean;
+	driverUrl: string;
 }

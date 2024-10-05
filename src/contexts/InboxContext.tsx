@@ -7,10 +7,11 @@ import {
 	useEffect,
 	useState,
 } from "react";
+import { Message } from "../Interfaces/websocket.interface";
 
 interface InboxContextType {
-	messages: any[];
-	setMessages: Dispatch<SetStateAction<any[]>>;
+	messages: Message[];
+	setMessages: Dispatch<SetStateAction<Message[]>>;
 }
 
 export const InboxContext = createContext<InboxContextType>({

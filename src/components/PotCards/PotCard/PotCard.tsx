@@ -33,6 +33,9 @@ export const PotCard = ({
 	pot: CropPotResponseDto;
 	layout?: layoutOptions;
 }) => {
+	const sensorsWithoutDriver = pot.sensors.filter(
+		(sensor) => !sensor.isDriverPresent
+	);
 	const [tab, setTab] = useState<tabOptions>(tabOptions.info);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 	const { setSelectedPot } = useContext(PotContext);
@@ -55,16 +58,22 @@ export const PotCard = ({
 					<CardHeader>
 						<CardTitle className="flex justify-between">
 							{pot.alias}
-							<TooltipProvider>
-								<Tooltip>
-									<TooltipTrigger>
-										<TriangleAlert className="text-red-500 mr-0 ml-auto" />
-									</TooltipTrigger>
-									<TooltipContent>
-										<p>Action required</p>
-									</TooltipContent>
-								</Tooltip>
-							</TooltipProvider>
+							{sensorsWithoutDriver && (
+								<TooltipProvider>
+									<Tooltip>
+										<TooltipTrigger>
+											<TriangleAlert className="text-red-500 mr-0 ml-auto" />
+										</TooltipTrigger>
+										<TooltipContent>
+											<p>Action required</p>
+											<span className="text-sm font-normal">
+												{" "}
+												- provide a driver
+											</span>
+										</TooltipContent>
+									</Tooltip>
+								</TooltipProvider>
+							)}
 						</CardTitle>
 					</CardHeader>
 				</Card>
@@ -75,20 +84,24 @@ export const PotCard = ({
 						tab !== tabOptions.info
 							? "min-h-[75dvh]"
 							: "min-h-[40dvh]"
-					} items-center text-left w-full`}
+					} max-h-full items-center text-left w-full`}
 				>
 					<DrawerHeader className="flex gap-6 items-center">
 						<DrawerTitle>{pot.alias}</DrawerTitle>
 
 						<PotDialog pot={pot} />
 					</DrawerHeader>
-					{tab === tabOptions.info ? (
-						<InfoTab pot={pot} setTab={setTab} />
-					) : (
-						<AdvancedSettingsComponent
+					<div className="w-full h-full overflow-auto flex flex-col items-center">
+
+						{tab === tabOptions.info ? (
+							<InfoTab pot={pot} setTab={setTab} />
+						) : (
+							<AdvancedSettingsComponent
 							returnHandler={returnHandler}
-						/>
-					)}
+							/>
+						)}
+						</div>
+					
 				</DrawerContent>
 			)}
 		</Drawer>
