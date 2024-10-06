@@ -2,16 +2,21 @@ import { ControlDto } from "./controls.dto";
 import { SensorDto } from "./sensors.dto";
 import { WebhookDto } from "./webhooks.dto";
 
+export enum SensorStatus {
+	Online = "online",
+	Updating = "updating",
+	Offline = "offline",
+}
 
-// CropPotResponse represents the response DTO for a CropPot
 export interface CropPotResponseDto {
 	id: number;
 	alias: string;
 	isArchived: boolean;
 	isPinned: boolean;
 	controls: ControlDto[];
-	sensors: SensorDto[]
-	webhooks?: WebhookDto[]
+	sensors: SensorDto[];
+	webhooks?: WebhookDto[];
+	status: SensorStatus;
 }
 
 export interface CropPotRequestDto {

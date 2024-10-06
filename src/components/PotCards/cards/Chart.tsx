@@ -41,25 +41,19 @@ export const Chart = ({ sensors }: ChartProps) => {
 
 	useEffect(() => {
 		if (selectedSensor) {
-			let previousDate: string | null = null;
-
 			const processedData = selectedSensor.measurements.map(
 				(measurement) => {
 					const date = new Date(measurement.CreatedAt);
-					const hours = date.getHours() % 12 || 12; // 12-hour format
+					const hours = date.getHours() % 12 || 12;
 					const period = date.getHours() < 12 ? "AM" : "PM";
 
-					// Format the date and time
 					const currentDate = date.toLocaleDateString(undefined, {
 						month: "short",
 						day: "numeric",
 					});
 					const time = `${hours} ${period}`;
-					let timeLabel = time;
-					if (previousDate !== currentDate) {
-						timeLabel = `${currentDate}, ${time}`;
-						previousDate = currentDate;
-					}
+
+					const timeLabel = `${currentDate}, ${time}`;
 
 					return {
 						time: timeLabel,

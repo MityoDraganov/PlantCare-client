@@ -17,6 +17,7 @@ interface PotContextType {
 	setCropPots: Dispatch<SetStateAction<CropPotResponseDto[] | null>>;
 	selectedPot: CropPotResponseDto | null;
 	setSelectedPot: Dispatch<SetStateAction<CropPotResponseDto | null>>;
+	updatePotDataHandler: (updatedPotData: CropPotResponseDto) => void;
 }
 
 export const PotContext = createContext<PotContextType>({
@@ -24,6 +25,7 @@ export const PotContext = createContext<PotContextType>({
 	setCropPots: () => null,
 	selectedPot: null,
 	setSelectedPot: () => null,
+	updatePotDataHandler: () => null,
 });
 
 interface PotProviderProps {
@@ -58,9 +60,39 @@ export const PotProvider: FunctionComponent<PotProviderProps> = ({ children }) =
 		}
 	}, [cropPots, selectedPot]);
 
+	const updatePotDataHandler = (updatedPotData: CropPotResponseDto) => {
+		console.log(cropPots);
+		console.log(updatedPotData);
+		
+		
+		if (!cropPots){
+			return;
+		}
+		const updatedPotIndex = cropPots?.findIndex(
+			(pot) => pot.id === updatedPotData.id
+		);
+
+		if (updatedPotIndex !== undefined && updatedPotIndex !== -1) {
+			const updatedCropPots = [...cropPots];
+			updatedCropPots[updatedPotIndex] = {
+				...updatedCropPots[updatedPotIndex],
+				...updatedPotData,
+			};
+
+			setCropPots(updatedCropPots);
+
+			if (selectedPot?.id === updatedPotData.id) {
+				setSelectedPot({
+					...selectedPot,
+					...updatedPotData,
+				});
+			}
+		}
+	}
+
 	return (
 		<PotContext.Provider
-			value={{ cropPots, setCropPots, selectedPot, setSelectedPot }}
+			value={{ cropPots, setCropPots, selectedPot, setSelectedPot, updatePotDataHandler }}
 		>
 			{children}
 		</PotContext.Provider>

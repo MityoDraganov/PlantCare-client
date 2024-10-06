@@ -11,9 +11,6 @@ enum bodyEntries {
 
 export const Inbox = () => {
 	const { messages } = useContext(InboxContext);
-	console.log(messages);
-	
-
 	// Recursive function to render values as key-value pairs
 	const renderValue = (value: any) => {
 		if (Array.isArray(value)) {
@@ -54,7 +51,7 @@ export const Inbox = () => {
 						<h2>No new notifications, yet!</h2>
 					) : (
 						<ul className="mt-2 flex flex-col gap-4">
-							{messages.slice(1).reverse().map((message, index) => {
+							{messages.reverse().map((message, index) => {
 								const date = new Date(message.timestamp);
 								
 								// Destructure data for easier access

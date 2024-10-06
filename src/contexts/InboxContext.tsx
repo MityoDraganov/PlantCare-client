@@ -27,11 +27,6 @@ export const InboxProvider: FunctionComponent<InboxProviderProps> = ({
 	children,
 }) => {
 	const [messages, setMessages] = useState<any[]>([]);
-
-	useEffect(() => {
-		console.log(messages);
-		
-	}, [])
 	return (
 		<InboxContext.Provider value={{ messages, setMessages }}>
 			{children}

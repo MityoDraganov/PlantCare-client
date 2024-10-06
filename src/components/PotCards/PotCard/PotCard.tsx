@@ -1,4 +1,4 @@
-import { CropPotResponseDto } from "../../../dtos/CropPot.dto";
+import { CropPotResponseDto, SensorStatus } from "../../../dtos/CropPot.dto";
 import { Card, CardHeader, CardTitle } from "../../ui/card";
 import {
 	Drawer,
@@ -34,7 +34,7 @@ export const PotCard = ({
 	layout?: layoutOptions;
 }) => {
 	const sensorsWithoutDriver = pot.sensors.filter(
-		(sensor) => !sensor.isDriverPresent
+		(sensor) => !sensor.driverUrl
 	);
 	const [tab, setTab] = useState<tabOptions>(tabOptions.info);
 	const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -51,6 +51,17 @@ export const PotCard = ({
 	const returnHandler = () => {
 		setTab(tabOptions.info);
 	};
+
+	const renderStatusDot = (status: SensorStatus) => {
+		const colorClass = {
+			[SensorStatus.Online]: "bg-green-500",
+			[SensorStatus.Updating]: "bg-yellow-500",
+			[SensorStatus.Offline]: "bg-red-500",
+		}[status];
+
+		return <span className={`h-2 w-2 rounded-full ${colorClass}`} />;
+	};
+
 	return (
 		<Drawer key={pot.id}>
 			<DrawerTrigger onClick={onTriggerClick} asChild>
@@ -58,22 +69,34 @@ export const PotCard = ({
 					<CardHeader>
 						<CardTitle className="flex justify-between">
 							{pot.alias}
-							{sensorsWithoutDriver && (
+							<div className="flex gap-2">
 								<TooltipProvider>
+									{sensorsWithoutDriver.length > 0 && (
+										<Tooltip>
+											<TooltipTrigger>
+												<TriangleAlert className="text-red-500 mr-0 ml-auto" />
+											</TooltipTrigger>
+											<TooltipContent>
+												<p>Action required</p>
+												<span className="text-sm font-normal">
+													{" "}
+													- provide a driver
+												</span>
+											</TooltipContent>
+										</Tooltip>
+									)}
 									<Tooltip>
 										<TooltipTrigger>
-											<TriangleAlert className="text-red-500 mr-0 ml-auto" />
+											<div className="flex items-center">
+												{renderStatusDot(pot.status)}
+											</div>
 										</TooltipTrigger>
 										<TooltipContent>
-											<p>Action required</p>
-											<span className="text-sm font-normal">
-												{" "}
-												- provide a driver
-											</span>
+											Pot status: {pot.status}
 										</TooltipContent>
 									</Tooltip>
 								</TooltipProvider>
-							)}
+							</div>
 						</CardTitle>
 					</CardHeader>
 				</Card>
@@ -92,16 +115,14 @@ export const PotCard = ({
 						<PotDialog pot={pot} />
 					</DrawerHeader>
 					<div className="w-full h-full overflow-auto flex flex-col items-center">
-
 						{tab === tabOptions.info ? (
 							<InfoTab pot={pot} setTab={setTab} />
 						) : (
 							<AdvancedSettingsComponent
-							returnHandler={returnHandler}
+								returnHandler={returnHandler}
 							/>
 						)}
-						</div>
-					
+					</div>
 				</DrawerContent>
 			)}
 		</Drawer>
