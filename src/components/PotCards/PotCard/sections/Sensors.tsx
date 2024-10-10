@@ -13,11 +13,10 @@ import {
 import { ChevronsUpDown } from "lucide-react";
 
 export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
-	const sensorsWithoutDriver = sensors.filter((sensor) => !sensor.driverUrl);
-	const sensorsWithDriver = sensors.filter((sensor) => sensor.driverUrl);
+
 
 	const [isEditting, setIsEditting] = useState<boolean>(false);
-	const [updateData, _, setUpdateData] = useFormData(sensorsWithoutDriver);
+	const [updateData, _, setUpdateData] = useFormData(sensors);
 
 	const handleUpdateSensor = (sensorId: number, newValue: string) => {
 		// Find the index of the sensor to update
@@ -42,11 +41,11 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 
 	const handleSaveUpdate = async () => {
 		await updateSensor(updateData);
-		setUpdateData(sensorsWithoutDriver);
+		//setUpdateData(sensorsWithoutDriver);
 	};
 
 	const cancelUpdate = () => {
-		setUpdateData(sensorsWithoutDriver);
+		setUpdateData(updateData);
 	};
 
 	return (
@@ -65,8 +64,8 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 					</h2>
 					<div className="flex flex-col gap-4">
 						<ul className="flex flex-col gap-2">
-							{sensorsWithoutDriver.length > 0 ? (
-								sensorsWithoutDriver.map((sensor) => (
+							{updateData.some((sensor) => !sensor.driverUrl) ? (
+								updateData.filter((sensor) => !sensor.driverUrl).map((sensor) => (
 									<li
 										key={sensor.id}
 										className="flex justify-between w-full items-center"
@@ -106,8 +105,8 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 							</CollapsibleTrigger>
 							<CollapsibleContent>
 								<ul className="flex flex-col gap-2">
-									{sensorsWithDriver.length > 0 ? (
-										sensorsWithDriver.map((sensor) => (
+									{updateData.some((sensor) => sensor.driverUrl) ? (
+										updateData.filter((sensor) => sensor.driverUrl).map((sensor) => (
 											<li
 												key={sensor.id}
 												className="flex justify-between w-full items-center"
@@ -142,13 +141,13 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 							</CollapsibleContent>
 						</Collapsible>
 
-						{isEditting && (
+						
 							<EditBtnsComponent
 								isEditing={isEditting}
 								saveUpdate={handleSaveUpdate}
 								cancelUpdate={cancelUpdate}
 							/>
-						)}
+					
 					</div>
 				</div>
 			</div>

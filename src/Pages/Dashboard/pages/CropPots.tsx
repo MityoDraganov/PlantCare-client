@@ -10,9 +10,11 @@ export enum layoutOptions {
 export const CropPots = ({
 	cropPots,
 	layout = layoutOptions.page,
+	action
 }: {
 	cropPots: CropPotResponseDto[] | null;
 	layout?: layoutOptions;
+	action?: Function;
 }) => {
 	return (
 		<Card className="h-full w-full flex flex-col gap-2 py-4 px-2">
@@ -22,7 +24,7 @@ export const CropPots = ({
 			<div className="h-full w-full grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-6">
 				{cropPots?.length ? (
 					cropPots.map((x: CropPotResponseDto) => (
-						<PotCard key={x.id} pot={x}/>
+						<PotCard key={x.id} pot={x} layout={layout} action={action}/>
 					))
 				) : (
 					<p>No pots available</p>

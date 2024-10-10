@@ -2,7 +2,9 @@
 export enum Event {
 	ForecastAlert = "forecastAlert",
 	SensorConnected = "SensorConnected",
-	UpdatedPot = "updatedPot"
+	UpdatedPot = "updatedPot",
+
+	NotificationAlert = "notificationAlert"
 }
 
 export interface Message {

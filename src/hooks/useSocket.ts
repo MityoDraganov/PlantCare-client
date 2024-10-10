@@ -2,8 +2,10 @@ import { useState, useEffect, useRef, useContext } from "react";
 import { InboxContext } from "../contexts/InboxContext";
 import { PotContext } from "../contexts/PotContext"; // Import PotContext
 import { Event, Message } from "../Interfaces/websocket.interface";
+import { useToast } from "./use-toast";
 
 const useWebSocket = (url: string) => {
+	const { toast } = useToast();
 	const { setMessages } = useContext(InboxContext);
 	const { updatePotDataHandler } = useContext(PotContext); // Access cropPots and updatePotDataHandler
 	const [isConnected, setIsConnected] = useState(false); // Connection status
@@ -32,9 +34,8 @@ const useWebSocket = (url: string) => {
 					const parsedMessage = parseFields(message);
 
 					// Only handle the message if cropPots is populated
-				
-						handleIncomingMessage(parsedMessage); // Handle incoming message
-	
+
+					handleIncomingMessage(parsedMessage); // Handle incoming message
 				} catch (error) {
 					console.error("Error parsing message:", error);
 				}
@@ -92,16 +93,19 @@ const useWebSocket = (url: string) => {
 	};
 
 	const handleIncomingMessage = (message: any) => {
-        console.log(message)
+		console.log(message);
 		if (message.event && message.event == Event.UpdatedPot) {
-            console.log("set message here " + message);
 			const updatedPotData = message.data;
-			updatePotDataHandler(updatedPotData); // Update cropPots
-		} else {
-			console.log("set message here 11" + Object.entries(message));
-            
-			setMessages((prevMessages) => [...prevMessages, message]);
+			updatePotDataHandler(updatedPotData);
+			return;
 		}
+
+		if (message.event && message.event == Event.NotificationAlert) {
+			toast({ description: message.data.toString() });
+			return;
+		}
+
+		setMessages((prevMessages) => [...prevMessages, message]);
 	};
 
 	// Function to send a message

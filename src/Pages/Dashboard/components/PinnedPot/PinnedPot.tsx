@@ -9,17 +9,29 @@ import { Chart } from "../../../../components/PotCards/cards/Chart";
 import { PhotoCard } from "../../../../components/PotCards/cards/PhotoCard";
 import { PotContext } from "../../../../contexts/PotContext";
 import { updatePot } from "../../../../api/requests";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "../../../../components/ui/dialog";
+import {
+	Dialog,
+	DialogContent,
+	DialogTitle,
+	DialogTrigger,
+} from "../../../../components/ui/dialog";
 import { CropPots, layoutOptions } from "../../pages/CropPots";
 
 export const PinnedPot = () => {
 	const { cropPots } = useContext(PotContext);
 
 	const pinnedPots = cropPots ? cropPots.filter((pot) => pot.isPinned) : [];
-	const nonPinnedPots = cropPots ? cropPots.filter((pot) => !pot.isPinned) : [];
+	const nonPinnedPots = cropPots
+		? cropPots.filter((pot) => !pot.isPinned)
+		: [];
 
-	const unpinPotHandler = async (potId: number) => {
-		await updatePot(potId, { isPinned: false });
+		const unpinPotHandler = async (potId: number) => {
+			await updatePot(potId, { isPinned: false });
+		};
+		
+
+	const pinPotHandler = async (potId: number) => {
+		await updatePot(potId, { isPinned: true });
 	};
 
 	return (
@@ -62,12 +74,16 @@ export const PinnedPot = () => {
 			<Dialog>
 				<DialogTrigger>
 					<Card className="w-full lg:h-1/4 p-6 flex flex-col items-center justify-center text-xl hover:bg-primary-foreground hover:cursor-pointer">
-						<h2>Add pot</h2>
+						<h2>Pin pot</h2>
 					</Card>
 				</DialogTrigger>
 				<DialogContent className="w-[95%]">
 					<DialogTitle>Select pot to pin</DialogTitle>
-					<CropPots cropPots={nonPinnedPots} layout={layoutOptions.component}/>
+					<CropPots
+						cropPots={nonPinnedPots}
+						layout={layoutOptions.component}
+						action={pinPotHandler}
+					/>
 				</DialogContent>
 			</Dialog>
 		</div>

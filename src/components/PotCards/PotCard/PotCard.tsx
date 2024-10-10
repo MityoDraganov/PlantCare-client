@@ -7,7 +7,7 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from "../../ui/drawer";
-import { useContext, useState } from "react";
+import { act, useContext, useState } from "react";
 import { AdvancedSettingsComponent } from "./tabs/AdvancedSettingsComponent";
 import { InfoTab } from "./tabs/InfoTab";
 import { PotContext } from "../../../contexts/PotContext";
@@ -29,9 +29,11 @@ export enum tabOptions {
 export const PotCard = ({
 	pot,
 	layout = layoutOptions.page,
+	action
 }: {
 	pot: CropPotResponseDto;
 	layout?: layoutOptions;
+	action?: Function;
 }) => {
 	const sensorsWithoutDriver = pot.sensors.filter(
 		(sensor) => !sensor.driverUrl
@@ -42,6 +44,9 @@ export const PotCard = ({
 
 	const onTriggerClick = () => {
 		if (layout === layoutOptions.component) {
+			console.log("here");
+			
+			if (action) action(pot.id);
 		} else {
 			setIsOpen(true);
 			setSelectedPot(pot);
@@ -65,10 +70,10 @@ export const PotCard = ({
 	return (
 		<Drawer key={pot.id}>
 			<DrawerTrigger onClick={onTriggerClick} asChild>
-				<Card className="hover:bg-primary-foreground hover:cursor-pointer shadow-sm h-fit">
-					<CardHeader>
-						<CardTitle className="flex justify-between">
-							{pot.alias}
+				<Card className="hover:bg-primary-foreground hover:cursor-pointer shadow-sm h-full">
+					<CardHeader className="h-fit w-full">
+						<CardTitle className="flex w-full h-full justify-between items-center">
+							<p>{pot.alias}</p>
 							<div className="flex gap-2">
 								<TooltipProvider>
 									{sensorsWithoutDriver.length > 0 && (
