@@ -40,15 +40,15 @@ const request = async (
 
 		if (!res.ok) {
 			if (Array.isArray(responseData.error)) {
-				throw new Error(responseData.error.toString());
+				toast.error(responseData.error.toString());
 			}
 			toast.error(responseData.error);
-			throw new Error(responseData.error);
+			return;
 		}
 
 		return responseData;
 	} catch (error: any) {
-		throw new Error(error.message);
+		toast.error(error.error);
 	}
 };
 

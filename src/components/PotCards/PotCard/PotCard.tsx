@@ -29,7 +29,7 @@ export enum tabOptions {
 export const PotCard = ({
 	pot,
 	layout = layoutOptions.page,
-	action
+	action,
 }: {
 	pot: CropPotResponseDto;
 	layout?: layoutOptions;
@@ -44,8 +44,6 @@ export const PotCard = ({
 
 	const onTriggerClick = () => {
 		if (layout === layoutOptions.component) {
-			console.log("here");
-			
 			if (action) action(pot.id);
 		} else {
 			setIsOpen(true);

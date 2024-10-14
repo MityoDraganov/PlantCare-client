@@ -2,10 +2,9 @@ import { useState, useEffect, useRef, useContext } from "react";
 import { InboxContext } from "../contexts/InboxContext";
 import { PotContext } from "../contexts/PotContext"; // Import PotContext
 import { Event, Message } from "../Interfaces/websocket.interface";
-import { useToast } from "./use-toast";
+import toast from "react-hot-toast";
 
 const useWebSocket = (url: string) => {
-	const { toast } = useToast();
 	const { setMessages } = useContext(InboxContext);
 	const { updatePotDataHandler } = useContext(PotContext); // Access cropPots and updatePotDataHandler
 	const [isConnected, setIsConnected] = useState(false); // Connection status
@@ -94,6 +93,13 @@ const useWebSocket = (url: string) => {
 
 	const handleIncomingMessage = (message: any) => {
 		console.log(message);
+
+		if (message.event && message.event == Event.AsyncError) {
+			const errorMessage = message.data;
+			toast.error(errorMessage.error.toString());
+			return;
+		}
+
 		if (message.event && message.event == Event.UpdatedPot) {
 			const updatedPotData = message.data;
 			updatePotDataHandler(updatedPotData);
@@ -101,7 +107,7 @@ const useWebSocket = (url: string) => {
 		}
 
 		if (message.event && message.event == Event.NotificationAlert) {
-			toast({ description: message.data.toString() });
+			toast.success(message.data.toString());
 			return;
 		}
 

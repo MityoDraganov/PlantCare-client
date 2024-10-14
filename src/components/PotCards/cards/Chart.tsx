@@ -20,7 +20,6 @@ import {
 	SelectValue,
 } from "../../../components/ui/select";
 import { SensorDto } from "../../../dtos/sensors.dto";
-
 import { SensorDialog } from "../../dialogs/sensorDialog";
 
 interface ChartData {
@@ -32,13 +31,26 @@ interface ChartProps {
 	sensors: SensorDto[]; // Array of sensor data
 }
 
+// Helper function to render dot and status text
+const renderStatusWithDot = (status: boolean) => {
+	const colorClass = status ? "bg-green-500" : "bg-red-500"; // green for connected, red for disconnected
+	const statusText = status ? "Connected" : "Disconnected"; // status text
+
+	return (
+		<span className="flex items-center gap-2">
+			<span className={`h-2 w-2 rounded-full ${colorClass}`} />
+			<span>{statusText}</span>
+		</span>
+	);
+};
+
 export const Chart = ({ sensors }: ChartProps) => {
 	const [selectedSensor, setSelectedSensor] = useState<SensorDto | undefined>(
 		sensors[0]
 	);
-
 	const [chartData, setChartData] = useState<ChartData[]>([]);
 
+	// Update chart data when the selected sensor changes
 	useEffect(() => {
 		if (selectedSensor) {
 			const processedData = selectedSensor.measurements.map(
@@ -66,11 +78,17 @@ export const Chart = ({ sensors }: ChartProps) => {
 		}
 	}, [selectedSensor, sensors]);
 
+	// Generate the chart configuration
 	const chartConfig: ChartConfig | undefined = selectedSensor
 		? {
-				label: selectedSensor.alias
+				label: `
+            ${
+				selectedSensor.alias
 					? selectedSensor.alias
-					: selectedSensor.serialNumber,
+					: selectedSensor.serialNumber
+			}
+          `,
+
 				color: "hsl(var(--chart-1))",
 		  }
 		: undefined;
@@ -92,23 +110,35 @@ export const Chart = ({ sensors }: ChartProps) => {
 						}}
 					>
 						<div className="flex justify-between items-center w-full">
-							<SelectTrigger className="w-full md:w-fit">
-								<SelectValue
-									placeholder={
-										<p className="flex gap-2 p-1">
-											<span className="flex gap-2 items-baseline">
-												{chartConfig?.icon && (
-													<chartConfig.icon className="h-4 w-4" />
-												)}
-												{chartConfig?.label}
-											</span>
-											<span className="font-normal pr-2">
-												Chart
-											</span>
-										</p>
-									}
-								/>
-							</SelectTrigger>
+							<div
+								className={`flex gap-2 items-center ${
+									selectedSensor && !selectedSensor.IsAttached
+										? "opacity-50"
+										: ""
+								}`}
+							>
+								<SelectTrigger className="w-full md:w-fit">
+									<SelectValue
+										placeholder={
+											<p className="flex gap-2 p-1">
+												<span className="flex gap-2 items-baseline">
+													{chartConfig?.label}
+												</span>
+												<span className="font-normal pr-2">
+													Chart
+												</span>
+											</p>
+										}
+									/>
+								</SelectTrigger>
+								{selectedSensor && (
+									<span className="text-sm font-normal ">
+										{renderStatusWithDot(
+											selectedSensor.IsAttached
+										)}
+									</span>
+								)}
+							</div>
 							{selectedSensor && (
 								<SensorDialog sensor={selectedSensor} />
 							)}
@@ -121,6 +151,9 @@ export const Chart = ({ sensors }: ChartProps) => {
 											? sensor.alias
 											: sensor.serialNumber
 									}
+									className={`${
+										!sensor.IsAttached ? "opacity-50" : ""
+									}`}
 									key={sensor.id}
 								>
 									<div className="flex items-center gap-2">
@@ -129,6 +162,7 @@ export const Chart = ({ sensors }: ChartProps) => {
 												? sensor.alias
 												: sensor.serialNumber}
 										</p>
+										{renderStatusWithDot(sensor.IsAttached)}
 									</div>
 								</SelectItem>
 							))}

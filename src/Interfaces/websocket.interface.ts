@@ -4,7 +4,9 @@ export enum Event {
 	SensorConnected = "SensorConnected",
 	UpdatedPot = "updatedPot",
 
-	NotificationAlert = "notificationAlert"
+	NotificationAlert = "notificationAlert",
+
+	AsyncError = "asyncError",
 }
 
 export interface Message {

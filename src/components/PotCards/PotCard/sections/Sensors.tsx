@@ -3,7 +3,7 @@ import { SensorDto } from "../../../../dtos/sensors.dto";
 import useFormData from "../../../../hooks/useForm";
 import { InputGroup, orientationOpts } from "../../../InputGroup";
 import { Chart } from "../../cards/Chart";
-import { EditBtnsComponent } from "../../../editBtnsComponent";
+
 import { updateSensor } from "../../../../api/requests";
 import {
 	Collapsible,
@@ -11,6 +11,7 @@ import {
 	CollapsibleTrigger,
 } from "../../../ui/collapsible";
 import { ChevronsUpDown } from "lucide-react";
+import { EditBtnsComponent } from "../../../EditBtnsComponent";
 
 export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 
@@ -75,7 +76,7 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 											orientation={
 												orientationOpts.horizontal
 											}
-											label={sensor.alias ?? ""}
+											label={sensor.alias ?? sensor.serialNumber	}
 											isEditing={true}
 											value={sensor.driverUrl}
 											key={sensor.id}
