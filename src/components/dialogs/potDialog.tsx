@@ -53,6 +53,21 @@ export const PotDialog = ({ pot }: { pot: CropPotResponseDto }) => {
 						/>
 					</div>
 
+					<InputGroup
+						type={"time"}
+						value={updateData.measurementInterval}
+						onChange={(e) =>
+							setPartialChange({
+								id: "measurementInterval",
+								value: e.target.value,
+							})
+						}
+						id={"measurementInterval"}
+						label={"Measurement Interval"}
+						orientation={orientationOpts.horizontal}
+						isEditing={true}
+					/>
+
 					<div
 						className={`flex gap-2 transition-opacity duration-300 mr-2 ml-auto ${
 							isEditting ? "opacity-100" : "opacity-0"

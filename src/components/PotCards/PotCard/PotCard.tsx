@@ -7,7 +7,7 @@ import {
 	DrawerTitle,
 	DrawerTrigger,
 } from "../../ui/drawer";
-import { act, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { AdvancedSettingsComponent } from "./tabs/AdvancedSettingsComponent";
 import { InfoTab } from "./tabs/InfoTab";
 import { PotContext } from "../../../contexts/PotContext";

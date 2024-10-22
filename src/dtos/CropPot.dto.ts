@@ -17,9 +17,11 @@ export interface CropPotResponseDto {
 	sensors: SensorDto[];
 	webhooks?: WebhookDto[];
 	status: SensorStatus;
+	measurementInterval: string;
 }
 
 export interface CropPotRequestDto {
 	alias?: string;
 	isPinned?: boolean;
+	measurementInterval: string;
 }

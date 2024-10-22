@@ -7,6 +7,7 @@ export enum Event {
 	NotificationAlert = "notificationAlert",
 
 	AsyncError = "asyncError",
+	AsyncPromise = "asyncPromise"
 }
 
 export interface Message {

@@ -96,7 +96,7 @@ export const Chart = ({ sensors }: ChartProps) => {
 	return (
 		<Card className="h-full flex flex-col p-0">
 			<CardHeader className="p-3">
-				<CardTitle>
+				<CardTitle className="flex gap-2">
 					<Select
 						onValueChange={(value: string) => {
 							const sensor: SensorDto | undefined = sensors.find(
@@ -110,38 +110,28 @@ export const Chart = ({ sensors }: ChartProps) => {
 						}}
 					>
 						<div className="flex justify-between items-center w-full">
-							<div
-								className={`flex gap-2 items-center ${
-									selectedSensor && !selectedSensor.IsAttached
-										? "opacity-50"
-										: ""
-								}`}
-							>
-								<SelectTrigger className="w-full md:w-fit">
-									<SelectValue
-										placeholder={
-											<p className="flex gap-2 p-1">
-												<span className="flex gap-2 items-baseline">
-													{chartConfig?.label}
-												</span>
-												<span className="font-normal pr-2">
-													Chart
-												</span>
-											</p>
-										}
-									/>
-								</SelectTrigger>
+							<SelectTrigger className="w-full md:w-fit flex items-center text-left">
+								<SelectValue
+									placeholder={
+										<p className="flex gap-2 p-1">
+											<span className="flex gap-2 items-baseline">
+												{chartConfig?.label}
+											</span>
+											<span className="font-normal pr-2">
+												Chart
+											</span>
+										</p>
+									}
+								/>
+
 								{selectedSensor && (
-									<span className="text-sm font-normal ">
+									<span className="text-sm font-normal pl-4">
 										{renderStatusWithDot(
 											selectedSensor.IsAttached
 										)}
 									</span>
 								)}
-							</div>
-							{selectedSensor && (
-								<SensorDialog sensor={selectedSensor} />
-							)}
+							</SelectTrigger>
 						</div>
 						<SelectContent>
 							{sensors.map((sensor) => (
@@ -151,7 +141,7 @@ export const Chart = ({ sensors }: ChartProps) => {
 											? sensor.alias
 											: sensor.serialNumber
 									}
-									className={`${
+									className={`flex gap-4 ${
 										!sensor.IsAttached ? "opacity-50" : ""
 									}`}
 									key={sensor.id}
@@ -168,6 +158,7 @@ export const Chart = ({ sensors }: ChartProps) => {
 							))}
 						</SelectContent>
 					</Select>
+					{selectedSensor && <SensorDialog sensor={selectedSensor} />}
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="h-[90%] my-auto">

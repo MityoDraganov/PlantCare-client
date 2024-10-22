@@ -12,10 +12,9 @@ import {
 } from "../../../ui/collapsible";
 import { ChevronsUpDown } from "lucide-react";
 import { EditBtnsComponent } from "../../../EditBtnsComponent";
+import toast from "react-hot-toast";
 
 export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
-
-
 	const [isEditting, setIsEditting] = useState<boolean>(false);
 	const [updateData, _, setUpdateData] = useFormData(sensors);
 
@@ -41,12 +40,28 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 	}, [updateData, sensors]);
 
 	const handleSaveUpdate = async () => {
-		await updateSensor(updateData);
-		//setUpdateData(sensorsWithoutDriver);
+		try {
+			await updateSensor(updateData); // Save the updates to the server or backend
+
+			// After saving, filter the sensors again to move updated sensors
+			const updatedSensors = updateData.map((sensor) => {
+				return sensor.driverUrl
+					? { ...sensor, driverUrl: sensor.driverUrl }
+					: sensor;
+			});
+
+			setUpdateData(updatedSensors);
+			setIsEditting(false);
+
+			toast.success("Update saved")
+		} catch (error) {
+			console.error("Error saving the update:", error);
+		}
 	};
 
 	const cancelUpdate = () => {
-		setUpdateData(updateData);
+		setUpdateData(sensors); // Reset to the original sensor data if update is canceled
+		setIsEditting(false); // Disable editing mode
 	};
 
 	return (
@@ -65,51 +80,19 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 					</h2>
 					<div className="flex flex-col gap-4">
 						<ul className="flex flex-col gap-2">
-							{updateData.some((sensor) => !sensor.driverUrl) ? (
-								updateData.filter((sensor) => !sensor.driverUrl).map((sensor) => (
-									<li
-										key={sensor.id}
-										className="flex justify-between w-full items-center"
-									>
-										<InputGroup
-											className="w-1/3"
-											orientation={
-												orientationOpts.horizontal
-											}
-											label={sensor.alias ?? sensor.serialNumber	}
-											isEditing={true}
-											value={sensor.driverUrl}
-											key={sensor.id}
-											onChange={(e) =>
-												handleUpdateSensor(
-													sensor.id,
-													e.target.value
-												)
-											}
-											placeHolder=""
-											type="url"
-											id={sensor.id}
-										/>
-									</li>
-								))
-							) : (
-								<li className="text-muted-foreground">
-									No sensors without a driver.
-								</li> 
-							)}
-						</ul>
+							{sensors.some((sensor) => !sensor.driverUrl) ? (
+								sensors
+									.filter((sensor) => !sensor.driverUrl)
+									.map((sensor) => {
+										const updateValueSensor =
+											updateData.find(
+												(x) => x.id === sensor.id
+											);
+										if (!updateValueSensor) return;
 
-						<Collapsible>
-							<CollapsibleTrigger className="text-muted-foreground flex gap-4">
-								View other sensors
-								<ChevronsUpDown />
-							</CollapsibleTrigger>
-							<CollapsibleContent>
-								<ul className="flex flex-col gap-2">
-									{updateData.some((sensor) => sensor.driverUrl) ? (
-										updateData.filter((sensor) => sensor.driverUrl).map((sensor) => (
+										return (
 											<li
-												key={sensor.id}
+												key={updateValueSensor.id}
 												className="flex justify-between w-full items-center"
 											>
 												<InputGroup
@@ -117,22 +100,96 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 													orientation={
 														orientationOpts.horizontal
 													}
-													label={sensor.alias ?? ""}
+													label={
+														updateValueSensor.alias ??
+														updateValueSensor.serialNumber
+													}
 													isEditing={true}
-													value={sensor.driverUrl}
-													key={sensor.id}
+													value={
+														updateValueSensor.driverUrl
+													}
+													key={updateValueSensor.id}
 													onChange={(e) =>
 														handleUpdateSensor(
-															sensor.id,
+															updateValueSensor.id,
 															e.target.value
 														)
 													}
 													placeHolder=""
 													type="url"
-													id={sensor.id}
+													id={updateValueSensor.id}
 												/>
 											</li>
-										))
+										);
+									})
+							) : (
+								<li className="text-muted-foreground">
+									No sensors without a driver.
+								</li>
+							)}
+						</ul>
+
+						<Collapsible className="flex flex-col gap-2">
+							<CollapsibleTrigger className="text-muted-foreground flex gap-4 ">
+								View other sensors
+								<ChevronsUpDown />
+							</CollapsibleTrigger>
+							<CollapsibleContent>
+								<ul className="flex flex-col gap-2">
+									{sensors.some(
+										(sensor) => sensor.driverUrl
+									) ? (
+										sensors
+											.filter(
+												(sensor) => sensor.driverUrl
+											)
+											.map((sensor) => {
+												const updateValueSensor =
+													updateData.find(
+														(x) =>
+															x.id === sensor.id
+													);
+												if (!updateValueSensor) return;
+
+												return (
+													<li
+														key={
+															updateValueSensor.id
+														}
+														className="flex justify-between w-full items-center"
+													>
+														<InputGroup
+															className="w-1/3"
+															orientation={
+																orientationOpts.horizontal
+															}
+															label={
+																updateValueSensor.alias ??
+																updateValueSensor.serialNumber
+															}
+															isEditing={true}
+															value={
+																updateValueSensor.driverUrl
+															}
+															key={
+																updateValueSensor.id
+															}
+															onChange={(e) =>
+																handleUpdateSensor(
+																	updateValueSensor.id,
+																	e.target
+																		.value
+																)
+															}
+															placeHolder=""
+															type="url"
+															id={
+																updateValueSensor.id
+															}
+														/>
+													</li>
+												);
+											})
 									) : (
 										<li className="text-muted-foreground">
 											No sensors with a driver.
@@ -142,13 +199,11 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 							</CollapsibleContent>
 						</Collapsible>
 
-						
-							<EditBtnsComponent
-								isEditing={isEditting}
-								saveUpdate={handleSaveUpdate}
-								cancelUpdate={cancelUpdate}
-							/>
-					
+						<EditBtnsComponent
+							isEditing={isEditting}
+							saveUpdate={handleSaveUpdate}
+							cancelUpdate={cancelUpdate}
+						/>
 					</div>
 				</div>
 			</div>
