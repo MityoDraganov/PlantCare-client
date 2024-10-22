@@ -1,4 +1,4 @@
-import { Pin } from "lucide-react";
+import { PaintbrushVertical, Pin } from "lucide-react";
 import { Card, CardContent, CardTitle } from "../../../../components/ui/card";
 import { useContext } from "react";
 import { WaterTankCard } from "../../../../components/PotCards/cards/WaterTankCard";
@@ -16,6 +16,13 @@ import {
 	DialogTrigger,
 } from "../../../../components/ui/dialog";
 import { CropPots, layoutOptions } from "../../pages/CropPots";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "../../../../components/ui/tooltip";
+import { PinLayoutDesignDialog } from "../../../../components/dialogs/pinLayoutDesignDialog";
 
 export const PinnedPot = () => {
 	const { cropPots, updatePotDataHandler } = useContext(PotContext);
@@ -25,24 +32,23 @@ export const PinnedPot = () => {
 		? cropPots.filter((pot) => !pot.isPinned)
 		: [];
 
-		const pinPotHandler = async (potId: number) => {
-			const pot = cropPots?.find((x) => x.id === potId);
-			if (!pot) {
-				return;
-			}
-			await updatePot(potId, { ...pot, isPinned: true });
-			updatePotDataHandler({ ...pot, isPinned: true });
-		};
-		
-		const unpinPotHandler = async (potId: number) => {
-			const pot = cropPots?.find((x) => x.id === potId);
-			if (!pot) {
-				return;
-			}
-			await updatePot(potId, { ...pot, isPinned: false });
-			updatePotDataHandler({ ...pot, isPinned: false });
-		};
-		
+	const pinPotHandler = async (potId: number) => {
+		const pot = cropPots?.find((x) => x.id === potId);
+		if (!pot) {
+			return;
+		}
+		await updatePot(potId, { ...pot, isPinned: true });
+		updatePotDataHandler({ ...pot, isPinned: true });
+	};
+
+	const unpinPotHandler = async (potId: number) => {
+		const pot = cropPots?.find((x) => x.id === potId);
+		if (!pot) {
+			return;
+		}
+		await updatePot(potId, { ...pot, isPinned: false });
+		updatePotDataHandler({ ...pot, isPinned: false });
+	};
 
 	return (
 		<div className="flex flex-col">
@@ -50,10 +56,37 @@ export const PinnedPot = () => {
 				<Card className="w-full lg:h-1/4 p-2 pb-4 flex flex-col gap-4">
 					<CardTitle className="pl-6 flex justify-between w-full pr-1 pt-2">
 						Pinned Pot
-						<Pin
-							className="fill-[#F9E400] hover:cursor-pointer"
-							onClick={() => unpinPotHandler(x.id)}
-						/>
+						<div className="flex gap-2">
+							<TooltipProvider>
+								<Dialog>
+									<DialogTrigger>
+										<Tooltip>
+											<TooltipTrigger>
+												<PaintbrushVertical className="hover:rotate-12 duration-200" />
+											</TooltipTrigger>
+											<TooltipContent>
+												<p>Design pinned layout</p>
+											</TooltipContent>
+										</Tooltip>
+									</DialogTrigger>
+									<PinLayoutDesignDialog />
+								</Dialog>
+
+								<Tooltip>
+									<TooltipTrigger>
+										<Pin
+											className="fill-[#F9E400] hover:cursor-pointer hover:rotate-12 duration-200"
+											onClick={() =>
+												unpinPotHandler(x.id)
+											}
+										/>
+									</TooltipTrigger>
+									<TooltipContent>
+										<p>Unpin pot</p>
+									</TooltipContent>
+								</Tooltip>
+							</TooltipProvider>
+						</div>
 					</CardTitle>
 
 					<CardContent className="flex flex-col lg:flex-row w-full lg:h-3/4 gap-2 justify-between">
