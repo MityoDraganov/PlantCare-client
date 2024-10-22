@@ -23,5 +23,5 @@ export interface CropPotResponseDto {
 export interface CropPotRequestDto {
 	alias?: string;
 	isPinned?: boolean;
-	measurementInterval: string;
+	measurementInterval?: string;
 }

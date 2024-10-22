@@ -32,16 +32,21 @@ interface PotProviderProps {
 	children: ReactNode;
 }
 // In PotProvider (inside PotContext.tsx)
-export const PotProvider: FunctionComponent<PotProviderProps> = ({ children }) => {
+export const PotProvider: FunctionComponent<PotProviderProps> = ({
+	children,
+}) => {
 	const authContext = useContext(AuthContext);
 	const token = authContext?.token; // Use optional chaining to safely access token
 
 	const [cropPots, setCropPots] = useState<CropPotResponseDto[] | null>(null);
-	const [selectedPot, setSelectedPot] = useState<CropPotResponseDto | null>(null);
+	const [selectedPot, setSelectedPot] = useState<CropPotResponseDto | null>(
+		null
+	);
 
 	useEffect(() => {
 		(async () => {
-			if (token) {  // Ensure token exists before making API calls
+			if (token) {
+				// Ensure token exists before making API calls
 				const response = await getAllPots();
 				setCropPots(response);
 			}
@@ -51,7 +56,9 @@ export const PotProvider: FunctionComponent<PotProviderProps> = ({ children }) =
 	useEffect(() => {
 		if (cropPots && selectedPot) {
 			// Find the updated version of the selected pot
-			const updatedSelectedPot = cropPots.find(pot => pot.id === selectedPot.id);
+			const updatedSelectedPot = cropPots.find(
+				(pot) => pot.id === selectedPot.id
+			);
 
 			// Only update if there's an actual change
 			if (updatedSelectedPot && updatedSelectedPot !== selectedPot) {
@@ -61,26 +68,22 @@ export const PotProvider: FunctionComponent<PotProviderProps> = ({ children }) =
 	}, [cropPots, selectedPot]);
 
 	const updatePotDataHandler = (updatedPotData: CropPotResponseDto) => {
-		console.log(cropPots);
-		console.log(updatedPotData);
-		
-		
-		if (!cropPots){
+		if (!cropPots) {
 			return;
 		}
-		const updatedPotIndex = cropPots?.findIndex(
-			(pot) => pot.id === updatedPotData.id
-		);
-
-		if (updatedPotIndex !== undefined && updatedPotIndex !== -1) {
+	
+		// Use findIndex to find the pot by its id
+		const updatedPotIndex = cropPots.findIndex((pot) => pot.id === updatedPotData.id);
+		
+		if (updatedPotIndex !== -1) {
 			const updatedCropPots = [...cropPots];
 			updatedCropPots[updatedPotIndex] = {
 				...updatedCropPots[updatedPotIndex],
 				...updatedPotData,
 			};
-
+	
 			setCropPots(updatedCropPots);
-
+	
 			if (selectedPot?.id === updatedPotData.id) {
 				setSelectedPot({
 					...selectedPot,
@@ -88,11 +91,17 @@ export const PotProvider: FunctionComponent<PotProviderProps> = ({ children }) =
 				});
 			}
 		}
-	}
-
+	};
+	
 	return (
 		<PotContext.Provider
-			value={{ cropPots, setCropPots, selectedPot, setSelectedPot, updatePotDataHandler }}
+			value={{
+				cropPots,
+				setCropPots,
+				selectedPot,
+				setSelectedPot,
+				updatePotDataHandler,
+			}}
 		>
 			{children}
 		</PotContext.Provider>

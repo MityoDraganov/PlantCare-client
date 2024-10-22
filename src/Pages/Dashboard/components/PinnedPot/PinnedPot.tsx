@@ -18,21 +18,31 @@ import {
 import { CropPots, layoutOptions } from "../../pages/CropPots";
 
 export const PinnedPot = () => {
-	const { cropPots } = useContext(PotContext);
+	const { cropPots, updatePotDataHandler } = useContext(PotContext);
 
 	const pinnedPots = cropPots ? cropPots.filter((pot) => pot.isPinned) : [];
 	const nonPinnedPots = cropPots
 		? cropPots.filter((pot) => !pot.isPinned)
 		: [];
 
-		const unpinPotHandler = async (potId: number) => {
-			await updatePot(potId, { isPinned: false });
+		const pinPotHandler = async (potId: number) => {
+			const pot = cropPots?.find((x) => x.id === potId);
+			if (!pot) {
+				return;
+			}
+			await updatePot(potId, { ...pot, isPinned: true });
+			updatePotDataHandler({ ...pot, isPinned: true });
 		};
 		
-
-	const pinPotHandler = async (potId: number) => {
-		await updatePot(potId, { isPinned: true });
-	};
+		const unpinPotHandler = async (potId: number) => {
+			const pot = cropPots?.find((x) => x.id === potId);
+			if (!pot) {
+				return;
+			}
+			await updatePot(potId, { ...pot, isPinned: false });
+			updatePotDataHandler({ ...pot, isPinned: false });
+		};
+		
 
 	return (
 		<div className="flex flex-col">

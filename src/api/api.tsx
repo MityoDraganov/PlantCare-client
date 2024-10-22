@@ -39,6 +39,9 @@ const request = async (
 		const responseData = await res.json();
 
 		if (!res.ok) {
+			if(res.status === 401){
+				localStorage.removeItem("Authorization")
+			}
 			if (Array.isArray(responseData.error)) {
 				toast.error(responseData.error.toString());
 			}
