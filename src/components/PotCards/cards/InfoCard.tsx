@@ -20,7 +20,7 @@ export const InfoCard = ({
 	return (
 		<Card
 			className={cn(
-				`w-full flex flex-col items-center gap-4 pt-2 ${!mainContent ? "py-10" : ""}`,
+				`w-full h-full flex flex-col items-center gap-4 pt-2 ${!mainContent ? "py-10" : ""}`,
 				className
 			)}
 		>
