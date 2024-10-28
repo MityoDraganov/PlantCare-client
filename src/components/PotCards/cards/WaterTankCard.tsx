@@ -1,7 +1,11 @@
 import { Beaker } from "lucide-react";
-import { InfoCard } from "./InfoCard";
+import { InfoCard, InfoCardProps } from "./InfoCard";
 
-export const WaterTankCard = ({ percentageFull }: { percentageFull?: number }) => {
+interface WaterTankCardProps extends InfoCardProps {
+  percentageFull?: number;
+}
+
+export const WaterTankCard = ({ percentageFull, ...props }: WaterTankCardProps) => {
   return (  
     <InfoCard
       icon={<Beaker />}
@@ -13,6 +17,7 @@ export const WaterTankCard = ({ percentageFull }: { percentageFull?: number }) =
         </span>
       }
       subContent="capacity: 1000L"
+      {...props}
     />
   );
 };

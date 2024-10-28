@@ -2,12 +2,13 @@ import { ReactNode } from "react";
 import { Card, CardContent, CardTitle } from "../../../components/ui/card";
 import { cn } from "../../../lib/utils";
 
-interface InfoCardProps {
+export interface InfoCardProps {
 	icon?: ReactNode;
 	title?: string;
 	mainContent?: ReactNode;
 	subContent?: ReactNode;
 	className?: string;
+	asChild?: boolean;
 }
 
 export const InfoCard = ({
@@ -16,11 +17,14 @@ export const InfoCard = ({
 	mainContent,
 	subContent,
 	className,
+	asChild = false,
 }: InfoCardProps) => {
 	return (
 		<Card
 			className={cn(
-				`w-full h-full flex flex-col items-center gap-4 pt-2 ${!mainContent ? "py-10" : ""}`,
+				`w-full h-full flex flex-col items-center gap-4 pt-2 ${
+					!mainContent ? "py-10" : ""
+				} ${asChild ? "border-none" : ""}`,
 				className
 			)}
 		>

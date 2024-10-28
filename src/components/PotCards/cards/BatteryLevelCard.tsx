@@ -1,7 +1,11 @@
 import { BatteryMedium } from "lucide-react";
-import { InfoCard } from "./InfoCard";
+import { InfoCard, InfoCardProps } from "./InfoCard";
 
-export const BatteryLevelCard = ({ percentageCharged }: { percentageCharged?: number }) => {
+interface BatteryLevelCardProps extends InfoCardProps {
+	percentageCharged?: number;
+}
+
+export const BatteryLevelCard = ({ percentageCharged, ...props }: BatteryLevelCardProps) => {
   return (  
     <InfoCard
       icon={<BatteryMedium className="-rotate-90"/>}
@@ -12,6 +16,7 @@ export const BatteryLevelCard = ({ percentageCharged }: { percentageCharged?: nu
           <span>%</span>
         </span>
       }
+      {...props}
     />
   );
 };

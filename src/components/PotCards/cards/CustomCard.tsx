@@ -1,12 +1,13 @@
 
 import { Hammer } from "lucide-react";
-import { InfoCard } from "./InfoCard";
+import { InfoCard, InfoCardProps } from "./InfoCard";
 
-export const CustomCard = () => {
+export const CustomCard = ({...props} : InfoCardProps) => {
   return (  
     <InfoCard
       icon={<Hammer />}
       title="Custom card"
+      {...props}
     />
   );
 };

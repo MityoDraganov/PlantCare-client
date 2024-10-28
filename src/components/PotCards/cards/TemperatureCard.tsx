@@ -1,5 +1,5 @@
 import { Thermometer } from "lucide-react";
-import { InfoCard } from "./InfoCard";
+import { InfoCard, InfoCardProps } from "./InfoCard";
 import {
 	Select,
 	SelectContent,
@@ -9,11 +9,11 @@ import {
 } from "../../../components/ui/select";
 import { useState } from "react";
 
-export const TemperatureCard = ({
-	potTemperature,
-}: {
+interface TemperatureCardProps extends InfoCardProps {
 	potTemperature?: number;
-}) => {
+}
+
+export const TemperatureCard = ({ potTemperature, ...props }: TemperatureCardProps) => {
 	const [selectedMetricSystem, setSelectedMetricSystem] = useState<
 		"celsius" | "fahrenheit"
 	>("celsius");
@@ -58,6 +58,7 @@ export const TemperatureCard = ({
 					</Select>
 				</span>
 			}
+      {...props}
 		/>
 	);
 };

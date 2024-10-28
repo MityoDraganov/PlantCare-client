@@ -11,6 +11,7 @@ import { PotGalleryCard } from "../PotCards/cards/PotGalleryCard";
 import { TemperatureCard } from "../PotCards/cards/TemperatureCard";
 import { WaterTankCard } from "../PotCards/cards/WaterTankCard";
 import { DialogContent } from "../ui/dialog";
+import { Button } from "../ui/button";
 
 // Define a type for card components
 interface CardType {
@@ -90,6 +91,31 @@ export const PinLayoutDesignDialog = () => {
 		);
 	};
 
+	// Create buttons on the edges for resizing
+	const renderResizeButtons = (index: number, card: CardType) => {
+		return (
+			<>
+				<div className="absolute right-0 top-1/2 transform -translate-y-1/2  opacity-0 group-hover:opacity-100 transition-opacity flex flex-col gap-2">
+					<ResizeBtnsComponent
+						card={card}
+						index={index}
+						updateCardSize={updateCardSize}
+                        type="width"
+					/>
+				</div>
+
+				<div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 h-fit opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+					<ResizeBtnsComponent
+						card={card}
+						index={index}
+						updateCardSize={updateCardSize}
+                         type="height"
+					/>
+				</div>
+			</>
+		);
+	};
+
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
 			<DialogContent className="w-[95%] h-[95%] grid grid-cols-4">
@@ -116,7 +142,10 @@ export const PinLayoutDesignDialog = () => {
 												{...provided.dragHandleProps}
 												className="border p-2 rounded-lg"
 											>
-												<card.component />
+												<card.component
+													asChild={true}
+												/>{" "}
+												{/* Pass asChild={true} */}
 											</div>
 										)}
 									</Draggable>
@@ -148,7 +177,7 @@ export const PinLayoutDesignDialog = () => {
 													ref={provided.innerRef}
 													{...provided.draggableProps}
 													{...provided.dragHandleProps}
-													className="border p-2 rounded-lg"
+													className="border p-2 rounded-lg relative group"
 													style={{
 														gridColumnEnd:
 															card.width === 3
@@ -161,46 +190,14 @@ export const PinLayoutDesignDialog = () => {
 																: "auto",
 													}}
 												>
-													<card.component />
-													{/* Buttons to enlarge the card */}
-													<div className="flex mt-2">
-														<button
-															className="border p-1 m-1"
-															onClick={() =>
-																updateCardSize(
-																	index,
-																	1,
-																	1
-																)
-															}
-														>
-															1x1
-														</button>
-														<button
-															className="border p-1 m-1"
-															onClick={() =>
-																updateCardSize(
-																	index,
-																	2,
-																	2
-																)
-															}
-														>
-															2x2
-														</button>
-														<button
-															className="border p-1 m-1"
-															onClick={() =>
-																updateCardSize(
-																	index,
-																	3,
-																	3
-																)
-															}
-														>
-															3x3
-														</button>
-													</div>
+													<card.component
+														asChild={true}
+													/>
+
+													{renderResizeButtons(
+														index,
+														card
+													)}
 												</div>
 											)}
 										</Draggable>
@@ -218,5 +215,58 @@ export const PinLayoutDesignDialog = () => {
 				</div>
 			</DialogContent>
 		</DragDropContext>
+	);
+};
+
+const ResizeBtnsComponent = ({
+	card,
+	index,
+	updateCardSize,
+    type
+}: {
+	card: CardType;
+	index: number;
+	updateCardSize: (
+		index: number,
+		newWidth: number,
+		newHeight: number
+	) => void;
+    type: "width" | "height"
+}) => {
+	return (
+		<>
+			{((type === "width" && card.width < 3) || (type === "height" && card.height < 3)) && (
+				<Button
+					className="w-fit"
+					variant="outline"
+					onClick={() =>{
+						if(type === "height") {
+                            updateCardSize(index, card.width, card.height + 1)
+                            return;
+                        }
+                        updateCardSize(index, card.width + 1, card.height)
+					}
+                }
+				>
+					+
+				</Button>
+			)}
+			{((type === "width" && card.width > 1) || (type === "height" && card.height > 1)) && (
+				<Button
+					className="w-fit"
+					variant="outline"
+					onClick={() =>{
+						if(type === "height") {
+                            updateCardSize(index, card.width, card.height - 1)
+                            return;
+                        }
+                        updateCardSize(index, card.width - 1, card.height)
+					}
+                }
+				>
+					-
+				</Button>
+			)}
+		</>
 	);
 };
