@@ -5,13 +5,13 @@ import {
 	DragDropContext,
 	DropResult,
 } from "@hello-pangea/dnd";
-import { BatteryLevelCard } from "../PotCards/cards/BatteryLevelCard";
 import { CustomCard } from "../PotCards/cards/CustomCard";
 import { PotGalleryCard } from "../PotCards/cards/PotGalleryCard";
 import { TemperatureCard } from "../PotCards/cards/TemperatureCard";
 import { WaterTankCard } from "../PotCards/cards/WaterTankCard";
 import { DialogContent } from "../ui/dialog";
 import { Button } from "../ui/button";
+import { CropPotResponseDto } from "../../dtos/CropPot.dto";
 
 // Define a type for card components
 interface CardType {
@@ -25,17 +25,11 @@ interface CardType {
 const availableCards: CardType[] = [
 	{ id: "WaterTankCard", component: WaterTankCard, width: 1, height: 1 },
 	{ id: "TemperatureCard", component: TemperatureCard, width: 1, height: 1 },
-	{
-		id: "BatteryLevelCard",
-		component: BatteryLevelCard,
-		width: 1,
-		height: 1,
-	},
 	{ id: "PotGalleryCard", component: PotGalleryCard, width: 1, height: 1 },
 	{ id: "CustomCard", component: CustomCard, width: 1, height: 1 },
 ];
 
-export const PinLayoutDesignDialog = () => {
+export const PinLayoutDesignDialog = ({ pot }: { pot: CropPotResponseDto }) => {
 	const [droppedCards, setDroppedCards] = useState<CardType[]>([]);
 
 	// Handle what happens when an item is dragged and dropped
@@ -69,7 +63,6 @@ export const PinLayoutDesignDialog = () => {
 			source.droppableId === "dropZone" &&
 			destination.droppableId === "cardsList"
 		) {
-			const card = droppedCards[source.index];
 			setDroppedCards((prev) =>
 				prev.filter((_, i) => i !== source.index)
 			);
@@ -100,7 +93,7 @@ export const PinLayoutDesignDialog = () => {
 						card={card}
 						index={index}
 						updateCardSize={updateCardSize}
-                        type="width"
+						type="width"
 					/>
 				</div>
 
@@ -109,7 +102,7 @@ export const PinLayoutDesignDialog = () => {
 						card={card}
 						index={index}
 						updateCardSize={updateCardSize}
-                         type="height"
+						type="height"
 					/>
 				</div>
 			</>
@@ -119,7 +112,6 @@ export const PinLayoutDesignDialog = () => {
 	return (
 		<DragDropContext onDragEnd={onDragEnd}>
 			<DialogContent className="w-[95%] h-[95%] grid grid-cols-4">
-				{/* Left panel: Draggable components */}
 				<Droppable droppableId="cardsList" direction="vertical">
 					{(provided) => (
 						<div
@@ -192,6 +184,8 @@ export const PinLayoutDesignDialog = () => {
 												>
 													<card.component
 														asChild={true}
+														isInDesignerMode={true}
+                                                        potSensors={pot.sensors}
 													/>
 
 													{renderResizeButtons(
@@ -222,7 +216,7 @@ const ResizeBtnsComponent = ({
 	card,
 	index,
 	updateCardSize,
-    type
+	type,
 }: {
 	card: CardType;
 	index: number;
@@ -231,38 +225,38 @@ const ResizeBtnsComponent = ({
 		newWidth: number,
 		newHeight: number
 	) => void;
-    type: "width" | "height"
+	type: "width" | "height";
 }) => {
 	return (
 		<>
-			{((type === "width" && card.width < 3) || (type === "height" && card.height < 3)) && (
+			{((type === "width" && card.width < 3) ||
+				(type === "height" && card.height < 3)) && (
 				<Button
 					className="w-fit"
 					variant="outline"
-					onClick={() =>{
-						if(type === "height") {
-                            updateCardSize(index, card.width, card.height + 1)
-                            return;
-                        }
-                        updateCardSize(index, card.width + 1, card.height)
-					}
-                }
+					onClick={() => {
+						if (type === "height") {
+							updateCardSize(index, card.width, card.height + 1);
+							return;
+						}
+						updateCardSize(index, card.width + 1, card.height);
+					}}
 				>
 					+
 				</Button>
 			)}
-			{((type === "width" && card.width > 1) || (type === "height" && card.height > 1)) && (
+			{((type === "width" && card.width > 1) ||
+				(type === "height" && card.height > 1)) && (
 				<Button
 					className="w-fit"
 					variant="outline"
-					onClick={() =>{
-						if(type === "height") {
-                            updateCardSize(index, card.width, card.height - 1)
-                            return;
-                        }
-                        updateCardSize(index, card.width - 1, card.height)
-					}
-                }
+					onClick={() => {
+						if (type === "height") {
+							updateCardSize(index, card.width, card.height - 1);
+							return;
+						}
+						updateCardSize(index, card.width - 1, card.height);
+					}}
 				>
 					-
 				</Button>

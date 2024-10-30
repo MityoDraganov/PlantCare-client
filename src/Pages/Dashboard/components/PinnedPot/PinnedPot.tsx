@@ -69,7 +69,7 @@ export const PinnedPot = () => {
 											</TooltipContent>
 										</Tooltip>
 									</DialogTrigger>
-									<PinLayoutDesignDialog />
+									<PinLayoutDesignDialog pot={x}/>
 								</Dialog>
 
 								<Tooltip>

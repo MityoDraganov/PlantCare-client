@@ -13,7 +13,10 @@ interface TemperatureCardProps extends InfoCardProps {
 	potTemperature?: number;
 }
 
-export const TemperatureCard = ({ potTemperature, ...props }: TemperatureCardProps) => {
+export const TemperatureCard = ({
+	potTemperature,
+	...props
+}: TemperatureCardProps) => {
 	const [selectedMetricSystem, setSelectedMetricSystem] = useState<
 		"celsius" | "fahrenheit"
 	>("celsius");
@@ -58,7 +61,7 @@ export const TemperatureCard = ({ potTemperature, ...props }: TemperatureCardPro
 					</Select>
 				</span>
 			}
-      {...props}
+			{...props}
 		/>
 	);
 };
