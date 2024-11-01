@@ -9,6 +9,11 @@ export const Footer = () => {
 			</p>
 			<nav>
 				<ul className="flex space-x-4">
+				<li>
+						<Link to="/marketplace" className="hover:underline">
+							Marketplace
+						</Link>
+					</li>
 					<li>
 						<Link to="/privacy-policy" className="hover:underline">
 							Privacy Policy

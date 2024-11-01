@@ -1,5 +1,6 @@
 import { ControlDto } from "../dtos/controls.dto";
 import { CropPotRequestDto } from "../dtos/CropPot.dto";
+import { UploadDriverDto } from "../dtos/driver.dto";
 import { SensorDto } from "../dtos/sensors.dto";
 import { WebhookDto } from "../dtos/webhooks.dto";
 import * as api from "./api";
@@ -19,6 +20,8 @@ const endPoints = {
 		controlId ? `controls/${controlId}` : "controls",
 	sensors: (sensorId?: number) =>
 		sensorId ? `sensors/${sensorId}` : "sensors",
+
+	drivers: () => "drivers"
 };
 
 // --INBOX
@@ -71,3 +74,12 @@ export const updateSensor = (
 		updateData
 	);
 };
+
+// --DRIVERS--
+export const getAllDrivers = () => {
+	return api.get(endPoints.drivers())
+}
+
+export const uploadDriver = (driverData: UploadDriverDto) => {
+	return api.post(endPoints.drivers(), driverData, "formData")
+}

@@ -13,6 +13,7 @@ import { Spinner } from "./components/spinner";
 import useWebSocket from "./hooks/useSocket";
 import { ThemeProvider } from "./components/theme-provider";
 import { Footer } from "./components/Footer"; // Import the Footer
+import { Marketplace } from "./Pages/Marketplace/Marketplace";
 
 function App() {
 	const token = localStorage.getItem("clerkFetchedToken");
@@ -34,6 +35,8 @@ function App() {
 							<Route index element={<Dashboard />} />
 							{/* <Route path="pots" element={<CropPots />} /> */}
 						</Route>
+
+						<Route path="/marketplace" element={<Marketplace />} />
 					</Routes>
 				</Suspense>
 

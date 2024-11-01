@@ -5,7 +5,7 @@ import { Suspense } from "react";
 export const HomePage = () => {
 	return (
 		<div className="flex flex-col items-center  gap-12 md:gap-12 lg:gap-6 h-full w-full overflow-scroll">
-			<section className="sticky top-0 bg-white/80 z-10 flex flex-col items-center gap-6 py-3 w-full border-b shadow-md backdrop-blur-sm">
+			<section className="sticky top-0 bg-primary-foreground/80 z-10 flex flex-col items-center gap-6 py-3 w-full border-b shadow-md backdrop-blur-sm">
 				<div className="text-center">
 					<h2 className="text-4xl font-mono font-semibold">
 						Plants Care

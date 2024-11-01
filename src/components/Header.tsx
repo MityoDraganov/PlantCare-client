@@ -18,7 +18,7 @@ export const Header = () => {
 				<div className="h-full">
 					<img src="/icons/icon_transparent.png" className="h-full" />
 				</div>
-				<h2 className="text-2xl">Plants-Care</h2>
+				<h2 className="text-2xl">PlantsCare</h2>
 			</Link>
 
 			<div className="flex gap-4 items-center">
