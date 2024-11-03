@@ -21,7 +21,8 @@ const endPoints = {
 	sensors: (sensorId?: number) =>
 		sensorId ? `sensors/${sensorId}` : "sensors",
 
-	drivers: () => "drivers"
+	drivers: (driverId?: number) =>
+		driverId ? `drivers/${driverId}` : "drivers",
 };
 
 // --INBOX
@@ -77,9 +78,17 @@ export const updateSensor = (
 
 // --DRIVERS--
 export const getAllDrivers = () => {
-	return api.get(endPoints.drivers())
-}
+	return api.get(endPoints.drivers());
+};
 
 export const uploadDriver = (driverData: UploadDriverDto) => {
-	return api.post(endPoints.drivers(), driverData, "formData")
-}
+	return api.post(endPoints.drivers(), driverData, "formData");
+};
+
+export const updateDriver = (driverData: UploadDriverDto, driverId: number) => {
+	return api.put(endPoints.drivers(driverId), driverData, "formData");
+};
+
+export const deleteDriver = (driverId: number) => {
+	return api.del(endPoints.drivers(driverId));
+};

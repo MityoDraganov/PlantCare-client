@@ -3,13 +3,13 @@ import { TextAreaGroup } from "../../../../components/TextAreaGroup";
 import { Button } from "../../../../components/ui/button";
 import useFormData from "../../../../hooks/useForm";
 import { WebhookDto } from "../../../../dtos/webhooks.dto";
-import useLoading from "../../../../hooks/useLoading";
 import { createWebhook } from "../../../../api/requests";
 import { SensorDto } from "../../../../dtos/sensors.dto";
 import usePotStateUpdate from "../../../../hooks/usePotStateUpdate";
 import { Checkbox } from "../../../ui/checkbox";
 import { useContext } from "react";
 import { PotContext } from "../../../../contexts/PotContext";
+import { useLoading } from "../../../../contexts/LoadingContext";
 
 export const NewEndpoint = ({ returnTab }: { returnTab: () => void }) => {
 	const [webHookData, setWebHookData] = useFormData<WebhookDto>({

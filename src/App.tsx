@@ -33,7 +33,7 @@ function App() {
 						/>
 						<Route path="/dashboard" element={<Layout />}>
 							<Route index element={<Dashboard />} />
-							{/* <Route path="pots" element={<CropPots />} /> */}
+							
 						</Route>
 
 						<Route path="/marketplace" element={<Marketplace />} />

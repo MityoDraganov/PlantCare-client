@@ -13,7 +13,7 @@ import { ModeToggle } from "./theme-switch";
 export const Header = () => {
 	
 	return (
-		<header className="flex justify-between h-[7dvh] overflow-hidden border-b shadow-sm py-1 px-2">
+		<header className="flex justify-between h-[7dvh] overflow-hidden border-b shadow-sm py-1 px-2 z-50">
 			<Link to="/" className="h-full flex gap-1 items-center">
 				<div className="h-full">
 					<img src="/icons/icon_transparent.png" className="h-full" />

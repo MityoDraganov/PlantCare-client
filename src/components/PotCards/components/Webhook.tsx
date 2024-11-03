@@ -22,10 +22,11 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "../../../components/ui/alert-dialog";
-import useLoading from "../../../hooks/useLoading";
+
 import usePotStateUpdate from "../../../hooks/usePotStateUpdate";
 import { useContext, useState } from "react";
 import { PotContext } from "../../../contexts/PotContext";
+import { useLoading } from "../../../contexts/LoadingContext";
 
 export const Webhook = ({
 	webhook,

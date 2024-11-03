@@ -51,9 +51,9 @@ export const PinnedPot = () => {
 	};
 
 	return (
-		<div className="flex flex-col gap-4">
+		<div className="flex flex-col gap-4 h-full overflow-y-auto">
 			{pinnedPots.map((x) => (
-				<Card className="w-full lg:h-1/4 p-2 pb-4 flex flex-col gap-4">
+				<Card className="w-full lg:h-1/5 p-2 pb-4 flex flex-col gap-4">
 					<CardTitle className="pl-6 flex justify-between w-full pr-1 pt-2">
 						Pinned Pot
 						<div className="flex gap-2">

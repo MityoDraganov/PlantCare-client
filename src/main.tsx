@@ -7,17 +7,19 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { AuthProvider } from "./contexts/AuthContext";
 import { InboxProvider } from "./contexts/InboxContext";
 import { PotProvider } from "./contexts/PotContext";
+import { LoadingProvider } from "./contexts/LoadingContext";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-
 	<BrowserRouter>
 		<ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
 			<AuthProvider>
 				<PotProvider>
 					<InboxProvider>
-						<App />
+						<LoadingProvider>
+							<App />
+						</LoadingProvider>
 					</InboxProvider>
 				</PotProvider>
 			</AuthProvider>

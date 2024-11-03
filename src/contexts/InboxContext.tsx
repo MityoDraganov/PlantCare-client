@@ -4,7 +4,6 @@ import {
 	FunctionComponent,
 	ReactNode,
 	SetStateAction,
-	useEffect,
 	useState,
 } from "react";
 import { Message } from "../Interfaces/websocket.interface";

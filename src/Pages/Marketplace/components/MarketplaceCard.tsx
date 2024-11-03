@@ -9,16 +9,18 @@ import {
 import { Link } from "react-router-dom";
 import { Button } from "../../../components/ui/button";
 import { DriverDto } from "../../../dtos/driver.dto";
+import { UploadDialog } from "./UploadDialog";
 
 export const MarketplaceCard = (driverDto: DriverDto) => {
+	const displayName = driverDto.user.username || driverDto.user.email;
 	return (
-		<Card className="w-[16%]">
+		<Card className="w-[16%] h-[60%] flex flex-col justify-between">
 			<CardTitle className="text-sm flex flex-col p-2">
 				<img
 					className="border rounded-lg w-[95%] mx-auto"
 					src={driverDto.marketplaceBannerUrl}
 				/>
-				<p className="pl-2 font-medium">Temperature sensor driver</p>
+				<p className="pl-2 font-medium mt-2">{driverDto.alias}</p>
 			</CardTitle>
 			<CardContent className="p-2 text-left w-full flex flex-col">
 				<div className="flex justify-between items-center">
@@ -33,16 +35,34 @@ export const MarketplaceCard = (driverDto: DriverDto) => {
 						</Tooltip>
 					</TooltipProvider>
 
-					<Link to={driverDto.downloadUrl}>
-						<Button
-							className="flex gap-2 mr-0 ml-auto text-sm"
-							size="sm"
-						>
-							Visit <Github />
-						</Button>
-					</Link>
+					{driverDto.isUploader ? (
+						<UploadDialog
+							initialData={{
+								alias: driverDto.alias,
+								downloadUrl: driverDto.downloadUrl,
+								marketplaceBanner: null,
+							}}
+							driverId={driverDto.id}
+						/>
+					) : (
+						<Link to={driverDto.downloadUrl}>
+							<Button
+								className="flex gap-2 mr-0 ml-auto text-sm"
+								size="sm"
+							>
+								Visit <Github />
+							</Button>
+						</Link>
+					)}
 				</div>
-                <p className="text-xs">Made by:</p>
+				<p className="text-xs">
+					<span className="font-medium">Made by:</span>{" "}
+					{driverDto.isUploader ? (
+						<span className="uppercase font-bold">you</span>
+					) : (
+						<span>{displayName}</span>
+					)}
+				</p>
 			</CardContent>
 		</Card>
 	);

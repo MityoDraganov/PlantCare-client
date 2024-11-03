@@ -25,34 +25,31 @@ const request = async (
 
 	const token = localStorage.getItem("clerkFetchedToken");
 
+	// Attach authorization header if token exists
 	if (token) {
 		options.headers["Authorization"] = `Bearer ${token}`;
 	}
+
+	// Setup request body depending on content type
 	if (type === "formData") {
 		const formData = new FormData();
-
 		for (const key in data) {
 			if (
 				Array.isArray(data[key]) &&
 				data[key].every((x: any) => x instanceof File)
 			) {
-				// If the value is an array of Files, append each file
-				data[key].forEach((file: File) => {
-					formData.append(key, file);
-				});
+				data[key].forEach((file: File) => formData.append(key, file));
 			} else if (
 				typeof data[key] === "object" &&
 				!(data[key] instanceof File)
 			) {
-				Object.keys(data[key]).map((x) => {
-					formData.append(x, data[key][x]);
-				});
+				Object.keys(data[key]).forEach((x) =>
+					formData.append(x, data[key][x])
+				);
 			} else {
-				// Otherwise, append as usual
 				formData.append(key, data[key]);
 			}
 		}
-
 		options.body = formData;
 	} else {
 		options.headers["content-type"] = "application/json";
@@ -61,29 +58,37 @@ const request = async (
 
 	try {
 		const res = await fetch(host + url, options);
-		if (res.status == 204) {
-			return;
-		}
+
+		// Check for no content status (204) and return if successful
+		if (res.status === 204) return;
+
 		const responseData = await res.json();
 
+		// Handle HTTP errors by displaying toast and returning null
 		if (!res.ok) {
+			const errorMessage = Array.isArray(responseData.error)
+				? responseData.error.join(", ")
+				: responseData.error || "An unexpected error occurred.";
+			toast.error(errorMessage);
+
+			// Clear authorization token on 401 status (unauthorized)
 			if (res.status === 401) {
 				localStorage.removeItem("Authorization");
-				return;
 			}
-			if (Array.isArray(responseData.error)) {
-				toast.error(responseData.error.toString());
-			}
-			toast.error(responseData.error);
-			return;
+			return null; // Stop further execution by returning null
 		}
 
+		// Return parsed response data if successful
 		return responseData;
-	} catch (error: any) {
-		toast.error(error.error);
+	} catch (error) {
+		// Handle unexpected network or parsing errors
+		console.error("Request failed", error);
+		toast.error("Network error or invalid response format.");
+		return null; // Stop further execution by returning null
 	}
 };
 
+// Export HTTP methods as bound instances of `request`
 const get = request.bind(null, "GET");
 const post = request.bind(null, "POST");
 const put = request.bind(null, "PUT");
