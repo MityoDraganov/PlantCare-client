@@ -113,7 +113,7 @@ export const Chart = ({ sensors }: ChartProps) => {
 							<SelectTrigger className="w-full md:w-fit flex items-center text-left">
 								<SelectValue
 									placeholder={
-										<p className="flex gap-2 p-1">
+										<p className="flex gap-2 p-1 items-center">
 											<span className="flex gap-2 items-baseline">
 												{chartConfig?.label}
 											</span>
@@ -124,13 +124,7 @@ export const Chart = ({ sensors }: ChartProps) => {
 									}
 								/>
 
-								{selectedSensor && (
-									<span className="text-sm font-normal pl-4">
-										{renderStatusWithDot(
-											selectedSensor.IsAttached
-										)}
-									</span>
-								)}
+							
 							</SelectTrigger>
 						</div>
 						<SelectContent>

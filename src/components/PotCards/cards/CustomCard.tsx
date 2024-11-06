@@ -13,15 +13,17 @@ interface LucideIconPickerProps extends InfoCardProps{
 	onSelectIcon: (iconName: IconName) => void;
 	selectedIcon: IconName;
 }
-
 export const CustomCard = ({
 	onSelectIcon,
-	selectedIcon,
-    isInDesignerMode,
-    ...props
+	selectedIcon: initialSelectedIcon, // rename the prop for clarity
+	isInDesignerMode,
+	...props
 }: LucideIconPickerProps) => {
 	const [search, setSearch] = React.useState("");
 	const [open, setOpen] = React.useState(false);
+	const [selectedIcon, setSelectedIcon] = React.useState<IconName>(
+		initialSelectedIcon || "Hammer"
+	);
 
 	const filteredIcons = React.useMemo(() => {
 		return Object.keys(icons).filter((iconName) =>
@@ -29,7 +31,13 @@ export const CustomCard = ({
 		) as IconName[];
 	}, [search]);
 
-	const SelectedIcon = selectedIcon ? icons[selectedIcon] : icons.Hammer;
+	const SelectedIcon = icons[selectedIcon];
+
+	const handleIconSelect = (iconName: IconName) => {
+		setSelectedIcon(iconName); // Update local state with the selected icon
+		onSelectIcon(iconName); // Call the passed in function to update parent if needed
+		setOpen(false); // Close the popover
+	};
 
 	return (
 		<InfoCard
@@ -39,11 +47,10 @@ export const CustomCard = ({
                 <Popover open={open} onOpenChange={setOpen}>
 					<PopoverTrigger asChild>
 						<Button variant="outline" className="justify-start">
-							<SelectedIcon className=" h-4 w-4" />
-							<span className="truncate">{selectedIcon}</span>
+							<SelectedIcon className="h-4 w-4" />
 						</Button>
 					</PopoverTrigger>
-					<PopoverContent className=" p-0">
+					<PopoverContent className="p-0">
 						<div className="p-4 pb-0">
 							<Input
 								placeholder="Search icons..."
@@ -52,7 +59,7 @@ export const CustomCard = ({
 								className="mb-2"
 							/>
 						</div>
-						<ScrollArea className="h-[300px]">
+						<ScrollArea className="h-72">
 							<div className="grid grid-cols-4 gap-2 p-4">
 								{filteredIcons.map((iconName) => {
 									const Icon = icons[iconName];
@@ -65,15 +72,9 @@ export const CustomCard = ({
 												selectedIcon === iconName &&
 													"bg-muted"
 											)}
-											onClick={() => {
-												onSelectIcon(iconName);
-												setOpen(false);
-											}}
+											onClick={() => handleIconSelect(iconName)}
 										>
-											<Icon className="h-6 w-6" />
-											<span className="sr-only">
-												{iconName}
-											</span>
+											<Icon className="h-6 w-6"/>
 										</Button>
 									);
 								})}
@@ -83,8 +84,8 @@ export const CustomCard = ({
 				</Popover>
                 : <Hammer />
 			}
-            isInDesignerMode={isInDesignerMode}
-            {...props}
+			isInDesignerMode={isInDesignerMode}
+			{...props}
 		/>
 	);
 };

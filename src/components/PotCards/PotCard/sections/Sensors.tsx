@@ -10,13 +10,24 @@ import {
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from "../../../ui/collapsible";
-import { ChevronsUpDown } from "lucide-react";
+import { ChevronsUpDown, Store } from "lucide-react";
 import { EditBtnsComponent } from "../../../EditBtnsComponent";
 import toast from "react-hot-toast";
+import { Button } from "../../../ui/button";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "../../../ui/tooltip";
+import { Dialog, DialogContent, DialogTrigger } from "../../../ui/dialog";
+import { Marketplace } from "../../../../Pages/Marketplace/Marketplace";
 
 export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 	const [isEditting, setIsEditting] = useState<boolean>(false);
 	const [updateData, _, setUpdateData] = useFormData(sensors);
+	const [isMarketplaceDialogOpen, setIsMarketplaceDialogOpen] =
+		useState<boolean>(false);
 
 	const handleUpdateSensor = (sensorId: number, newValue: string) => {
 		// Find the index of the sensor to update
@@ -26,6 +37,7 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 
 		// Update the state with the modified sensor data
 		setUpdateData(updatedSensors);
+		setIsMarketplaceDialogOpen(false);
 	};
 
 	useEffect(() => {
@@ -53,7 +65,7 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 			setUpdateData(updatedSensors);
 			setIsEditting(false);
 
-			toast.success("Update saved")
+			toast.success("Update saved");
 		} catch (error) {
 			console.error("Error saving the update:", error);
 		}
@@ -93,16 +105,17 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 										return (
 											<li
 												key={updateValueSensor.id}
-												className="flex justify-between w-full items-center"
+												className="flex gap-2  justify-between w-full items-center"
 											>
 												<InputGroup
-													className="w-1/3"
+													className="w-1/3 h-full"
 													orientation={
 														orientationOpts.horizontal
 													}
 													label={
-														updateValueSensor.alias ??
-														updateValueSensor.serialNumber
+														updateValueSensor.alias
+															? updateValueSensor.alias
+															: updateValueSensor.serialNumber
 													}
 													isEditing={true}
 													value={
@@ -119,6 +132,45 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 													type="url"
 													id={updateValueSensor.id}
 												/>
+												<Dialog
+													open={
+														isMarketplaceDialogOpen
+													}
+													onOpenChange={
+														setIsMarketplaceDialogOpen
+													}
+												>
+													<DialogTrigger>
+														<TooltipProvider>
+															<Tooltip>
+																<TooltipTrigger>
+																	<Button
+																		size="icon"
+																		className="aspect-square"
+																	>
+																		<Store />
+																	</Button>
+																</TooltipTrigger>
+																<TooltipContent>
+																	Browse
+																	marketplace
+																	for drivers
+																</TooltipContent>
+															</Tooltip>
+														</TooltipProvider>
+													</DialogTrigger>
+													<DialogContent className="w-[90%] h-[90%]">
+														<Marketplace
+															asChild
+															handleUpdateSensor={
+																handleUpdateSensor
+															}
+															sensorId={
+																updateValueSensor.id
+															}
+														/>
+													</DialogContent>
+												</Dialog>
 											</li>
 										);
 									})
@@ -156,7 +208,7 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 														key={
 															updateValueSensor.id
 														}
-														className="flex justify-between w-full items-center"
+														className="flex gap-2 justify-between w-full items-center"
 													>
 														<InputGroup
 															className="w-1/3"
@@ -164,8 +216,9 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 																orientationOpts.horizontal
 															}
 															label={
-																updateValueSensor.alias ??
-																updateValueSensor.serialNumber
+																updateValueSensor.alias
+																	? updateValueSensor.alias
+																	: updateValueSensor.serialNumber
 															}
 															isEditing={true}
 															value={
@@ -187,6 +240,46 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 																updateValueSensor.id
 															}
 														/>
+														<Dialog
+															open={
+																isMarketplaceDialogOpen
+															}
+															onOpenChange={
+																setIsMarketplaceDialogOpen
+															}
+														>
+															<DialogTrigger>
+																<TooltipProvider>
+																	<Tooltip>
+																		<TooltipTrigger>
+																			<Button
+																				size="icon"
+																				className="aspect-square"
+																			>
+																				<Store />
+																			</Button>
+																		</TooltipTrigger>
+																		<TooltipContent>
+																			Browse
+																			marketplace
+																			for
+																			drivers
+																		</TooltipContent>
+																	</Tooltip>
+																</TooltipProvider>
+															</DialogTrigger>
+															<DialogContent className="w-[90%] h-[90%]">
+																<Marketplace
+																	asChild
+																	handleUpdateSensor={
+																		handleUpdateSensor
+																	}
+																	sensorId={
+																		updateValueSensor.id
+																	}
+																/>
+															</DialogContent>
+														</Dialog>
 													</li>
 												);
 											})

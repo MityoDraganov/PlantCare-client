@@ -78,7 +78,7 @@ export const Controls = ({
 					Controls
 				</h2>
 
-				<ul className="py-4 pr-4 h-full overflow-auto mb-1">
+				{/* <ul className="py-4 pr-4 h-full overflow-auto mb-1">
 					{updateData?.map((x) => (
 						<ControlCard
 							control={x}
@@ -88,7 +88,9 @@ export const Controls = ({
 							updateControlValue={updateControlValue}
 						/>
 					))}
-				</ul>
+				</ul> */}
+
+				<p className="text-muted-foreground m-auto">coming soon...</p>
 
 			</div>
 

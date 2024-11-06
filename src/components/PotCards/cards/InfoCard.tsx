@@ -25,6 +25,7 @@ export interface InfoCardProps {
 	asChild?: boolean;
 	isInDesignerMode?: boolean;
 	potSensors?: SensorDto[];
+	cardType?: "structural" | "related";
 }
 
 export const InfoCard = ({
@@ -36,13 +37,14 @@ export const InfoCard = ({
 	asChild = false,
 	isInDesignerMode = false,
 	potSensors,
+	cardType = "related",
 }: InfoCardProps) => {
 	return (
 		<Card
 			className={cn(
 				`w-full h-full flex flex-col items-center gap-2 pt-2 ${
 					!mainContent ? "py-10" : ""
-				} ${asChild ? "border-none" : ""}`,
+				} ${asChild ? "border-none px-4" : ""}`,
 				className
 			)}
 		>
@@ -62,7 +64,7 @@ export const InfoCard = ({
 					<span className="uppercase text-xs">{subContent}</span>
 				</CardContent>
 			)}
-			{isInDesignerMode && (
+			{isInDesignerMode && cardType === "related" && (
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger className="w-1/2 flex justify-center">
@@ -74,7 +76,7 @@ export const InfoCard = ({
 								<SelectContent>
 									{potSensors?.map((x) => (
 										<SelectItem value="light">
-											{x.alias}
+											{x.alias ? x.alias : x.serialNumber}
 										</SelectItem>
 									))}
 								</SelectContent>

@@ -10,26 +10,38 @@ export enum layoutOptions {
 export const CropPots = ({
 	cropPots,
 	layout = layoutOptions.page,
-	action
+	action,
 }: {
 	cropPots: CropPotResponseDto[] | null;
 	layout?: layoutOptions;
 	action?: Function;
 }) => {
 	return (
-		<Card className="h-full w-full flex flex-col gap-2 py-4 px-2">
+		<Card className="h-[10%] sm:h-fit flex flex-col gap-2 py-4 px-2">
 			{layout === layoutOptions.page && (
 				<h2 className="text-xl pl-2 font-medium">Crop pots:</h2>
 			)}
-			<div className="h-full w-full grid grid-cols-2 md:grid-cols-3 gap-2 md:gap-6">
+			<ul className="h-full w-full flex flex-col sm:flex-row gap-2 md:gap-6 overflow-x-scroll">
 				{cropPots?.length ? (
-					cropPots.map((x: CropPotResponseDto) => (
-						<PotCard key={x.id} pot={x} layout={layout} action={action}/>
-					))
+					// Repeat the map multiple times to create an overflow effect
+					<>
+					{
+							cropPots.map((x: CropPotResponseDto, index: number) => (
+								<li className="min-w-[40%] sm:min-w-[25%] md:min-w-[18%] ">
+									<PotCard
+										key={`${x.id}-${index}`} // Ensure unique keys for each PotCard
+										pot={x}
+										layout={layout}
+										action={action}
+									/>
+								</li>
+							))
+}
+					</>
 				) : (
-					<p>No pots available</p>
+					<p>No crop pots available</p>
 				)}
-			</div>
+			</ul>
 		</Card>
 	);
 };

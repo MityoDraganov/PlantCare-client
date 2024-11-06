@@ -72,7 +72,7 @@ export const PotCard = ({
 					<CardHeader className="h-fit w-full">
 						<CardTitle className="flex w-full h-full justify-between items-center">
 							<p>{pot.alias}</p>
-							<div className="flex gap-2">
+							<div className="ml-2 flex gap-2">
 								<TooltipProvider>
 									{sensorsWithoutDriver.length > 0 && (
 										<Tooltip>

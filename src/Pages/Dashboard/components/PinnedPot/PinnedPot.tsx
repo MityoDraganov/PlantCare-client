@@ -75,7 +75,7 @@ export const PinnedPot = () => {
 								<Tooltip>
 									<TooltipTrigger>
 										<Pin
-											className="fill-[#F9E400] hover:cursor-pointer hover:rotate-12 duration-200"
+											className="hover:cursor-pointer hover:rotate-12 duration-200"
 											onClick={() =>
 												unpinPotHandler(x.id)
 											}

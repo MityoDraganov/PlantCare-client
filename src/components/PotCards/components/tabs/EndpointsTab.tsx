@@ -54,16 +54,18 @@ export const EndpointsTab = () => {
 						)}
 					</BreadcrumbList>
 				</Breadcrumb>
+				
 				<Button
 					variant="outline"
-					className={`sm:ml-auto sm:mr-2 ml-0 mr-auto text-green-500 border-green-500 hover:bg-green-200/50 hover:text-green-800 hover:border-green-800 flex gap-3 ${
-						tab === tabOptions.newEndpoint ? "hidden" : ""
+					className={`sm:ml-auto sm:mr-2 ml-0 mr-auto text-green-500 border-green-500 hover:bg-green-200/50 hover:text-green-800 hover:border-green-800 flex gap-3 transition-opacity duration-300 ${
+						tab === tabOptions.newEndpoint ? "opacity-0" : "opacity-100"
 					}`}
 					onClick={() => setTab(tabOptions.newEndpoint)}
 				>
 					<Plus />
 					Add Endpoint
 				</Button>
+
 			</div>
 			{tab === tabOptions.endpoints && (
 				<Endpoints/>

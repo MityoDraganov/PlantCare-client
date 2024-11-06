@@ -23,6 +23,8 @@ const endPoints = {
 
 	drivers: (driverId?: number) =>
 		driverId ? `drivers/${driverId}` : "drivers",
+
+	canvas: () => ""
 };
 
 // --INBOX
@@ -92,3 +94,13 @@ export const updateDriver = (driverData: UploadDriverDto, driverId: number) => {
 export const deleteDriver = (driverId: number) => {
 	return api.del(endPoints.drivers(driverId));
 };
+
+
+//	--PINNED CARDS
+export const createPinnedCard = () => {
+	
+}
+
+export const updatePinnedCard = () => {
+
+}

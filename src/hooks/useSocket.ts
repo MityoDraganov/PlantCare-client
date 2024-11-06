@@ -34,7 +34,7 @@ const useWebSocket = (url: string) => {
 					const parsedMessage = parseFields(message);
 
 					// Handle the message
-					handleIncomingMessage(parsedMessage); 
+					handleIncomingMessage(parsedMessage);
 				} catch (error) {
 					console.error("Error parsing message:", error);
 				}
@@ -47,7 +47,9 @@ const useWebSocket = (url: string) => {
 
 			// Handle connection close
 			socket.onclose = () => {
-				console.log("WebSocket connection closed. Attempting to reconnect...");
+				console.log(
+					"WebSocket connection closed. Attempting to reconnect..."
+				);
 				setIsConnected(false);
 				// Start reconnecting after a delay
 				reconnectInterval.current = setTimeout(connect, 1000); // Try to reconnect after 1 second
@@ -91,14 +93,16 @@ const useWebSocket = (url: string) => {
 
 	// Handle incoming messages
 	const handleIncomingMessage = (message: any) => {
-		console.log(message);
-
 		if (message.event && message.event === Event.AsyncError) {
 			const errorMessage = message.data;
-			
+
 			// Reject the toast promise if there's an error
 			if (toastPromiseRef.current) {
-				toastPromiseRef.current({ isLoading: false, success: false, error: errorMessage.error.toString() });
+				toastPromiseRef.current({
+					isLoading: false,
+					success: false,
+					error: errorMessage.error.toString(),
+				});
 				toastPromiseRef.current = null;
 			} else {
 				toast.error(errorMessage.error.toString());
@@ -113,9 +117,9 @@ const useWebSocket = (url: string) => {
 			toastPromiseRef.current = toast.promise(
 				new Promise(() => {}), // No-op, manually controlled
 				{
-					loading: 'Processing...',
-					success: 'Operation completed!',
-					error: 'Error occurred!',
+					loading: "Processing...",
+					success: "Operation completed!",
+					error: "Error occurred!",
 				}
 			);
 			return;
@@ -127,7 +131,11 @@ const useWebSocket = (url: string) => {
 
 			// Resolve the toast promise if the pot update is successful
 			if (toastPromiseRef.current) {
-				toastPromiseRef.current({ isLoading: false, success: true, message: "Pot updated successfully!" });
+				toastPromiseRef.current({
+					isLoading: false,
+					success: true,
+					message: "Pot updated successfully!",
+				});
 				toastPromiseRef.current = null;
 			}
 			return;

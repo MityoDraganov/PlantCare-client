@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 // Footer.js
 export const Footer = () => {
 	return (
-		<footer className="border-t h-10 shadow-lg flex items-center justify-between px-5 text-sm">
-			<p className="text-center">
+		<footer className="border-t h-fit py-1 sm:h-10 shadow-lg flex flex-col sm:flex-row items-center justify-between px-5 text-sm w-screen overflow-x-scroll">
+			<p className="text-center text-nowrap">
 				© 2024 PlantCare. All rights reserved.
 			</p>
 			<nav>

@@ -16,6 +16,7 @@ export const PotGalleryCard = ({ ...props }: InfoCardProps) => {
 					</p>
 				</span>
 			}
+			cardType="structural"
 			{...props}
 		/>
 	);

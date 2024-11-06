@@ -109,7 +109,7 @@ export const NewEndpoint = ({ returnTab }: { returnTab: () => void }) => {
 								className="text-sm font-medium hover:cursor-pointer"
 								htmlFor={x?.serialNumber}
 							>
-								{x?.alias}
+								Sensor {x.alias ? x.alias : x.serialNumber} <span className="font-medium">measures</span>
 							</label>
 						</li>
 					))}
