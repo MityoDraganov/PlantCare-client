@@ -42,7 +42,7 @@ export const SensorDialog = ({ sensor }: { sensor: SensorDto }) => {
             {Object.entries(updateData)
               .filter(
                 ([key]) =>
-                  !["id", "serialnumber", "measurements"].includes(
+                  !["id", "serialnumber", "measurements", "isattached", "type"].includes(
                     key.toLowerCase()
                   )
               )

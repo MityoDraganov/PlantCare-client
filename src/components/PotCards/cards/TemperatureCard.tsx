@@ -13,6 +13,8 @@ interface TemperatureCardProps extends InfoCardProps {
 	potTemperature?: number;
 }
 
+const title = "Pot temperature";
+
 export const TemperatureCard = ({
 	potTemperature,
 	...props
@@ -28,7 +30,7 @@ export const TemperatureCard = ({
 	return (
 		<InfoCard
 			icon={<Thermometer />}
-			title="Pot temperature"
+			title={title}
 			mainContent={
 				<span className="flex items-center justify-center">
 					<span>
@@ -65,3 +67,7 @@ export const TemperatureCard = ({
 		/>
 	);
 };
+
+
+TemperatureCard.getIcon = () => "Beaker";
+TemperatureCard.getTitle = () => title;

@@ -5,11 +5,13 @@ interface WaterTankCardProps extends InfoCardProps {
   percentageFull?: number;
 }
 
+const title = "Water tank";
+
 export const WaterTankCard = ({ percentageFull, ...props }: WaterTankCardProps) => {
   return (  
     <InfoCard
       icon={<Beaker />}
-      title="Water tank"
+      title={title}
       mainContent={
         <span className="flex gap-1">
           <span>{percentageFull?.toFixed(1)}</span>
@@ -21,3 +23,6 @@ export const WaterTankCard = ({ percentageFull, ...props }: WaterTankCardProps) 
     />
   );
 };
+
+WaterTankCard.getIcon = () => "Beaker";
+WaterTankCard.getTitle = () => title;

@@ -28,6 +28,8 @@ export interface InfoCardProps {
 	cardType?: "structural" | "related";
 }
 
+
+
 export const InfoCard = ({
 	icon,
 	title,
@@ -39,10 +41,14 @@ export const InfoCard = ({
 	potSensors,
 	cardType = "related",
 }: InfoCardProps) => {
+
+	const getIcon = () => icon || <span>Default Icon</span>;
+	const getTitle = () => title || "Default Title";
+
 	return (
 		<Card
 			className={cn(
-				`w-full h-full flex flex-col items-center gap-2 pt-2 ${
+				`w-full h-full flex flex-col items-center gap-2 pt-2 overflow-hidden ${
 					!mainContent ? "py-10" : ""
 				} ${asChild ? "border-none px-4" : ""}`,
 				className
@@ -56,18 +62,18 @@ export const InfoCard = ({
 				{icon}
 				{typeof title === "string" ? <p>{title}</p> : title}
 			</CardTitle>
-			{mainContent && (
+	
 				<CardContent className="flex flex-col h-fit justify-between items-center gap-0 font-mono">
 					<span className="font-extrabold text-2xl">
 						{mainContent}
 					</span>
 					<span className="uppercase text-xs">{subContent}</span>
 				</CardContent>
-			)}
+			
 			{isInDesignerMode && cardType === "related" && (
 				<TooltipProvider>
 					<Tooltip>
-						<TooltipTrigger className="w-1/2 flex justify-center">
+						<TooltipTrigger className="w-1/2 flex justify-center absolute bottom-6">
 							<Select>
 								<Tooltip></Tooltip>
 								<SelectTrigger className="my-5 mx-5">
@@ -75,7 +81,7 @@ export const InfoCard = ({
 								</SelectTrigger>
 								<SelectContent>
 									{potSensors?.map((x) => (
-										<SelectItem value="light">
+										<SelectItem value="light" key={x.id}>
 											{x.alias ? x.alias : x.serialNumber}
 										</SelectItem>
 									))}

@@ -8,7 +8,7 @@ import {
 	useEffect,
 	useState,
 } from "react";
-import { CropPotResponseDto } from "../dtos/CropPot.dto";
+import { CropPotResponseDto } from "../dtos/cropPot.dto";
 import { getAllPots } from "../api/requests";
 import { AuthContext } from "./AuthContext";
 

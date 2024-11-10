@@ -1,4 +1,4 @@
-import { CropPotResponseDto } from "../../../dtos/CropPot.dto";
+import { CropPotResponseDto } from "../../../dtos/cropPot.dto";
 import { PotCard } from "../../../components/PotCards/PotCard/PotCard";
 import { Card } from "../../../components/ui/card";
 

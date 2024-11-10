@@ -1,3 +1,4 @@
+import { CanvasDto } from "./canvas.dto";
 import { ControlDto } from "./controls.dto";
 import { SensorDto } from "./sensors.dto";
 import { WebhookDto } from "./webhooks.dto";
@@ -18,6 +19,7 @@ export interface CropPotResponseDto {
 	webhooks?: WebhookDto[];
 	status: SensorStatus;
 	measurementInterval: string;
+	canvas: CanvasDto;
 }
 
 export interface CropPotRequestDto {

@@ -23,6 +23,8 @@ export const MarketplaceCard = ({
 	sensorId?: number;
 }) => {
 	const displayName = driverDto.user.username || driverDto.user.email;
+	console.log(sensorId);
+	
 	return (
 		<Card className="w-full sm:w-[48%] md:w-[24%] lg:w-[16%] h-[60%] flex flex-col justify-between ">
 			<CardTitle className="text-sm flex flex-col p-2 h-[50%] md:h-auto">

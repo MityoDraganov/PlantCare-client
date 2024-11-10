@@ -1,7 +1,9 @@
+
 import { Inbox as InboxIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { InboxContext } from "../../contexts/InboxContext";
 import { useContext } from "react";
+import { markAllMessagesAsRead } from "../../api/requests";
 
 enum bodyEntries {
 	title = "title",
@@ -10,8 +12,16 @@ enum bodyEntries {
 }
 
 export const Inbox = () => {
-	const { messages } = useContext(InboxContext);
-	// Recursive function to render values as key-value pairs
+	const { messages, handleMarkAllMessagesAsRead } = useContext(InboxContext);
+	
+	const handlePopoverClose = async (isOpen: boolean) => {
+        if (!isOpen) {
+			await markAllMessagesAsRead();
+			handleMarkAllMessagesAsRead();
+        }
+    };
+
+
 	const renderValue = (value: any) => {
 		if (Array.isArray(value)) {
 			return (
@@ -38,7 +48,7 @@ export const Inbox = () => {
 	};
 
 	return (
-		<Popover>
+		<Popover onOpenChange={handlePopoverClose}>
 			<PopoverTrigger>
 				<InboxIcon />
 			</PopoverTrigger>
@@ -61,7 +71,7 @@ export const Inbox = () => {
 								return (
 									<li
 										key={index}
-										className={`flex flex-col p-2 rounded-lg hover:bg-slate-50 ${!message.isRead ? "opacity-50" : ""}`}
+										className={`flex flex-col p-2 rounded-lg hover:bg-slate-50 ${message.isRead ? "opacity-50" : ""}`}
 									>
 										{/* Notification Box */}
 										<div className="rounded-lg border bg-card text-card-foreground shadow-sm px-4 py-2">

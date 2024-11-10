@@ -29,17 +29,21 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 	const [isMarketplaceDialogOpen, setIsMarketplaceDialogOpen] =
 		useState<boolean>(false);
 
-	const handleUpdateSensor = (sensorId: number, newValue: string) => {
-		// Find the index of the sensor to update
-		const updatedSensors = updateData.map((sensor) =>
-			sensor.id === sensorId ? { ...sensor, driverUrl: newValue } : sensor
-		);
-
-		// Update the state with the modified sensor data
-		setUpdateData(updatedSensors);
-		setIsMarketplaceDialogOpen(false);
-	};
-
+		const handleUpdateSensor = (sensorId: number, newValue: string) => {
+			// Find the index of the sensor to update
+			const sensorToUpdateIndex = updateData.findIndex((x) => x.id === sensorId);
+			if (sensorToUpdateIndex === -1) return;
+		
+			// Update the sensor in the array at the found index
+			const updatedSensor = { ...updateData[sensorToUpdateIndex], driverUrl: newValue };
+			const updatedData = [...updateData];
+			updatedData[sensorToUpdateIndex] = updatedSensor;
+		
+			// Update the state with the modified array
+			setUpdateData(updatedData);
+			setIsMarketplaceDialogOpen(false);
+		};
+		
 	useEffect(() => {
 		const isModified = updateData.some((updatedSensor) => {
 			const originalSensor = sensors.find(
@@ -275,7 +279,7 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 																		handleUpdateSensor
 																	}
 																	sensorId={
-																		updateValueSensor.id
+																		sensor.id
 																	}
 																/>
 															</DialogContent>

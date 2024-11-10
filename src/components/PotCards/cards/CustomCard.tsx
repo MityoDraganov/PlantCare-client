@@ -1,29 +1,44 @@
-import * as React from "react";
+import React, { useState } from "react";
 import { Hammer, icons } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import { Button } from "../../ui/button";
 import { Input } from "../../ui/input";
 import { ScrollArea } from "../../ui/scroll-area";
-import { cn } from "../../../lib/utils";
 import { InfoCard, InfoCardProps } from "./InfoCard";
+import { cn } from "../../../lib/utils";
 
 type IconName = keyof typeof icons;
 
-interface LucideIconPickerProps extends InfoCardProps{
+interface LucideIconPickerProps extends InfoCardProps {
 	onSelectIcon: (iconName: IconName) => void;
+	onTitleChange?: (title: string) => void;
 	selectedIcon: IconName;
 }
+
 export const CustomCard = ({
 	onSelectIcon,
-	selectedIcon: initialSelectedIcon, // rename the prop for clarity
+	onTitleChange,
+	selectedIcon: initialSelectedIcon,
 	isInDesignerMode,
 	...props
 }: LucideIconPickerProps) => {
-	const [search, setSearch] = React.useState("");
-	const [open, setOpen] = React.useState(false);
-	const [selectedIcon, setSelectedIcon] = React.useState<IconName>(
+	const [search, setSearch] = useState("");
+	const [open, setOpen] = useState(false);
+	const [selectedIcon, setSelectedIcon] = useState<IconName>(
 		initialSelectedIcon || "Hammer"
 	);
+	const [title, setTitle] = useState<string>("");
+
+	const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const newTitle = e.target.value;
+		setTitle(newTitle);
+		onTitleChange && onTitleChange(newTitle);
+	};
+
+	const handleIconChange = (iconName: string) => {
+		setSelectedIcon(iconName as IconName);
+		onSelectIcon && onSelectIcon(iconName as IconName);
+	};
 
 	const filteredIcons = React.useMemo(() => {
 		return Object.keys(icons).filter((iconName) =>
@@ -33,56 +48,65 @@ export const CustomCard = ({
 
 	const SelectedIcon = icons[selectedIcon];
 
-	const handleIconSelect = (iconName: IconName) => {
-		setSelectedIcon(iconName); // Update local state with the selected icon
-		onSelectIcon(iconName); // Call the passed in function to update parent if needed
-		setOpen(false); // Close the popover
-	};
-
 	return (
 		<InfoCard
-			title={isInDesignerMode ? <Input className="w-1/2" placeholder="Card title..."/> : "Custom card"}
+			title={
+				isInDesignerMode ? (
+					<Input
+						value={title}
+						onChange={handleTitleChange}
+						placeholder="Card title..."
+						className="w-full"
+					/>
+				) : (
+					title
+				)
+			}
 			icon={
-				isInDesignerMode ? 
-                <Popover open={open} onOpenChange={setOpen}>
-					<PopoverTrigger asChild>
-						<Button variant="outline" className="justify-start">
-							<SelectedIcon className="h-4 w-4" />
-						</Button>
-					</PopoverTrigger>
-					<PopoverContent className="p-0">
-						<div className="p-4 pb-0">
-							<Input
-								placeholder="Search icons..."
-								value={search}
-								onChange={(e) => setSearch(e.target.value)}
-								className="mb-2"
-							/>
-						</div>
-						<ScrollArea className="h-72">
-							<div className="grid grid-cols-4 gap-2 p-4">
-								{filteredIcons.map((iconName) => {
-									const Icon = icons[iconName];
-									return (
-										<Button
-											key={iconName}
-											variant="ghost"
-											className={cn(
-												"h-12 w-12 p-0",
-												selectedIcon === iconName &&
-													"bg-muted"
-											)}
-											onClick={() => handleIconSelect(iconName)}
-										>
-											<Icon className="h-6 w-6"/>
-										</Button>
-									);
-								})}
+				isInDesignerMode ? (
+					<Popover open={open} onOpenChange={setOpen}>
+						<PopoverTrigger asChild>
+							<Button variant="outline" className="justify-start">
+								<SelectedIcon className="h-4 w-4" />
+							</Button>
+						</PopoverTrigger>
+						<PopoverContent className="p-0">
+							<div className="p-4 pb-0">
+								<Input
+									placeholder="Search icons..."
+									value={search}
+									onChange={(e) => setSearch(e.target.value)}
+									className="mb-2"
+								/>
 							</div>
-						</ScrollArea>
-					</PopoverContent>
-				</Popover>
-                : <Hammer />
+							<ScrollArea className="h-72">
+								<div className="grid grid-cols-4 gap-2 p-4">
+									{filteredIcons.map((iconName) => {
+										const Icon = icons[iconName];
+										return (
+											<Button
+												key={iconName}
+												variant="ghost"
+												className={cn(
+													"h-12 w-12 p-0",
+													selectedIcon === iconName &&
+														"bg-muted"
+												)}
+												onClick={() =>
+													handleIconChange(iconName)
+												}
+											>
+												<Icon className="h-6 w-6" />
+											</Button>
+										);
+									})}
+								</div>
+							</ScrollArea>
+						</PopoverContent>
+					</Popover>
+				) : (
+					<Hammer />
+				)
 			}
 			isInDesignerMode={isInDesignerMode}
 			{...props}

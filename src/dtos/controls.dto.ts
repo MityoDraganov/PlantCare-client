@@ -1,4 +1,4 @@
-import { ConditionDto } from "./Condition.dto";
+import { ConditionDto } from "./condition.dto";
 
 export interface ControlDto {
 	serialNumber: string;

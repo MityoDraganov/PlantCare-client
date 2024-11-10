@@ -1,5 +1,6 @@
+import { CanvasDto } from "../dtos/canvas.dto";
 import { ControlDto } from "../dtos/controls.dto";
-import { CropPotRequestDto } from "../dtos/CropPot.dto";
+import { CropPotRequestDto } from "../dtos/cropPot.dto";
 import { UploadDriverDto } from "../dtos/driver.dto";
 import { SensorDto } from "../dtos/sensors.dto";
 import { WebhookDto } from "../dtos/webhooks.dto";
@@ -24,12 +25,16 @@ const endPoints = {
 	drivers: (driverId?: number) =>
 		driverId ? `drivers/${driverId}` : "drivers",
 
-	canvas: () => ""
+	canvas: (canvasId?: number) => (canvasId ? `canvas/${canvasId}` : "canvas"),
 };
 
 // --INBOX
 export const getAllMessages = () => {
 	return api.get(endPoints.inbox);
+};
+
+export const markAllMessagesAsRead = () => {
+	return api.put(endPoints.inbox);
 };
 
 // --CROP POTS--
@@ -95,12 +100,15 @@ export const deleteDriver = (driverId: number) => {
 	return api.del(endPoints.drivers(driverId));
 };
 
+// --CANVASES
 
-//	--PINNED CARDS
-export const createPinnedCard = () => {
-	
+export const getAllCanvases = () => {
+	return api.get(endPoints.canvas())
 }
+export const createCanvas = (canvasData: CanvasDto) => {
+	return api.post(endPoints.canvas(), canvasData);
+};
 
-export const updatePinnedCard = () => {
-
-}
+export const updateCanvas = (canvasData: CanvasDto, canvasId: number) => {
+	return api.put(endPoints.canvas(canvasId), canvasData);
+};

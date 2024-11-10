@@ -5,7 +5,7 @@ import { InputGroup, orientationOpts } from "../../InputGroup";
 import { Pencil } from "lucide-react";
 import { ControlDtoWithEditing } from "../PotCard/tabs/InfoTab";
 import { DaySelector } from "../../selectors/DaySelector";
-import { ConditionDto } from "../../../dtos/Condition.dto";
+import { ConditionDto } from "../../../dtos/condition.dto";
 import {
 	Select,
 	SelectContent,
