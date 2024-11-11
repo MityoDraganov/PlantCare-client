@@ -22,7 +22,7 @@ import {
 import { PinLayoutDesignDialog } from "../../../../components/dialogs/pinLayoutDesignDialog";
 import { CardID, CardType } from "../../../../Interfaces/PinnedCards.interface";
 import { CustomCard } from "../../../../components/PotCards/cards/CustomCard";
-
+import { useTranslation } from "react-i18next";
 
 interface GridPosition {
 	rowStart: number;
@@ -32,6 +32,7 @@ interface GridPosition {
 type GridOccupiedMap = { [key: string]: boolean };
 
 export const PinnedPots = () => {
+	const { t } = useTranslation();
 	const { cropPots, updatePotDataHandler } = useContext(PotContext);
 
 	const pinnedPots = cropPots ? cropPots.filter((pot) => pot.isPinned) : [];
@@ -65,10 +66,10 @@ export const PinnedPots = () => {
 	): GridPosition => {
 		let row = 1;
 		let column = 1;
-	
+
 		while (true) {
 			let fits = true;
-	
+
 			// Check if the space starting at (row, column) can fit the card
 			for (let r = row; r < row + height; r++) {
 				for (let c = column; c < column + width; c++) {
@@ -79,7 +80,7 @@ export const PinnedPots = () => {
 				}
 				if (!fits) break;
 			}
-	
+
 			if (fits) {
 				// Mark the grid cells as occupied
 				for (let r = row; r < row + height; r++) {
@@ -89,22 +90,23 @@ export const PinnedPots = () => {
 				}
 				return { rowStart: row, colStart: column };
 			}
-	
+
 			// Move to the next column or row
 			column++;
-			if (column > 3) { // Assuming 3 columns in the grid
+			if (column > 3) {
+				// Assuming 3 columns in the grid
 				column = 1;
 				row++;
 			}
 		}
 	};
 
-	const renderCardContent = (card: CardType) => {
+	const renderCardContent = (card: CardType, value?: number) => {
 		switch (card.type) {
 			case CardID.WaterTankCard:
-				return <WaterTankCard percentageFull={78} />;
+				return <WaterTankCard percentageFull={value} />;
 			case CardID.TemperatureCard:
-				return <TemperatureCard potTemperature={25} />;
+				return <TemperatureCard potTemperature={value} />;
 			case CardID.PotGalleryCard:
 				return <PotGalleryCard />;
 			case CardID.CustomCard:
@@ -114,6 +116,7 @@ export const PinnedPots = () => {
 						icon={card.icon}
 						onSelectIcon={() => {}}
 						selectedIcon="Hammer"
+						value={value}
 					/>
 				);
 			default:
@@ -121,13 +124,17 @@ export const PinnedPots = () => {
 		}
 	};
 
-	const renderCard = (card: CardType, grid: GridOccupiedMap) => {
+	const renderCard = (
+		card: CardType,
+		grid: GridOccupiedMap,
+		value?: number
+	) => {
 		const { rowStart, colStart } = findNextAvailablePosition(
 			grid,
 			card.width,
 			card.height
 		);
-	
+
 		return (
 			<div
 				key={card.id}
@@ -138,11 +145,10 @@ export const PinnedPots = () => {
 					gridRowEnd: `span ${card.height}`,
 				}}
 			>
-				{renderCardContent(card)}
+				{renderCardContent(card, value)}
 			</div>
 		);
 	};
-
 
 	return (
 		<div className="flex flex-col gap-4 h-full overflow-y-auto">
@@ -152,7 +158,7 @@ export const PinnedPots = () => {
 					key={x.id}
 				>
 					<CardTitle className="pl-6 flex justify-between w-full pr-1 pt-2">
-						Pinned Pot
+						{t("dashboard.pinnedPot")}
 						<div className="flex gap-2">
 							<TooltipProvider>
 								<Dialog>
@@ -162,7 +168,11 @@ export const PinnedPots = () => {
 												<PaintbrushVertical className="hover:rotate-12 duration-200" />
 											</TooltipTrigger>
 											<TooltipContent>
-												<p>Design pinned layout</p>
+												<p>
+													{t(
+														"dashboard.tooltip.designLayout"
+													)}
+												</p>
 											</TooltipContent>
 										</Tooltip>
 									</DialogTrigger>
@@ -179,7 +189,7 @@ export const PinnedPots = () => {
 										/>
 									</TooltipTrigger>
 									<TooltipContent>
-										<p>Unpin pot</p>
+										<p>{t("dashboard.tooltip.unpin")}</p>
 									</TooltipContent>
 								</Tooltip>
 							</TooltipProvider>
@@ -188,15 +198,31 @@ export const PinnedPots = () => {
 
 					<CardContent className="flex flex-col lg:flex-row w-full lg:h-3/4 gap-2 justify-between">
 						<div className="grid grid-cols-3 grid-rows-3 h-full lg:h-1/3 w-full gap-2 relative">
-							{x.canvas.pinnedCards && x.canvas.pinnedCards?.length > 0 ? 
-							(() => {
-								const grid: GridOccupiedMap = {}; // To track occupied grid cells
-								return x.canvas.pinnedCards.map((card) => renderCard(card, grid));
-							})()
-							: (
+							{x.canvas.pinnedCards &&
+							x.canvas.pinnedCards?.length > 0 ? (
+								(() => {
+									const grid: GridOccupiedMap = {};
+									console.log(x.canvas.pinnedCards);
+									return x.canvas.pinnedCards.map((card) => {
+										const sensor = pinnedPots
+											.flatMap((pot) => pot.sensors)
+											.find(
+												(sensor) =>
+													sensor.id === card.sensorId
+											);
+										if (!sensor || !sensor.measurements)
+											return null;
+										const value =
+											sensor.measurements[
+												sensor.measurements.length - 1
+											]?.value;
+
+										return renderCard(card, grid, value);
+									});
+								})()
+							) : (
 								<p>
-									No pinned cards yet, go into design mode to
-									configure the canvas
+									{t("dashboard.noPinnedCards")}
 								</p>
 							)}
 						</div>
@@ -207,7 +233,7 @@ export const PinnedPots = () => {
 			<Dialog>
 				<DialogTrigger>
 					<Card className="w-full lg:h-1/4 p-6 flex flex-col items-center justify-center text-xl hover:bg-primary-foreground hover:cursor-pointer">
-						<h2>Pin pot</h2>
+						{t("dashboard.pinPot")}
 					</Card>
 				</DialogTrigger>
 				<DialogContent className="w-[95%]">

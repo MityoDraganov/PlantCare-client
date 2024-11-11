@@ -1,22 +1,24 @@
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 // Footer.js
 export const Footer = () => {
+	const { t } = useTranslation();
 	return (
 		<footer className="border-t h-fit py-1 sm:h-10 shadow-lg flex flex-col sm:flex-row items-center justify-between px-5 text-sm w-screen overflow-x-scroll">
 			<p className="text-center text-nowrap">
-				© 2024 PlantCare. All rights reserved.
+				© 2024 PlantCare. {t('footer.allRightsReserved')}.
 			</p>
 			<nav>
 				<ul className="flex space-x-4">
 				<li>
 						<Link to="/marketplace" className="hover:underline">
-							Marketplace
+						{t('footer.marketplace')}
 						</Link>
 					</li>
 					<li>
 						<Link to="/privacy-policy" className="hover:underline">
-							Privacy Policy
+							{t('footer.privacyPolicy')}
 						</Link>
 					</li>
 					<li>
@@ -24,7 +26,7 @@ export const Footer = () => {
 							to="/terms-of-service"
 							className="hover:underline"
 						>
-							Terms of Service
+							{t('footer.termsOfService')}
 						</Link>
 					</li>
 					<li>
@@ -32,7 +34,7 @@ export const Footer = () => {
 							to="mailto:mityodraganow@gmail.com"
 							className="hover:underline"
 						>
-							Contact Us
+							{t('footer.contacts')}
 						</Link>
 					</li>
 				</ul>

@@ -9,23 +9,19 @@ import {
 } from "../../../components/ui/select";
 import { useState } from "react";
 
-interface TemperatureCardProps extends InfoCardProps {
-	potTemperature?: number;
+interface MoistureCardProps extends InfoCardProps {
+	moisture?: number;
 }
 
-const title = "Temperature";
+const title = "Moisture";
 
-export const TemperatureCard = ({
-	potTemperature,
+export const MoistureCard = ({
+	moisture,
 	...props
-}: TemperatureCardProps) => {
+}: MoistureCardProps) => {
 	const [selectedMetricSystem, setSelectedMetricSystem] = useState<
 		"celsius" | "fahrenheit"
 	>("celsius");
-
-	function celsiusToFahrenheit(celsius: number) {
-		return (celsius * 9) / 5 + 32;
-	}
 
 	return (
 		<InfoCard
@@ -34,11 +30,7 @@ export const TemperatureCard = ({
 			mainContent={
 				<span className="flex items-center justify-center">
 					<span>
-						{selectedMetricSystem === "celsius"
-							? potTemperature?.toFixed(1)
-							: potTemperature
-							? celsiusToFahrenheit(potTemperature)?.toFixed(1)
-							: 0}
+						{moisture}%
 					</span>
 					<Select
 						onValueChange={(value) =>
@@ -67,7 +59,3 @@ export const TemperatureCard = ({
 		/>
 	);
 };
-
-
-TemperatureCard.getIcon = () => "Beaker";
-TemperatureCard.getTitle = () => title;

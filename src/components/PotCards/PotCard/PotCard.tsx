@@ -20,6 +20,7 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "../../ui/tooltip";
+import { useTranslation } from "react-i18next";
 
 export enum tabOptions {
 	"info" = 0,
@@ -35,6 +36,7 @@ export const PotCard = ({
 	layout?: layoutOptions;
 	action?: Function;
 }) => {
+	const { t } = useTranslation();
 	const sensorsWithoutDriver = pot.sensors.filter(
 		(sensor) => !sensor.driverUrl
 	);
@@ -80,10 +82,10 @@ export const PotCard = ({
 												<TriangleAlert className="text-red-500 mr-0 ml-auto" />
 											</TooltipTrigger>
 											<TooltipContent>
-												<p>Action required</p>
+												<p>{t("potCard.actionsNeeded.actionRequired")}</p>
 												<span className="text-sm font-normal">
 													{" "}
-													- provide a driver
+													- {t("potCard.actionsNeeded.noDriver")}
 												</span>
 											</TooltipContent>
 										</Tooltip>
@@ -95,7 +97,7 @@ export const PotCard = ({
 											</div>
 										</TooltipTrigger>
 										<TooltipContent>
-											Pot status: {pot.status}
+											{t("potCard.statuses.potStatus")}: {t(`potCard.statuses.${pot.status}`)}
 										</TooltipContent>
 									</Tooltip>
 								</TooltipProvider>

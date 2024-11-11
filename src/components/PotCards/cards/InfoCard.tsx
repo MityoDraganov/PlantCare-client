@@ -26,9 +26,10 @@ export interface InfoCardProps {
 	isInDesignerMode?: boolean;
 	potSensors?: SensorDto[];
 	cardType?: "structural" | "related";
+	onSensorSelect?: (sensorId: number, instanceId: string) => void;
+	instanceId?: string;
+	corespondingSensorSeria?: number;
 }
-
-
 
 export const InfoCard = ({
 	icon,
@@ -40,11 +41,9 @@ export const InfoCard = ({
 	isInDesignerMode = false,
 	potSensors,
 	cardType = "related",
+	onSensorSelect,
+	instanceId
 }: InfoCardProps) => {
-
-	const getIcon = () => icon || <span>Default Icon</span>;
-	const getTitle = () => title || "Default Title";
-
 	return (
 		<Card
 			className={cn(
@@ -55,33 +54,36 @@ export const InfoCard = ({
 			)}
 		>
 			<CardTitle
-				className={`text-sm flex items-center justify-center ${
+				className={`text-sm flex items-center justify-center text-center ${
 					typeof title === "string" ? "gap-1" : "gap-4"
 				}`}
 			>
 				{icon}
 				{typeof title === "string" ? <p>{title}</p> : title}
 			</CardTitle>
-	
-				<CardContent className="flex flex-col h-fit justify-between items-center gap-0 font-mono">
-					<span className="font-extrabold text-2xl">
-						{mainContent}
-					</span>
-					<span className="uppercase text-xs">{subContent}</span>
-				</CardContent>
-			
-			{isInDesignerMode && cardType === "related" && (
+
+			<CardContent className="flex flex-col h-fit justify-between items-center gap-0 font-mono">
+				<span className="font-extrabold text-2xl">{mainContent}</span>
+				<span className="uppercase text-xs">{subContent}</span>
+			</CardContent>
+
+			{isInDesignerMode && cardType === "related" && instanceId && (
 				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger className="w-1/2 flex justify-center absolute bottom-6">
-							<Select>
+							<Select
+								onValueChange={(value: string) => {
+									
+									onSensorSelect?.(parseInt(value), instanceId);
+								}}
+							>
 								<Tooltip></Tooltip>
 								<SelectTrigger className="my-5 mx-5">
 									<SelectValue placeholder="Select coresponding sensor" />
 								</SelectTrigger>
 								<SelectContent>
 									{potSensors?.map((x) => (
-										<SelectItem value="light" key={x.id}>
+										<SelectItem value={x.id.toString()} key={x.id}>
 											{x.alias ? x.alias : x.serialNumber}
 										</SelectItem>
 									))}

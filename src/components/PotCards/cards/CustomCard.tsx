@@ -13,6 +13,7 @@ interface LucideIconPickerProps extends InfoCardProps {
 	onSelectIcon: (iconName: IconName) => void;
 	onTitleChange?: (title: string) => void;
 	selectedIcon: IconName;
+	value?: number;
 }
 
 export const CustomCard = ({
@@ -20,6 +21,7 @@ export const CustomCard = ({
 	onTitleChange,
 	selectedIcon: initialSelectedIcon,
 	isInDesignerMode,
+	value,
 	...props
 }: LucideIconPickerProps) => {
 	const [search, setSearch] = useState("");
@@ -27,7 +29,7 @@ export const CustomCard = ({
 	const [selectedIcon, setSelectedIcon] = useState<IconName>(
 		initialSelectedIcon || "Hammer"
 	);
-	const [title, setTitle] = useState<string>("");
+	const [title, setTitle] = useState<string>();
 
 	const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const newTitle = e.target.value;
@@ -53,15 +55,16 @@ export const CustomCard = ({
 			title={
 				isInDesignerMode ? (
 					<Input
-						value={title}
+						value={title != "" ? title : "Custom card"}
 						onChange={handleTitleChange}
 						placeholder="Card title..."
 						className="w-full"
 					/>
 				) : (
-					title
+					title ? title : "Custom card"
 				)
 			}
+			mainContent={value}
 			icon={
 				isInDesignerMode ? (
 					<Popover open={open} onOpenChange={setOpen}>

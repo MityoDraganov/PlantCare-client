@@ -39,6 +39,7 @@ const availableCards: CardType[] = [
 		height: 1,
 		startLocation: 1,
 		type: CardID.WaterTankCard,
+
 	},
 	{
 		id: "TemperatureCard",
@@ -129,6 +130,7 @@ const onDragEnd = (result: DropResult) => {
 			{
 				...card,
 				startLocation: newStartLocation,
+				instanceId: `${card.id}-${new Date().getTime()}`,
 			},
 		]);
 	}
@@ -161,6 +163,20 @@ const updateCardSize = (
 				: card
 		)
 	);
+};
+
+const handleSensorSelect = (sensorId: number, instanceId: string) => {
+	console.log(sensorId);
+	
+	const newDroppedCards = droppedCards.map((card) => {
+		if (card.instanceId === instanceId) {
+			card.sensorId = sensorId;
+		}
+		return card;
+	});
+	console.log(newDroppedCards);
+	
+	setDroppedCards(newDroppedCards);
 };
 
 // Create buttons on the edges for resizing
@@ -342,6 +358,8 @@ return (
 													asChild={true}
 													isInDesignerMode={true}
 													potSensors={pot.sensors}
+													onSensorSelect={handleSensorSelect}
+													instanceId={card.instanceId}
 												/>
 
 												{renderResizeButtons(

@@ -1,6 +1,7 @@
 import { CropPotResponseDto } from "../../../dtos/cropPot.dto";
 import { PotCard } from "../../../components/PotCards/PotCard/PotCard";
 import { Card } from "../../../components/ui/card";
+import { useTranslation } from "react-i18next";
 
 export enum layoutOptions {
 	page,
@@ -16,10 +17,11 @@ export const CropPots = ({
 	layout?: layoutOptions;
 	action?: Function;
 }) => {
+	const { t } = useTranslation();
 	return (
 		<Card className="h-[10%] sm:h-fit flex flex-col gap-2 py-4 px-2">
 			{layout === layoutOptions.page && (
-				<h2 className="text-xl pl-2 font-medium">Crop pots:</h2>
+				<h2 className="text-xl pl-2 font-medium">{t("dashboard.cropPots")}:</h2>
 			)}
 			<ul className="h-full w-full flex flex-col sm:flex-row gap-2 md:gap-6 overflow-x-scroll">
 				{cropPots?.length ? (
@@ -39,7 +41,7 @@ export const CropPots = ({
 }
 					</>
 				) : (
-					<p>No crop pots available</p>
+					<p>{t("dashboard.noPotsAvaliable")}</p>
 				)}
 			</ul>
 		</Card>

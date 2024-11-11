@@ -7,6 +7,7 @@ export enum CardID {
 
 export interface CardType {
 	id: string;
+	instanceId?: string;
 	component: React.ElementType;
 	width: number; // Grid columns the card occupies
 	height: number; // Grid rows the card occupies

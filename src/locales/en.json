@@ -1,0 +1,53 @@
+{
+	"home": {
+		"subHeader": "Autonomous Crop Pot",
+		"headerTitle": "Plants Care",
+		"getStarted": "Get Started",
+		"dashboard": "Dashboard",
+		"section1Title": "Understanding the Impact of insufficient plant care",
+		"section1Description": "Neglecting proper plant care can lead to more than just wilted leaves. It's crucial to understand that inadequate watering, poor sunlight exposure, and lack of nutrients can severely impact plant health.",
+		"section2Title": "Revolutionize Your Gardening with the Autonomous Crop Pot",
+		"section2Description": "Say goodbye to the guesswork of gardening! The Autonomous Crop Pot is here to transform your plant care routine. This cutting-edge product is designed to automatically manage watering, lighting, and nutrients, ensuring your plants receive optimal care even when you're away.",
+		"betterTitle": "Just better.",
+		"features": {
+			"modularDesign": "Modular design",
+			"precisionMonitoring": "Precision Monitoring",
+			"ecoFriendly": "Environmentally Friendly",
+			"intuitiveUsage": "Intuitive usage",
+			"futureProof": "Future-Proof"
+		}
+	},
+
+  "dashboard": {
+      "cropPots": "Crop Pots",
+      "noPotsAvaliable": "No crop pots available",
+      "pinnedPot": "Pinned Pot",
+      "pinPot": "Pin Pot",
+      "tooltip": {
+        "designLayout": "Design pinned layout",
+        "unpin": "Unpin pot"
+      },
+      "noPinnedCards": "No pinned cards yet, go into design mode to configure the canvas"
+  },
+
+  "potCard": {
+	"actionsNeeded": {
+		"actionRequired": "Action Required",
+		"noDriver": "provide a driver"
+	},
+	"statuses": {
+		"potStatus": "Pot Status",
+		"offline": "Offline",
+		"online": "Online",
+		"updating": "Updating"
+	}
+  },
+
+	"footer": {
+		"allRightsReserved": "All Rights Reserved",
+		"contacts": "Contact Us",
+		"termsOfService": "Terms of Service",
+		"privacyPolicy": "Privacy Policy",
+		"marketplace": "Marketplace"
+	}
+}
