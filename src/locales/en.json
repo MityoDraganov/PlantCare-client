@@ -1,4 +1,8 @@
 {
+	"header": {
+		"signIn": "Sign In",
+		"signUp": "Sign Up"
+	},
 	"home": {
 		"subHeader": "Autonomous Crop Pot",
 		"headerTitle": "Plants Care",
@@ -18,30 +22,75 @@
 		}
 	},
 
-  "dashboard": {
-      "cropPots": "Crop Pots",
-      "noPotsAvaliable": "No crop pots available",
-      "pinnedPot": "Pinned Pot",
-      "pinPot": "Pin Pot",
-      "tooltip": {
-        "designLayout": "Design pinned layout",
-        "unpin": "Unpin pot"
-      },
-      "noPinnedCards": "No pinned cards yet, go into design mode to configure the canvas"
-  },
-
-  "potCard": {
-	"actionsNeeded": {
-		"actionRequired": "Action Required",
-		"noDriver": "provide a driver"
+	"dashboard": {
+		"cropPots": "Crop Pots",
+		"noPotsAvaliable": "No crop pots available",
+		"pinnedPot": "Pinned Pot",
+		"pinPot": "Pin Pot",
+		"tooltip": {
+			"designLayout": "Design pinned layout",
+			"unpin": "Unpin pot"
+		},
+		"noPinnedCards": "No pinned cards yet, go into design mode to configure the canvas"
 	},
-	"statuses": {
-		"potStatus": "Pot Status",
-		"offline": "Offline",
-		"online": "Online",
-		"updating": "Updating"
-	}
-  },
+
+	"potCard": {
+		"actionsNeeded": {
+			"actionRequired": "Action Required",
+			"noDriver": "provide a driver"
+		},
+		"statuses": {
+			"potStatus": "Pot Status",
+			"offline": "Offline",
+			"online": "Online",
+			"updating": "Updating"
+		}
+	},
+
+	"inbox": {
+		"header": "Inbox",
+		"noMessages": "No new notifications, yet"
+	},
+
+	"pinCards": {
+		"waterTank": {
+			"title": "Water Tank"
+		},
+		"temperatureCard": {
+			"title": "Temperature"
+		}
+	},
+
+	"marketplace": {
+		"header": "Marketplace",
+		"subheader": "Find all your drivers in one place",
+		"noDrivers": "No drivers available",
+		"visit": "Visit",
+		"madeBy": "Made by",
+		"you": "You",
+		"sort": {
+			"sortBy": "Sort by",
+			"official": "Official first",
+			"mostPopular": "Most popular",
+			"leastPopular": "Least popular"
+		},
+		"areYouDeveloper": "Are you developer? Submit your driver",
+		"here": "here",
+		"noDriversAvailable": "No drivers available",
+		"edit": "Edit",
+		"delete": "Delete",
+		"update": "Update",
+		"submit": "Submit",
+		"officialTooltip": "Official and trusted driver",
+
+		"alias": "Alias",
+		"downloadUrl": "Download URL",
+		"bannerImage": "Banner Image"
+	},
+
+	"apiResponses": {
+		"networkError": "Network error or invalid response format."
+	},
 
 	"footer": {
 		"allRightsReserved": "All Rights Reserved",

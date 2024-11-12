@@ -1,9 +1,9 @@
-
 import { Inbox as InboxIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { InboxContext } from "../../contexts/InboxContext";
 import { useContext } from "react";
 import { markAllMessagesAsRead } from "../../api/requests";
+import { useTranslation } from "react-i18next";
 
 enum bodyEntries {
 	title = "title",
@@ -13,7 +13,7 @@ enum bodyEntries {
 
 export const Inbox = () => {
 	const { messages, handleMarkAllMessagesAsRead } = useContext(InboxContext);
-	
+	const { t } = useTranslation();
 	const handlePopoverClose = async (isOpen: boolean) => {
         if (!isOpen) {
 			await markAllMessagesAsRead();
@@ -23,6 +23,15 @@ export const Inbox = () => {
 
 
 	const renderValue = (value: any) => {
+		if (typeof value === "string") {
+			try {
+				const parsedValue = JSON.parse(value);
+				return renderValue(parsedValue);
+			} catch (e) {
+				// Not a JSON string, render as is
+			}
+		}
+
 		if (Array.isArray(value)) {
 			return (
 				<ul className="list-disc pl-5">
@@ -54,11 +63,11 @@ export const Inbox = () => {
 			</PopoverTrigger>
 
 			<PopoverContent className="max-w-screen-sm max-h-96" align={"end"}>
-				<h2 className="h-min">Inbox</h2>
+				<h2 className="h-min">{t("inbox.header")}</h2>
 
 				<div className="max-h-72 overflow-y-auto">
 					{!messages || messages.length === 0 ? (
-						<h2>No new notifications, yet!</h2>
+						<h2>{t("inbox.noMessages")}!</h2>
 					) : (
 						<ul className="mt-2 flex flex-col gap-4">
 							{messages.reverse().map((message, index) => {

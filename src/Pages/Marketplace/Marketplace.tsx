@@ -12,6 +12,7 @@ import { getAllDrivers } from "../../api/requests";
 import { MarketplaceCard } from "./components/MarketplaceCard";
 import { DriverDto } from "../../dtos/driver.dto";
 import { UploadDialog } from "./components/UploadDialog";
+import { useTranslation } from "react-i18next";
 
 export const Marketplace = ({
 	asChild,
@@ -23,7 +24,7 @@ export const Marketplace = ({
 	sensorId?: number;
 }) => {
 	const [drivers, setDrivers] = useState<DriverDto[]>();
-
+	const { t } = useTranslation();
 	useEffect(() => {
 		(async () => {
 			setDrivers(await getAllDrivers());
@@ -39,9 +40,11 @@ export const Marketplace = ({
 					<header className="text-center mb-4 mt-4">
 						<h1 className="text-2xl">
 							PlantsCare -{" "}
-							<span className="font-medium">Marketplace</span>
+							<span className="font-medium">
+								{t("marketplace.header")}
+							</span>
 						</h1>
-						<p>Find all your drivers in one place</p>
+						<p>{t("marketplace.subheader")}</p>
 					</header>
 				)}
 
@@ -51,15 +54,19 @@ export const Marketplace = ({
 							className="w-[40%] md:w-[10%] mr-0 ml-auto"
 							icon={Filter}
 						>
-							<SelectValue placeholder="Sort by:" />
+							<SelectValue
+								placeholder={t("marketplace.sort.sortBy")}
+							/>
 						</SelectTrigger>
 						<SelectContent>
-							<SelectItem value="official">Official</SelectItem>
-							<SelectItem value="mostPopular">
-								Most popular
+							<SelectItem value="official">
+								{t("marketplace.sort.official")}
 							</SelectItem>
 							<SelectItem value="mostPopular">
-								Least popular
+								{t("marketplace.sort.mostPopular")}
+							</SelectItem>
+							<SelectItem value="mostPopular">
+								{t("marketplace.sort.leastPopular")}
 							</SelectItem>
 						</SelectContent>
 					</Select>
@@ -81,7 +88,7 @@ export const Marketplace = ({
 								/>
 							))
 						) : (
-							<p>No drivers found!</p>
+							<p>{t("marketplace.noDriversAvailable")}!</p>
 						)}
 					</CardContent>
 

@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { Button } from "../../../components/ui/button";
 import { DriverDto } from "../../../dtos/driver.dto";
 import { UploadDialog } from "./UploadDialog";
+import { useTranslation } from "react-i18next";
 
 export const MarketplaceCard = ({
 	driverDto,
@@ -24,7 +25,7 @@ export const MarketplaceCard = ({
 }) => {
 	const displayName = driverDto.user.username || driverDto.user.email;
 	console.log(sensorId);
-	
+	const { t } = useTranslation();
 	return (
 		<Card className="w-full sm:w-[48%] md:w-[24%] lg:w-[16%] h-[60%] flex flex-col justify-between ">
 			<CardTitle className="text-sm flex flex-col p-2 h-[50%] md:h-auto">
@@ -77,15 +78,15 @@ export const MarketplaceCard = ({
 								className="flex gap-2 mr-0 ml-auto text-sm"
 								size="sm"
 							>
-								Visit <Github />
+								{t("marketplace.visit")} <Github />
 							</Button>
 						</Link>
 					)}
 				</div>
 				<p className="text-xs">
-					<span className="font-medium">Made by:</span>{" "}
+					<span className="font-medium">{t("marketplace.madeBy")}:</span>{" "}
 					{driverDto.isUploader ? (
-						<span className="uppercase font-bold">you</span>
+						<span className="uppercase font-bold">{t("marketplace.you")}</span>
 					) : (
 						<span>{displayName}</span>
 					)}

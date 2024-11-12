@@ -293,7 +293,7 @@ return (
 						{...provided.droppableProps}
 					>
 						<p>Components:</p>
-						<div className="grid grid-cols-2 gap-2">
+						<div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
 							{availableCards.map((card, index) => (
 								<Draggable
 									key={card.id}

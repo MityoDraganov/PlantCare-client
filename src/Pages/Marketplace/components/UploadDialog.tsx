@@ -15,6 +15,7 @@ import { UploadDriverDto } from "../../../dtos/driver.dto";
 import useFormData from "../../../hooks/useForm";
 import { useEffect } from "react";
 import { useLoading } from "../../../contexts/LoadingContext";
+import { useTranslation } from "react-i18next";
 
 interface UploadDialogProps {
 	initialData?: UploadDriverDto; // Optional initial data for edit mode
@@ -27,13 +28,14 @@ export const UploadDialog = ({
 	onSubmitSuccess,
 	driverId,
 }: UploadDialogProps) => {
+	const { t } = useTranslation();
 	const [driverData, onChange, setDriverData] = useFormData<UploadDriverDto>({
 		alias: "",
 		downloadUrl: "",
 		marketplaceBanner: null,
 	});
 
-	const { beginLoading, endLoading } = useLoading()
+	const { beginLoading, endLoading } = useLoading();
 
 	// Set initial data when editing
 	useEffect(() => {
@@ -71,11 +73,11 @@ export const UploadDialog = ({
 		<Dialog>
 			<DialogTrigger>
 				{initialData ? (
-					<Button>Edit</Button>
+					<Button>{t('marketplace.edit')}</Button>
 				) : (
 					<p className=" absolute bottom-1 right-2 text-sm hover:underline hover:cursor-pointer underline-offset-2">
-						Are you developer? Submit your driver{" "}
-						<span className="font-medium">here.</span>
+						{t("marketplace.areYouDeveloper")}{" "}
+						<span className="font-medium">{t("marketplace.here")}.</span>
 					</p>
 				)}
 			</DialogTrigger>
@@ -87,19 +89,19 @@ export const UploadDialog = ({
 					<div className="flex flex-col gap-3">
 						<InputGroup
 							id="alias"
-							label="Alias"
+							label={t("marketplace.alias")}
 							onChange={onChange}
 							value={driverData.alias}
 						/>
 						<InputGroup
 							id="downloadUrl"
-							label="Download Url"
+							label={t("marketplace.downloadUrl")}
 							onChange={onChange}
 							value={driverData.downloadUrl}
 							type="url"
 						/>
 						<InputGroup
-							label="Content"
+							label={t("marketplace.bannerImage")}
 							placeHolder=""
 							onChange={onChange}
 							id="marketplaceBanner"
@@ -108,14 +110,14 @@ export const UploadDialog = ({
 					</div>
 					<div className="flex flex-col gap-3">
 						<Button onClick={handleUploadDriver}>
-							{initialData ? "Update" : "Submit"}
+							{initialData ? t("marketplace.update") : t("marketplace.submit")}
 						</Button>
 						{initialData && driverId && (
 							<Button
 								variant="destructive"
 								onClick={handleDeleteDriver}
 							>
-								Delete
+								{t('marketplace.delete')}
 							</Button>
 						)}
 					</div>

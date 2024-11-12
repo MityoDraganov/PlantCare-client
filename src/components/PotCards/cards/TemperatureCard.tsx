@@ -8,12 +8,13 @@ import {
 	SelectValue,
 } from "../../../components/ui/select";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface TemperatureCardProps extends InfoCardProps {
 	potTemperature?: number;
 }
 
-const title = "Temperature";
+
 
 export const TemperatureCard = ({
 	potTemperature,
@@ -23,6 +24,8 @@ export const TemperatureCard = ({
 		"celsius" | "fahrenheit"
 	>("celsius");
 
+	const { t } = useTranslation();
+
 	function celsiusToFahrenheit(celsius: number) {
 		return (celsius * 9) / 5 + 32;
 	}
@@ -30,7 +33,7 @@ export const TemperatureCard = ({
 	return (
 		<InfoCard
 			icon={<Thermometer />}
-			title={title}
+			title={t('pinCards.temperatureCard.title')}
 			mainContent={
 				<span className="flex items-center justify-center">
 					<span>
@@ -68,6 +71,3 @@ export const TemperatureCard = ({
 	);
 };
 
-
-TemperatureCard.getIcon = () => "Beaker";
-TemperatureCard.getTitle = () => title;

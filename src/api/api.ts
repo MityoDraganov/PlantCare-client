@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-
+import i18n, { getTranslation } from "../lib/translation";
 const host =
 	process.env.NODE_ENV === "production" ? "" : "//localhost:8080/api/v1/";
 
@@ -83,7 +83,7 @@ const request = async (
 	} catch (error) {
 		// Handle unexpected network or parsing errors
 		console.error("Request failed", error);
-		toast.error("Network error or invalid response format.");
+		toast.error(getTranslation("apiResponses.networkError"));
 		return null; // Stop further execution by returning null
 	}
 };
