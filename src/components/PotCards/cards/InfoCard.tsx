@@ -29,6 +29,7 @@ export interface InfoCardProps {
 	onSensorSelect?: (sensorId: number, instanceId: string) => void;
 	instanceId?: string;
 	corespondingSensorSeria?: number;
+	sensorAlias?: string;
 }
 
 export const InfoCard = ({
@@ -42,7 +43,8 @@ export const InfoCard = ({
 	potSensors,
 	cardType = "related",
 	onSensorSelect,
-	instanceId
+	instanceId,
+	sensorAlias
 }: InfoCardProps) => {
 	return (
 		<Card
@@ -63,6 +65,7 @@ export const InfoCard = ({
 			</CardTitle>
 
 			<CardContent className="flex flex-col h-fit justify-between items-center gap-0 font-mono">
+				{!isInDesignerMode && sensorAlias && (<p className="flex gap-1 text-xs"><span>Sensor:</span> <span>{sensorAlias}</span></p>)}
 				<span className="font-extrabold text-2xl">{mainContent}</span>
 				<span className="uppercase text-xs">{subContent}</span>
 			</CardContent>

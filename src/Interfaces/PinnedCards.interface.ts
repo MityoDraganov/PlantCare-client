@@ -1,3 +1,5 @@
+import { SensorDto } from "../dtos/sensors.dto";
+
 export enum CardID {
 	WaterTankCard = "WaterTankCard",
 	TemperatureCard = "TemperatureCard",
@@ -15,6 +17,7 @@ export interface CardType {
 	title?: string;
 	icon?: string;
 	sensorId?: number;
+	sensor?: SensorDto;
 	type: CardID;
 }
 

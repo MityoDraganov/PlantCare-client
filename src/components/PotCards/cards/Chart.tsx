@@ -1,4 +1,4 @@
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis, ResponsiveContainer, Brush } from "recharts";
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Brush } from "recharts";
 import { useState, useEffect } from "react";
 import {
     ChartContainer,

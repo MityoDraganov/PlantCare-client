@@ -7,7 +7,7 @@ import { ScrollArea } from "../../ui/scroll-area";
 import { InfoCard, InfoCardProps } from "./InfoCard";
 import { cn } from "../../../lib/utils";
 
-type IconName = keyof typeof icons;
+export type IconName = keyof typeof icons;
 
 interface LucideIconPickerProps extends InfoCardProps {
 	onSelectIcon: (iconName: IconName) => void;

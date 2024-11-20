@@ -110,20 +110,20 @@ const useWebSocket = (url: string) => {
 			return;
 		}
 
-		if (message.event && message.event === Event.AsyncPromise) {
-			const asyncMessage = message.data;
+		// if (message.event && message.event === Event.AsyncPromise) {
+		// 	const asyncMessage = message.data;
 
-			// Start the toast promise
-			toastPromiseRef.current = toast.promise(
-				new Promise(() => {}), // No-op, manually controlled
-				{
-					loading: "Processing...",
-					success: "Operation completed!",
-					error: "Error occurred!",
-				}
-			);
-			return;
-		}
+		// 	// Start the toast promise
+		// 	toastPromiseRef.current = toast.promise(
+		// 		new Promise(() => {}), // No-op, manually controlled
+		// 		{
+		// 			loading: "Processing...",
+		// 			success: "Operation completed!",
+		// 			error: "Error occurred!",
+		// 		}
+		// 	);
+		// 	return;
+		// }
 
 		if (message.event && message.event === Event.UpdatedPot) {
 			const updatedPotData = message.data;

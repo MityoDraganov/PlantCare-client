@@ -1,14 +1,11 @@
 import { Dispatch, SetStateAction } from "react";
-import { updateControllSetting } from "../../../../api/requests";
-import { Button } from "../../../ui/button";
-import { ControlCard } from "../../components/ControlCard";
+//import { updateControllSetting } from "../../../../api/requests";
 import { tabOptions } from "../PotCard";
 import { ControlDtoWithEditing } from "../tabs/InfoTab";
 
 export const Controls = ({
-	updateData,
-	setUpdateData,
-	cancelUpdate,
+	//updateData,
+	//setUpdateData,
 	setTab,
 }: {
 	updateData: ControlDtoWithEditing[];
@@ -16,59 +13,59 @@ export const Controls = ({
 	cancelUpdate: () => void;
 	setTab: Dispatch<SetStateAction<tabOptions>>;
 }) => {
-	const saveUpdate = async () => {
-		await updateControllSetting(updateData);
+	// const saveUpdate = async () => {
+	// 	await updateControllSetting(updateData);
 
-		const newData = updateData.map((x) => ({ ...x, isEditing: false }));
+	// 	const newData = updateData.map((x) => ({ ...x, isEditing: false }));
 
-		setUpdateData(newData);
-	};
+	// 	setUpdateData(newData);
+	// };
 
-	const editStateHandler = (serialNumber: string) => {
-		const newData = updateData.map((control) =>
-			control.serialNumber === serialNumber
-				? { ...control, isEditing: !control.isEditing }
-				: control
-		);
+	// const editStateHandler = (serialNumber: string) => {
+	// 	const newData = updateData.map((control) =>
+	// 		control.serialNumber === serialNumber
+	// 			? { ...control, isEditing: !control.isEditing }
+	// 			: control
+	// 	);
 
-		setUpdateData(newData);
-	};
-	const updateControlValue = <K extends keyof ControlDtoWithEditing>(
-		serialNumber: string,
-		path: string[],
-		value: ControlDtoWithEditing[K]
-	) => {
-		const newData = updateData.map((control) => {
-			if (control.serialNumber === serialNumber) {
-				let updatedControl = { ...control };
-				let currentLevel: any = updatedControl;
+	// 	setUpdateData(newData);
+	// };
+	// const updateControlValue = <K extends keyof ControlDtoWithEditing>(
+	// 	serialNumber: string,
+	// 	path: string[],
+	// 	value: ControlDtoWithEditing[K]
+	// ) => {
+	// 	const newData = updateData.map((control) => {
+	// 		if (control.serialNumber === serialNumber) {
+	// 			let updatedControl = { ...control };
+	// 			let currentLevel: any = updatedControl;
 	
-				for (let i = 0; i < path.length - 1; i++) {
-					const key = path[i];
-					if (!currentLevel[key]) {
-						currentLevel[key] = {}; // Create the nested structure if it doesn't exist
-					}
-					currentLevel = currentLevel[key];
-				}
+	// 			for (let i = 0; i < path.length - 1; i++) {
+	// 				const key = path[i];
+	// 				if (!currentLevel[key]) {
+	// 					currentLevel[key] = {}; // Create the nested structure if it doesn't exist
+	// 				}
+	// 				currentLevel = currentLevel[key];
+	// 			}
 	
-				const finalKey = path[path.length - 1];
-				let parsedValue;
+	// 			const finalKey = path[path.length - 1];
+	// 			let parsedValue;
 	
-				if (Array.isArray(value)) {
-					parsedValue = value;
-				} else {
-					parsedValue = !isNaN(Number(value)) ? Number(value) : value;
-				}
+	// 			if (Array.isArray(value)) {
+	// 				parsedValue = value;
+	// 			} else {
+	// 				parsedValue = !isNaN(Number(value)) ? Number(value) : value;
+	// 			}
 	
-				currentLevel[finalKey] = parsedValue;
+	// 			currentLevel[finalKey] = parsedValue;
 	
-				return updatedControl;
-			}
-			return control;
-		});
+	// 			return updatedControl;
+	// 		}
+	// 		return control;
+	// 	});
 	
-		setUpdateData(newData);
-	};
+	// 	setUpdateData(newData);
+	// };
 	
 	return (
 		<div className="pl-3 flex flex-col justify-between h-full pb-5">

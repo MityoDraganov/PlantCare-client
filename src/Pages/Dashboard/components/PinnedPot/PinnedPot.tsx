@@ -101,14 +101,14 @@ export const PinnedPots = () => {
 		}
 	};
 
-	const renderCardContent = (card: CardType, value?: number) => {
+	const renderCardContent = (card: CardType, value?: number, sensorAlias?: string) => {
 		switch (card.type) {
 			case CardID.WaterTankCard:
-				return <WaterTankCard percentageFull={value} />;
+				return <WaterTankCard percentageFull={value} sensorAlias={sensorAlias}/>;
 			case CardID.TemperatureCard:
-				return <TemperatureCard potTemperature={value} />;
+				return <TemperatureCard potTemperature={value} sensorAlias={sensorAlias}/>;
 			case CardID.PotGalleryCard:
-				return <PotGalleryCard />;
+				return <PotGalleryCard sensorAlias={sensorAlias}/>;
 			case CardID.CustomCard:
 				return (
 					<CustomCard
@@ -117,6 +117,7 @@ export const PinnedPots = () => {
 						onSelectIcon={() => {}}
 						selectedIcon="Hammer"
 						value={value}
+						sensorAlias={sensorAlias}
 					/>
 				);
 			default:
@@ -127,7 +128,8 @@ export const PinnedPots = () => {
 	const renderCard = (
 		card: CardType,
 		grid: GridOccupiedMap,
-		value?: number
+		value?: number,
+		sensorAlias?: string
 	) => {
 		const { rowStart, colStart } = findNextAvailablePosition(
 			grid,
@@ -145,7 +147,7 @@ export const PinnedPots = () => {
 					gridRowEnd: `span ${card.height}`,
 				}}
 			>
-				{renderCardContent(card, value)}
+				{renderCardContent(card, value, sensorAlias)}
 			</div>
 		);
 	};
@@ -216,8 +218,8 @@ export const PinnedPots = () => {
 											sensor.measurements[
 												sensor.measurements.length - 1
 											]?.value;
-
-										return renderCard(card, grid, value);
+										const sensorAlias = sensor.alias ? sensor.alias : sensor.serialNumber;
+										return renderCard(card, grid, value, sensorAlias);
 									});
 								})()
 							) : (
