@@ -99,5 +99,18 @@
 		"termsOfService": "Terms of Service",
 		"privacyPolicy": "Privacy Policy",
 		"marketplace": "Marketplace"
+	},
+
+	"pinLayout": {
+		"components": "Components",
+		"dropCards": "Drop your cards here",
+		"successMessage": "Layout saved successfully",
+		"comingSoon": "Coming soon",
+		"cardProperties": "Card Properties"
+	},
+
+	"editBtnsComponent": {
+		"save": "Save",
+		"cancel": "Cancel"
 	}
 }

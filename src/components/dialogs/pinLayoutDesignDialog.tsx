@@ -9,7 +9,7 @@ import { CustomCard, IconName } from "../PotCards/cards/CustomCard";
 import { PotGalleryCard } from "../PotCards/cards/PotGalleryCard";
 import { TemperatureCard } from "../PotCards/cards/TemperatureCard";
 import { WaterTankCard } from "../PotCards/cards/WaterTankCard";
-import { DialogContent } from "../ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 import { Button } from "../ui/button";
 
 import { EditBtnsComponent } from "../EditBtnsComponent";
@@ -18,6 +18,9 @@ import { updateCanvas } from "../../api/requests";
 import { CanvasDto } from "../../dtos/canvas.dto";
 import { CropPotResponseDto } from "../../dtos/cropPot.dto";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { PaintbrushVertical } from "lucide-react";
 
 interface CustomCardFields {
 	title: string;
@@ -30,6 +33,9 @@ export const PinLayoutDesignDialog = ({ pot }: { pot: CropPotResponseDto }) => {
 		icon: "",
 		title: "",
 	});
+	const [open, setOpen] = useState<boolean>(false);
+
+	const { t } = useTranslation();
 
 	const availableCards: CardType[] = [
 		{
@@ -147,7 +153,6 @@ export const PinLayoutDesignDialog = ({ pot }: { pot: CropPotResponseDto }) => {
 	}, [droppedCards]);
 
 	const GRID_SIZE = 3;
-	const MAX_POSITION = 9;
 
 	function positionToCoords(position: number): { row: number; col: number } {
 		const row = Math.floor((position - 1) / GRID_SIZE);
@@ -268,6 +273,7 @@ export const PinLayoutDesignDialog = ({ pot }: { pot: CropPotResponseDto }) => {
 
 	const handleCancel = () => {
 		setDroppedCards([]);
+		setOpen(false);
 	};
 
 	const handleSave = async () => {
@@ -276,57 +282,35 @@ export const PinLayoutDesignDialog = ({ pot }: { pot: CropPotResponseDto }) => {
 			pinnedCards: droppedCards,
 		};
 		await updateCanvas(canvas, pot.id);
+		toast.success("Canvas updated successfully");
+		setOpen(false);
 	};
 
 	return (
-		<DragDropContext onDragEnd={onDragEnd}>
-			<DialogContent className="w-[95%] h-[95%] grid grid-cols-4">
-				<Droppable droppableId="cardsList" direction="vertical">
-					{(provided) => (
-						<div
-							className="col-span-1 border-r h-full p-4"
-							ref={provided.innerRef}
-							{...provided.droppableProps}
-						>
-							<p>Components:</p>
-							<div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
-								{availableCards.map((card, index) => (
-									<Draggable
-										key={card.id}
-										draggableId={card.id}
-										index={index}
-									>
-										{(provided) => (
-											<div
-												ref={provided.innerRef}
-												{...provided.draggableProps}
-												{...provided.dragHandleProps}
-												className="border p-2 rounded-lg"
-											>
-												<card.component
-													asChild={true}
-												/>{" "}
-											</div>
-										)}
-									</Draggable>
-								))}
-							</div>
-							{provided.placeholder}
-						</div>
-					)}
-				</Droppable>
+		<Dialog open={open} onOpenChange={setOpen}>
+			<DialogTrigger>
+				<Tooltip>
+					<TooltipTrigger>
+						<PaintbrushVertical className="hover:rotate-12 duration-200" />
+					</TooltipTrigger>
+					<TooltipContent>
+						<p>{t("dashboard.tooltip.designLayout")}</p>
+					</TooltipContent>
+				</Tooltip>
+			</DialogTrigger>
 
-				<div className="flex flex-col w-full h-full col-span-2">
-					<p>Drop your cards here:</p>
-					<Droppable droppableId="dropZone" mode="standard">
+			<DragDropContext onDragEnd={onDragEnd}>
+				<DialogContent className="w-[95%] h-[95%] grid grid-cols-4">
+					<Droppable droppableId="cardsList" direction="vertical">
 						{(provided) => (
 							<div
-								className="col-span-2 border-r h-full p-4 auto-rows-[minmax(100px,auto)] gap-4"
+								className="col-span-1 border-r h-full p-4"
 								ref={provided.innerRef}
 								{...provided.droppableProps}
 							>
-								<div className="grid grid-cols-3 grid-rows-3 gap-4 h-full">
-									{droppedCards.map((card, index) => (
+								<p>{t("pinLayout.components")}:</p>
+								<div className="grid grid-cols-1 lg:grid-cols-2 gap-2">
+									{availableCards.map((card, index) => (
 										<Draggable
 											key={card.id}
 											draggableId={card.id}
@@ -337,55 +321,11 @@ export const PinLayoutDesignDialog = ({ pot }: { pot: CropPotResponseDto }) => {
 													ref={provided.innerRef}
 													{...provided.draggableProps}
 													{...provided.dragHandleProps}
-													className="border p-2 rounded-lg relative group"
-													style={{
-														gridColumnEnd:
-															card.width === 3
-																? "span 3"
-																: `span ${card.width}`,
-														gridRowEnd: `span ${card.height}`,
-														gridColumnStart:
-															card.width === 3
-																? "1"
-																: "auto",
-													}}
+													className="border p-2 rounded-lg"
 												>
 													<card.component
 														asChild={true}
-														isInDesignerMode={true}
-														potSensors={pot.sensors}
-														onSensorSelect={
-															handleSensorSelect
-														}
-														instanceId={
-															card.instanceId
-														}
-														onTitleChange={(
-															title: string
-														) => {
-															setCustomCardData(
-																(prev) => ({
-																	...prev,
-																	title,
-																})
-															);
-														}}
-														onSelectIcon={(
-															iconName: IconName
-														) => {
-															setCustomCardData(
-																(prev) => ({
-																	...prev,
-																	icon: iconName,
-																})
-															);
-														}}
-													/>
-
-													{renderResizeButtons(
-														index,
-														card
-													)}
+													/>{" "}
 												</div>
 											)}
 										</Draggable>
@@ -395,19 +335,108 @@ export const PinLayoutDesignDialog = ({ pot }: { pot: CropPotResponseDto }) => {
 							</div>
 						)}
 					</Droppable>
-				</div>
 
-				<div className="col-span-1 h-full p-4 flex flex-col justify-between">
-					<p>Card properties:</p>
+					<div className="flex flex-col w-full h-full col-span-2">
+						<p>{t("pinLayout.dropCards")}:</p>
+						<Droppable droppableId="dropZone" mode="standard">
+							{(provided) => (
+								<div
+									className="col-span-2 border-r h-full p-4  gap-4"
+									ref={provided.innerRef}
+									{...provided.droppableProps}
+								>
+									<div className="grid grid-cols-3 grid-rows-3 gap-4 h-full">
+										{droppedCards.map((card, index) => (
+											<Draggable
+												key={card.id}
+												draggableId={card.id}
+												index={index}
+											>
+												{(provided) => (
+													<div
+														ref={provided.innerRef}
+														{...provided.draggableProps}
+														{...provided.dragHandleProps}
+														className="border p-2 rounded-lg relative group"
+														style={{
+															gridColumnEnd:
+																card.width === 3
+																	? "span 3"
+																	: `span ${card.width}`,
+															gridRowEnd: `span ${card.height}`,
+															gridColumnStart:
+																card.width === 3
+																	? "1"
+																	: "auto",
+														}}
+													>
+														<card.component
+															asChild={true}
+															isInDesignerMode={
+																true
+															}
+															potSensors={
+																pot.sensors
+															}
+															onSensorSelect={
+																handleSensorSelect
+															}
+															instanceId={
+																card.instanceId
+															}
+															onTitleChange={(
+																title: string
+															) => {
+																setCustomCardData(
+																	(prev) => ({
+																		...prev,
+																		title,
+																	})
+																);
+															}}
+															onSelectIcon={(
+																iconName: IconName
+															) => {
+																setCustomCardData(
+																	(prev) => ({
+																		...prev,
+																		icon: iconName,
+																	})
+																);
+															}}
+														/>
 
-					<EditBtnsComponent
-						cancelUpdate={handleCancel}
-						saveUpdate={handleSave}
-						isEditing={true}
-					/>
-				</div>
-			</DialogContent>
-		</DragDropContext>
+														{renderResizeButtons(
+															index,
+															card
+														)}
+													</div>
+												)}
+											</Draggable>
+										))}
+									</div>
+									{provided.placeholder}
+								</div>
+							)}
+						</Droppable>
+					</div>
+
+					<div className="col-span-1 h-full p-4 flex flex-col justify-between">
+						<p>{t("pinLayout.cardProperties")}:</p>
+
+						<p className="text-muted-foreground">
+							{t("pinLayout.comingSoon")}...
+						</p>
+
+						<EditBtnsComponent
+							cancelUpdate={handleCancel}
+							saveUpdate={handleSave}
+							isEditing={true}
+						/>
+					</div>
+				</DialogContent>
+			</DragDropContext>
+		</Dialog>
 	);
 };
 

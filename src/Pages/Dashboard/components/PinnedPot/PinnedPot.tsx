@@ -136,6 +136,10 @@ export const PinnedPots = () => {
 			card.width,
 			card.height
 		);
+		console.log('here');
+		
+		console.log(rowStart, colStart);
+		
 
 		return (
 			<div
@@ -163,23 +167,9 @@ export const PinnedPots = () => {
 						{t("dashboard.pinnedPot")}
 						<div className="flex gap-2">
 							<TooltipProvider>
-								<Dialog>
-									<DialogTrigger>
-										<Tooltip>
-											<TooltipTrigger>
-												<PaintbrushVertical className="hover:rotate-12 duration-200" />
-											</TooltipTrigger>
-											<TooltipContent>
-												<p>
-													{t(
-														"dashboard.tooltip.designLayout"
-													)}
-												</p>
-											</TooltipContent>
-										</Tooltip>
-									</DialogTrigger>
+
 									<PinLayoutDesignDialog pot={x} />
-								</Dialog>
+								
 
 								<Tooltip>
 									<TooltipTrigger>

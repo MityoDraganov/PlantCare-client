@@ -1,27 +1,27 @@
+import { useTranslation } from "react-i18next";
 import { Button } from "./ui/button";
 
 export const EditBtnsComponent = ({
-    saveUpdate,
+	saveUpdate,
 	cancelUpdate,
-    isEditing,
+	isEditing,
 }: {
-    saveUpdate: () => void;
+	saveUpdate: () => void;
 	cancelUpdate: () => void;
-    isEditing: boolean;
+	isEditing: boolean;
 }) => {
+	const { t } = useTranslation();
 	return (
 		<div
 			className={`flex gap-2 transition-opacity duration-300 ${
-				isEditing
-					? "opacity-100"
-					: "opacity-0"
+				isEditing ? "opacity-100" : "opacity-0"
 			}`}
 		>
 			<Button variant="secondary" onClick={cancelUpdate}>
-				Cancel
+				{t("editBtnsComponent.cancel")}
 			</Button>
 			<Button variant="blue" onClick={saveUpdate}>
-				Save
+				{t("editBtnsComponent.save")}
 			</Button>
 		</div>
 	);

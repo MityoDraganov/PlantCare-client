@@ -100,5 +100,18 @@
 		"termsOfService": "Условия за ползване",
 		"privacyPolicy": "Политика за поверителност",
 		"marketplace": "Пазар"
+	},
+
+	"pinLayout": {
+		"components": "Компоненти",
+		"dropCards": "Поставете карти тук",
+		"successMessage": "Дизайнът беше запазен успешно",
+		"comingSoon": "Очаквайте скоро",
+		"cardProperties": "Свойства на картата"
+	},
+
+	"editBtnsComponent": {
+		"save": "Запази",
+		"cancel": "Отказ"
 	}
 }

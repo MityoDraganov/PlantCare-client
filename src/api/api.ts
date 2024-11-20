@@ -88,6 +88,15 @@ const request = async (
 		// Check for no content status (204) and return if successful
 		if (res.status === 204) return;
 
+		if (res.status === 401 && retry) {
+			const newToken = await refreshToken();
+			if (newToken) {
+				return request(method, url, data, type, false); // Retry the request with the new token
+			} else {
+				localStorage.removeItem("clerkFetchedToken");
+			}
+		}
+
 		const responseData = await res.json();
 
         if (!res.ok) {
