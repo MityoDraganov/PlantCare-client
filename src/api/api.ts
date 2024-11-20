@@ -1,5 +1,9 @@
 import toast from "react-hot-toast";
-import i18n, { getTranslation } from "../lib/translation";
+import { getTranslation } from "../lib/translation";
+import { Clerk } from "@clerk/clerk-js";
+
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
 const host =
 	process.env.NODE_ENV === "production" ? "" : "//localhost:8080/api/v1/";
 
@@ -12,11 +16,33 @@ interface RequestOptions {
 	body?: string | FormData;
 }
 
+const refreshToken = async (): Promise<string | null> => {
+    try {
+        const clerk = new Clerk(PUBLISHABLE_KEY);
+        await clerk.load();
+        const session = clerk.session;
+        if (session) {
+            const newToken = await session.getToken();
+			if (!newToken) {
+				return null;
+			}
+			toast.success(getTranslation("apiResponses.tokenRefreshed"));
+            localStorage.setItem("clerkFetchedToken", newToken);
+            return newToken;
+        }
+        return null;
+    } catch (error) {
+        console.error("Token refresh failed", error);
+        return null;
+    }
+};
+
 const request = async (
 	method: string,
 	url: string,
 	data?: any,
-	type?: "json" | "formData"
+	type?: "json" | "formData",
+	retry = true
 ): Promise<any> => {
 	const options: RequestOptions = {
 		method,
@@ -64,29 +90,33 @@ const request = async (
 
 		const responseData = await res.json();
 
-		// Handle HTTP errors by displaying toast and returning null
-		if (!res.ok) {
-			const errorMessage = Array.isArray(responseData.error)
-				? responseData.error.join(", ")
-				: responseData.error || "An unexpected error occurred.";
-			toast.error(errorMessage);
+        if (!res.ok) {
+            const errorMessage = Array.isArray(responseData.error)
+                ? responseData.error.join(", ")
+                : responseData.error || "An unexpected error occurred.";
+            toast.error(errorMessage);
 
-			// Clear authorization token on 401 status (unauthorized)
-			if (res.status === 401) {
-				localStorage.removeItem("Authorization");
-			}
-			return null; // Stop further execution by returning null
-		}
+            if (res.status === 401 && retry) {
+                const newToken = await refreshToken();
+                if (newToken) {
+                    return request(method, url, data, type, false); // Retry the request with the new token
+                } else {
+                    localStorage.removeItem("clerkFetchedToken");
+                }
+            }
+            return null;
+        }
 
 		// Return parsed response data if successful
 		return responseData;
 	} catch (error) {
-		// Handle unexpected network or parsing errors
 		console.error("Request failed", error);
 		toast.error(getTranslation("apiResponses.networkError"));
-		return null; // Stop further execution by returning null
+		return null;
 	}
 };
+
+
 
 // Export HTTP methods as bound instances of `request`
 const get = request.bind(null, "GET");

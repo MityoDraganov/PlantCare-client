@@ -89,7 +89,8 @@
 	},
 
 	"apiResponses": {
-		"networkError": "Network error or invalid response format."
+		"networkError": "Network error or invalid response format.",
+		"tokenRefreshed": "Token refreshed successfully."
 	},
 
 	"footer": {

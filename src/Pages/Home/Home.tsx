@@ -32,7 +32,7 @@ export const HomePage = () => {
 
       <div className="flex flex-col items-center gap-24 md:gap-12 lg:gap-6 h-full w-full">
         <section className="min-h-[45%] flex items-center w-fit gap-6">
-          <div className="h-full w-[35%]">
+          <div className="h-fit w-[35%]">
             <img
               src="dyingPlant_1-transparent.png"
               className="h-full w-full object-cover"
@@ -50,7 +50,7 @@ export const HomePage = () => {
             <p className="text-[14px]">{t('home.section2Description')}</p>
           </div>
 
-          <div className="w-[40%]">
+          <div className="h-fit">
             <img
               src="pot_dreemy_transparent.png"
               className="h-full w-full object-cover"
