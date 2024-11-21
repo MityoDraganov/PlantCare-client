@@ -1,4 +1,4 @@
-import { CropPotResponseDto } from "../../../../dtos/cropPot.dto";
+import { CropPotResponseDto } from "../../../../dtos/CropPot.dto";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { tabOptions } from "../PotCard";
 import useFormData from "../../../../hooks/useForm";

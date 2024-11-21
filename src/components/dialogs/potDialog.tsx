@@ -4,7 +4,7 @@ import useFormData from "../../hooks/useForm";
 import { Button } from "../ui/button";
 import { InputGroup, orientationOpts } from "../InputGroup";
 import { useEffect, useState } from "react";
-import { CropPotResponseDto } from "../../dtos/cropPot.dto";
+import { CropPotResponseDto } from "../../dtos/CropPot.dto";
 import { updatePot } from "../../api/requests";
 
 export const PotDialog = ({ pot }: { pot: CropPotResponseDto }) => {

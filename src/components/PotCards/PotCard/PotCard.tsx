@@ -1,4 +1,4 @@
-import { CropPotResponseDto, SensorStatus } from "../../../dtos/cropPot.dto";
+import { CropPotResponseDto, SensorStatus } from "../../../dtos/CropPot.dto";
 import { Card, CardHeader, CardTitle } from "../../ui/card";
 import {
 	Drawer,

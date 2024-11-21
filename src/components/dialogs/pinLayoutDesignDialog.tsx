@@ -16,7 +16,7 @@ import { EditBtnsComponent } from "../EditBtnsComponent";
 import { CardID, CardType } from "../../Interfaces/PinnedCards.interface";
 import { updateCanvas } from "../../api/requests";
 import { CanvasDto } from "../../dtos/canvas.dto";
-import { CropPotResponseDto } from "../../dtos/cropPot.dto";
+import { CropPotResponseDto } from "../../dtos/CropPot.dto";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
