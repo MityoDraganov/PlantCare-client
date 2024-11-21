@@ -52,7 +52,7 @@ export const Inbox = () => {
 				</div>
 			);
 		} else {
-			return <span>{value.toString()}</span>; // For primitive values
+			return <span>{value != null && value?.toString()}</span>; // For primitive values
 		}
 	};
 

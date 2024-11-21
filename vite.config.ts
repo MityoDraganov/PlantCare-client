@@ -4,15 +4,19 @@ import react from '@vitejs/plugin-react-swc'
 
 
 export default defineConfig({
+  server: {
+    host: '0.0.0.0',
+    port: 5173,
+  },
   plugins: [
     react(),
     VitePWA({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
-        name: 'Your App Name',
-        short_name: 'AppName',
-        description: 'Your app description',
+        name: 'PlantsCare',
+        short_name: 'PlantsCare',
+        description: 'Revolionize the way you take care of your plants',
         theme_color: '#ffffff',
         icons: [
           {

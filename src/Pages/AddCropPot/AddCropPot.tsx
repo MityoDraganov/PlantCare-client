@@ -9,7 +9,6 @@ import { Card } from "../../components/ui/card";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { Button } from "../../components/ui/button";
 import { ChevronRight } from "lucide-react";
-import { CropPotScene } from "./components/cropPotScene";
 import { useParams } from "react-router-dom";
 import { assignCropPot } from "../../api/requests";
 import toast from "react-hot-toast";
@@ -28,7 +27,7 @@ export const AddCropPot = () => {
     };
 
     return (
-        <div className="flex flex-col gap-[2%] h-full py-[5%] items-center">
+        <div className="flex flex-col gap-[2%] h-[90%] py-[5%] items-center">
             <div>
                 <h1 className="text-3xl font-mono">Plant Care</h1>
                 <p>Add Crop-Pot</p>
@@ -39,7 +38,7 @@ export const AddCropPot = () => {
             </SignedOut>
             <SignedIn>
                 <div className="w-[80%] h-full gap-[5%] items-center flex flex-col ">
-                    <div className="w-full h-[20%] flex flex-col">
+                    <div className="w-full h-[20%] flex flex-col ">
                         <p className="p-0 text-left font-semibold pl-2">
                             Signed in as:
                         </p>
@@ -53,7 +52,7 @@ export const AddCropPot = () => {
                                 </Avatar>
                             </div>
 
-                            <div className="flex flex-col text-left w-full">
+                            <div className="flex flex-col text-left w-full ">
                                 <h2 className="font-semibold">
                                     {user?.firstName} {user?.lastName}
                                 </h2>
@@ -76,9 +75,9 @@ export const AddCropPot = () => {
                                 </span>{" "}
                                 to your account?
                             </p>
-                            <p className="text-xs">token: <span className="font-medium">{token}</span></p>
+                            <p className="text-md">token: <span className="font-medium">{token}</span></p>
 
-                            <CropPotScene />
+           
                         </Card>
 
                         <Button
