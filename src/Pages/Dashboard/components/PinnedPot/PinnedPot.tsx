@@ -1,4 +1,4 @@
-import { PaintbrushVertical, Pin } from "lucide-react";
+import {  Pin } from "lucide-react";
 import { Card, CardContent, CardTitle } from "../../../../components/ui/card";
 import { useContext } from "react";
 import { WaterTankCard } from "../../../../components/PotCards/cards/WaterTankCard";

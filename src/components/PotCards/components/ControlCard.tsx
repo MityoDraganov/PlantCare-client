@@ -123,7 +123,7 @@ export const ControlCard = ({
 						<SelectContent>
 							<SelectItem
 								key={"unselect"}
-								
+								value=""
 							>
 								Remove selection
 							</SelectItem>

@@ -5,7 +5,6 @@ import {
 	XCircle,
 	ChevronDown,
 	XIcon,
-	WandSparkles,
 } from "lucide-react";
 
 import { cn } from "../../lib/utils";
@@ -136,7 +135,7 @@ export const MultiSelect = React.forwardRef<
 		const [selectedValues, setSelectedValues] =
 			React.useState<string[]>(defaultValue);
 		const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
-		const [isAnimating, setIsAnimating] = React.useState(false);
+		const [isAnimating] = React.useState(false);
 
 		React.useEffect(() => {
 			setSelectedValues(defaultValue);

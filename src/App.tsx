@@ -7,7 +7,6 @@ import { Toaster } from "react-hot-toast";
 import { Header } from "./components/Header";
 import { Dashboard } from "./Pages/Dashboard/Dashboard";
 import { Layout } from "./Pages/Dashboard/Layout";
-import { PotProvider } from "./contexts/PotContext";
 import { Suspense } from "react";
 import { Spinner } from "./components/spinner";
 import useWebSocket from "./hooks/useSocket";
