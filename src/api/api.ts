@@ -5,7 +5,7 @@ import { Clerk } from "@clerk/clerk-js";
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 const host =
-	process.env.NODE_ENV === "production" ? "" : "//localhost:8080/api/v1/";
+	process.env.NODE_ENV === "production" ? "" : "//localhost:8000/api/v1/";
 
 interface RequestOptions {
 	method: string;
