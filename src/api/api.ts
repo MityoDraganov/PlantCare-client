@@ -4,7 +4,7 @@ import { Clerk } from "@clerk/clerk-js";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
-const host = "http://plantscare.sytes.net/api/v1/"
+const host = "https://plantscare.sytes.net/api/v1/cropPots";
 
 interface RequestOptions {
 	method: string;
