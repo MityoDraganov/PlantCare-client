@@ -1,7 +1,8 @@
-import { CropPotResponseDto } from "../../../dtos/cropPot.dto";
+
 import { PotCard } from "../../../components/PotCards/PotCard/PotCard";
 import { Card } from "../../../components/ui/card";
 import { useTranslation } from "react-i18next";
+import { CropPotResponseDto } from "../../../dtos/CropPot.dto";
 
 export enum layoutOptions {
 	page,

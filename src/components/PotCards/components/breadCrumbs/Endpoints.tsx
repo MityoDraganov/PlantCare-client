@@ -10,9 +10,11 @@ import {
 
 import { Webhook } from "../Webhook";
 import { PotContext } from "../../../../contexts/PotContext";
+import { useTranslation } from "react-i18next";
 
 export const Endpoints = () => {
-	const {selectedPot} = useContext(PotContext)
+	const { selectedPot } = useContext(PotContext);
+	const { t } = useTranslation();
 	return (
 		<Table className="w-full h-full">
 			<TableHeader className="w-full font-mono">
@@ -24,14 +26,14 @@ export const Endpoints = () => {
 				{selectedPot?.webhooks?.length === 0 ? (
 					<TableRow key="empty">
 						<TableCell className="font-medium">
-							No webhooks yet
+							{t("advancedSettings.webhooks.noWebhooksYet")}
 						</TableCell>
 					</TableRow>
 				) : (
 					selectedPot?.webhooks?.map(
 						(webhook) =>
 							webhook.id && (
-								<Webhook webhook={webhook} key={webhook.id}/>
+								<Webhook webhook={webhook} key={webhook.id} />
 							)
 					)
 				)}

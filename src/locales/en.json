@@ -112,5 +112,32 @@
 	"editBtnsComponent": {
 		"save": "Save",
 		"cancel": "Cancel"
+	}, 
+
+
+	"sensors": {
+		"sensors": "Sensors",
+		"noDriver": "Sensors, with no provided driver",
+		"viewOther": "View other sensors",
+		"noSensorsWithoutDriver": "No sensors without provided driver",
+		"browseMarketplace": "Browse marketplace for drivers",
+		"noSensorsWithDriverProvided": "No sensors with provided driver"
+	},
+	"controls": {
+		"controls": "Controls",
+		"comingSoon": "Coming soon"
+	},
+
+	"advancedSettings": {
+		"advancedSettings": "Advanced Settings",
+		"webhooks": {
+			"webhooks": "Webhooks",
+			"endpoints": "Endpoints",
+			"editWebhook": "Edit Webhook",
+			"eventCatalog": "Event Catalog (coming soon)",
+			"newEndpoint": "New Endpoint",
+			"addEndpoint": "Add Endpoint",
+			"noWebhooksYet": "No webhooks yet"
+		}
 	}
 }

@@ -113,5 +113,32 @@
 	"editBtnsComponent": {
 		"save": "Запази",
 		"cancel": "Отказ"
+	},
+
+	"sensors": {
+		"sensors": "Сензори",
+		"noDriver": "Сензори без драйвер",
+		"viewOther": "Вижте други сензори",
+		"noSensorsWithoutDriver": "Няма сензори без предоставен драйвер",
+		"browseMarketplace": "Разгледайте пазара за драйвери",
+		"noSensorsWithDriverProvided": "Няма сензори с предоставен драйвер"
+	},
+	"controls": {
+		"controls": "Контроли",
+		"comingSoon": "Очаквайте скоро"
+	},
+
+	"advancedSettings": {
+		"advancedSettings": "Разширени настройки",
+		"webhooks": {
+			"webhooks": "Уеб куки",
+			"endpoints": "Крайни точки",
+			"editWebhook": "Редактиране на уеб кука",
+			"eventCatalog": "Каталог на събития (очакайте скоро)",
+			"newEndpoint": "Нова крайна точка",
+			"addEndpoint": "Добави крайна точка",
+			"noWebhooksYet": "Все още няма уеб куки"
+		}
 	}
+
 }
