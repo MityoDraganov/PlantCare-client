@@ -164,7 +164,7 @@ export const PinnedPots = () => {
 					key={x.id}
 				>
 					<CardTitle className="pl-6 flex justify-between w-full pr-1 pt-2">
-						{t("dashboard.pinnedPot")}
+						{t("dashboard.pinnedPot")}: {x.alias ? x.alias : x.id}
 						<div className="flex gap-2">
 							<TooltipProvider>
 
