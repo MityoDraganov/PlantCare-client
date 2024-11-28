@@ -33,7 +33,7 @@ export const PotDialog = ({ pot }: { pot: CropPotResponseDto }) => {
 			<DialogTrigger>
 				<Settings />
 			</DialogTrigger>
-			<DialogContent className="w-1/3 px-10 pt-10">
+			<DialogContent className="w-[95%] md:w-1/3 px-10 pt-10">
 				<div className="flex flex-col gap-4 pl-2 pb-4">
 					<h2 className="text-lg font-medium">Edit pot</h2>
 					<div className="flex flex-col gap-2 ">

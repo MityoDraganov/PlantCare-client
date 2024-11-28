@@ -35,7 +35,7 @@ export const SensorDialog = ({ sensor }: { sensor: SensorDto }) => {
       <DialogTrigger>
         <Settings />
       </DialogTrigger>
-      <DialogContent className="w-2/3 px-10 pt-10">
+      <DialogContent className="w-[95%] md:w-2/3 px-10 pt-10">
         <div className="flex flex-col gap-4 pl-2 pb-4">
           <h2 className="text-lg font-medium">Edit Sensor</h2>
           <div className="flex flex-col gap-2 ">

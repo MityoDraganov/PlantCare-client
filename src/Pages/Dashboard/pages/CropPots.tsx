@@ -19,17 +19,17 @@ export const CropPots = ({
 }) => {
 	const { t } = useTranslation();
 	return (
-		<Card className="h-[10%] sm:h-fit flex flex-col gap-2 py-4 px-2">
+		<Card className="h-1/3 md:h-[10%] sm:h-fit flex flex-col gap-2 py-4 px-2">
 			{layout === layoutOptions.page && (
 				<h2 className="text-xl pl-2 font-medium">{t("dashboard.cropPots")}:</h2>
 			)}
-			<ul className="h-full w-full flex flex-col sm:flex-row gap-2 md:gap-6 overflow-x-scroll">
+			<ul className=" h-full w-full flex flex-col sm:flex-row gap-2 md:gap-6 overflow-x-scroll md:overflow-y-hidden">
 				{cropPots?.length ? (
 					// Repeat the map multiple times to create an overflow effect
 					<>
 					{
 							cropPots.map((x: CropPotResponseDto, index: number) => (
-								<li className="min-w-[40%] sm:min-w-[25%] md:min-w-[18%] ">
+								<li className="min-w-[40%] sm:min-w-[25%] md:min-w-[18%] min-h-[10dvh]">
 									<PotCard
 										key={`${x.id}-${index}`} // Ensure unique keys for each PotCard
 										pot={x}

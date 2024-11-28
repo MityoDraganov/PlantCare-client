@@ -143,13 +143,15 @@ export const PinnedPots = () => {
 
 		return (
 			<div
+			className="w-fit"
 				key={card.id}
 				style={{
 					gridColumnStart: colStart,
 					gridRowStart: rowStart,
 					gridColumnEnd: `span ${card.width}`,
 					gridRowEnd: `span ${card.height}`,
-				}}
+				}
+			}
 			>
 				{renderCardContent(card, value, sensorAlias)}
 			</div>
