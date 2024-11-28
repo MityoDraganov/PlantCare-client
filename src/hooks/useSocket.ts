@@ -141,6 +141,23 @@ const useWebSocket = (url: string) => {
 			return;
 		}
 
+		if (message.event && message.event === Event.PotMeasurements) {
+			const updatedPotData = message.data;
+			//updatePotDataHandler(updatedPotData);
+			console.log(updatedPotData);
+			
+			// Resolve the toast promise if the pot update is successful
+			if (toastPromiseRef.current) {
+				toastPromiseRef.current({
+					isLoading: false,
+					success: true,
+					message: "Pot measurements updated successfully!",
+				});
+				toastPromiseRef.current = null;
+			}
+			return;
+		}
+
 		if (message.event && message.event === Event.NotificationAlert) {
 			toast.success(message.data.toString());
 			return;

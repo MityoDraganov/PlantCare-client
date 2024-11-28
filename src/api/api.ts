@@ -1,6 +1,7 @@
 import toast from "react-hot-toast";
 import { getTranslation } from "../lib/translation";
 import { Clerk } from "@clerk/clerk-js";
+import { endLoadingWithoutHook } from "../contexts/LoadingContext";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -104,6 +105,7 @@ const request = async (
                 ? responseData.error.join(", ")
                 : responseData.error || "An unexpected error occurred.";
             toast.error(errorMessage);
+			endLoadingWithoutHook();
 
             if (res.status === 401 && retry) {
                 const newToken = await refreshToken();

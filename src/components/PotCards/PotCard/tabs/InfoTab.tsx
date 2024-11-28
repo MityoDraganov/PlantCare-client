@@ -34,7 +34,7 @@ export const InfoTab = ({
 
 	return (
 		<div className="grid grid-cols-1 h-[90%] md:grid-cols-2 gap-2 w-full px-5 items-center md:w-2/3">
-			<Sensors sensors={pot.sensors} />
+			<Sensors sensors={pot.sensors} potId={pot.id}/>
 			<Controls
 				updateData={updateData}
 				setUpdateData={setUpdateData}

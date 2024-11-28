@@ -4,13 +4,13 @@ import useFormData from "../../../../hooks/useForm";
 import { InputGroup, orientationOpts } from "../../../InputGroup";
 import { Chart } from "../../cards/Chart";
 
-import { updateSensor } from "../../../../api/requests";
+import { measurePot, updateSensor } from "../../../../api/requests";
 import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from "../../../ui/collapsible";
-import { ChevronsUpDown, Store } from "lucide-react";
+import { ChevronsUpDown, RefreshCcw, Store } from "lucide-react";
 import { EditBtnsComponent } from "../../../EditBtnsComponent";
 import toast from "react-hot-toast";
 import { Button } from "../../../ui/button";
@@ -22,28 +22,35 @@ import {
 } from "../../../ui/tooltip";
 import { Dialog, DialogContent, DialogTrigger } from "../../../ui/dialog";
 import { Marketplace } from "../../../../Pages/Marketplace/Marketplace";
+import { useLoading } from "../../../../contexts/LoadingContext";
 
-export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
+export const Sensors = ({ sensors, potId }: { sensors: SensorDto[]; potId: number }) => {
 	const [isEditting, setIsEditting] = useState<boolean>(false);
 	const [updateData, _, setUpdateData] = useFormData(sensors);
+	const {isLoading, beginLoading } = useLoading();
 	const [isMarketplaceDialogOpen, setIsMarketplaceDialogOpen] =
 		useState<boolean>(false);
 
-		const handleUpdateSensor = (sensorId: number, newValue: string) => {
-			// Find the index of the sensor to update
-			const sensorToUpdateIndex = updateData.findIndex((x) => x.id === sensorId);
-			if (sensorToUpdateIndex === -1) return;
-		
-			// Update the sensor in the array at the found index
-			const updatedSensor = { ...updateData[sensorToUpdateIndex], driverUrl: newValue };
-			const updatedData = [...updateData];
-			updatedData[sensorToUpdateIndex] = updatedSensor;
-		
-			// Update the state with the modified array
-			setUpdateData(updatedData);
-			setIsMarketplaceDialogOpen(false);
+	const handleUpdateSensor = (sensorId: number, newValue: string) => {
+		// Find the index of the sensor to update
+		const sensorToUpdateIndex = updateData.findIndex(
+			(x) => x.id === sensorId
+		);
+		if (sensorToUpdateIndex === -1) return;
+
+		// Update the sensor in the array at the found index
+		const updatedSensor = {
+			...updateData[sensorToUpdateIndex],
+			driverUrl: newValue,
 		};
-		
+		const updatedData = [...updateData];
+		updatedData[sensorToUpdateIndex] = updatedSensor;
+
+		// Update the state with the modified array
+		setUpdateData(updatedData);
+		setIsMarketplaceDialogOpen(false);
+	};
+
 	useEffect(() => {
 		const isModified = updateData.some((updatedSensor) => {
 			const originalSensor = sensors.find(
@@ -80,10 +87,22 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 		setIsEditting(false); // Disable editing mode
 	};
 
+	const handleSensorsManualUpdate = async () => {
+		measurePot(potId);
+		beginLoading();
+	};
+
 	return (
 		<div className="md:border-r h-full md:border-gray-300 md:pr-6">
-			<h2 className="text-lg font-medium flex gap-[1%] items-center border-b pb-2 mb-4 pl-2">
-				Sensors
+			<h2 className="text-lg font-medium flex gap-[1%] items-center border-b pb-2 mb-4 pl-2 justify-between">
+				<p>Sensors</p>
+				{/* <Button
+					size="icon"
+					onClick={handleSensorsManualUpdate}
+					disabled={isLoading}
+				>
+					<RefreshCcw className={`${isLoading ? "animate-spin" : ""}`}/>
+				</Button> */}
 			</h2>
 			<div className="h-full flex flex-col gap-4">
 				<div className="h-max">

@@ -5,13 +5,9 @@ import {
 	useCallback,
 	ReactNode,
 } from "react";
+import { LoadingContextType } from "../Interfaces/Loading.interface";
 
-interface LoadingContextType {
-	isLoading: boolean;
-	beginLoading: () => void;
-	endLoading: () => void;
-}
-
+let globalLoadingControl: { endLoading: () => void; beginLoading: () => void } | null = null;
 export const LoadingContext = createContext<LoadingContextType>({
 	isLoading: false,
 	beginLoading: () => {},
@@ -29,6 +25,8 @@ export function LoadingProvider({ children }: { children: ReactNode }) {
 		setIsLoading(false);
 	}, []);
 
+	globalLoadingControl = { endLoading, beginLoading };
+
 	return (
 		<LoadingContext.Provider
 			value={{ isLoading, beginLoading, endLoading }}
@@ -41,3 +39,12 @@ export function LoadingProvider({ children }: { children: ReactNode }) {
 export function useLoading() {
 	return useContext(LoadingContext);
 }
+
+
+export const endLoadingWithoutHook = () => {
+	if (globalLoadingControl) {
+		globalLoadingControl.endLoading();
+	} else {
+		console.warn("Loading control is not available.");
+	}
+};

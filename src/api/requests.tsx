@@ -9,6 +9,7 @@ import * as api from "./api";
 const endPoints = {
 	assignPot: (token: string) => `cropPots/assign/${token}`,
 	cropPots: (id?: number) => (id ? `cropPots/${id}` : "cropPots"),
+	measurePot: (id: number) => `cropPots/measure/${id}`,
 	inbox: "inbox",
 	webhooks: (routeData?: { potId: number; webhookId?: number }) =>
 		!routeData
@@ -49,6 +50,10 @@ export const getAllPots = () => {
 export const updatePot = (potId: number, potData: CropPotRequestDto) => {
 	return api.put(endPoints.cropPots(potId), potData);
 };
+
+export const measurePot = (potId: number) => {
+	return api.get(endPoints.measurePot(potId));
+}
 
 // --WEBHOOKS--
 export const createWebhook = (potId: number, webHookData: WebhookDto) => {

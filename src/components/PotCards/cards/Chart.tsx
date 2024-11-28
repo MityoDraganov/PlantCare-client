@@ -32,17 +32,17 @@ interface ChartProps {
 }
 
 // Helper function to render dot and status text
-const renderStatusWithDot = (status: boolean) => {
-    const colorClass = status ? "bg-green-500" : "bg-red-500"; // green for connected, red for disconnected
-    const statusText = status ? "Connected" : "Disconnected"; // status text
+// const renderStatusWithDot = (status: boolean) => {
+//     const colorClass = status ? "bg-green-500" : "bg-red-500"; // green for connected, red for disconnected
+//     const statusText = status ? "Connected" : "Disconnected"; // status text
 
-    return (
-        <span className="flex items-center gap-2">
-            <span className={`h-2 w-2 rounded-full ${colorClass}`} />
-            <span>{statusText}</span>
-        </span>
-    );
-};
+//     return (
+//         <span className="flex items-center gap-2">
+//             <span className={`h-2 w-2 rounded-full ${colorClass}`} />
+//             <span>{statusText}</span>
+//         </span>
+//     );
+// };
 
 export const Chart = ({ sensors }: ChartProps) => {
     const [selectedSensor, setSelectedSensor] = useState<SensorDto | undefined>(
@@ -146,7 +146,7 @@ export const Chart = ({ sensors }: ChartProps) => {
                                                 ? sensor.alias
                                                 : sensor.serialNumber}
                                         </p>
-                                        {renderStatusWithDot(sensor.IsAttached)}
+                                        {/* {renderStatusWithDot(sensor.IsAttached)} */}
                                     </div>
                                 </SelectItem>
                             ))}
