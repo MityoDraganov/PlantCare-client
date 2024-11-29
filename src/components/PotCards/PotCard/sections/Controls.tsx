@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 //import { updateControllSetting } from "../../../../api/requests";
 import { tabOptions } from "../PotCard";
 import { ControlDtoWithEditing } from "../tabs/InfoTab";
+import { useTranslation } from "react-i18next";
 
 export const Controls = ({
 	//updateData,
@@ -13,6 +14,7 @@ export const Controls = ({
 	cancelUpdate: () => void;
 	setTab: Dispatch<SetStateAction<tabOptions>>;
 }) => {
+	const { t } = useTranslation();
 	// const saveUpdate = async () => {
 	// 	await updateControllSetting(updateData);
 
@@ -39,7 +41,7 @@ export const Controls = ({
 	// 		if (control.serialNumber === serialNumber) {
 	// 			let updatedControl = { ...control };
 	// 			let currentLevel: any = updatedControl;
-	
+
 	// 			for (let i = 0; i < path.length - 1; i++) {
 	// 				const key = path[i];
 	// 				if (!currentLevel[key]) {
@@ -47,32 +49,32 @@ export const Controls = ({
 	// 				}
 	// 				currentLevel = currentLevel[key];
 	// 			}
-	
+
 	// 			const finalKey = path[path.length - 1];
 	// 			let parsedValue;
-	
+
 	// 			if (Array.isArray(value)) {
 	// 				parsedValue = value;
 	// 			} else {
 	// 				parsedValue = !isNaN(Number(value)) ? Number(value) : value;
 	// 			}
-	
+
 	// 			currentLevel[finalKey] = parsedValue;
-	
+
 	// 			return updatedControl;
 	// 		}
 	// 		return control;
 	// 	});
-	
+
 	// 	setUpdateData(newData);
 	// };
-	
+
 	return (
 		<div className="pl-3 flex flex-col justify-between h-full pb-5">
 			<div className="flex flex-col gap-[2%] h-full pb-2">
 				<h2 className="text-lg font-medium flex gap-[1%] items-center border-b pb-2 mb-4 pl-2">
 					{" "}
-					Controls
+					{t("potCard.controls")}
 				</h2>
 
 				{/* <ul className="py-4 pr-4 h-full overflow-auto mb-1">
@@ -87,15 +89,16 @@ export const Controls = ({
 					))}
 				</ul> */}
 
-				<p className="text-muted-foreground m-auto">coming soon...</p>
-
+				<p className="text-muted-foreground m-auto">
+					{t("potCard.comingSoon")}...
+				</p>
 			</div>
 
 			<p
 				className="text-sm hover:underline hover:text-black text-muted-foreground transition-all duration-100"
 				onClick={() => setTab(tabOptions.advancedSettings)}
 			>
-				Advanced Settings
+				{t("potCard.advancedSettings")}
 			</p>
 		</div>
 	);

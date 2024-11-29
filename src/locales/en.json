@@ -44,7 +44,17 @@
 			"offline": "Offline",
 			"online": "Online",
 			"updating": "Updating"
-		}
+		},
+		"sensors": "Sensors",
+		"controls": "Controls",
+		"sensorsNoDriver": "Sensors, with no provided driver",
+		"noSensorsWithoutDriver": "No sensors without a driver.",
+		"viewOther": "View other sensors",
+		"browseMarketplace": "Browse marketplace for drivers",
+		"advancedSettings": "Advanced settings",
+		"comingSoon":"Coming soon",
+		"noSensorsWithDriver": "No sensors with a driver."
+
 	},
 
 	"inbox": {

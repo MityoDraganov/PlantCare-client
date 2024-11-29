@@ -45,7 +45,16 @@
 			"offline": "Извън линия",
 			"online": "На линия",
 			"updating": "Актуализиране"
-		}
+		},
+		"sensors": "Сензори",
+		"controls": "Контроли",
+		"sensorsNoDriver": "Няма сензори без драйвер.",
+		"noSensorsWithoutDriver": "Няма сензори без драйвер.",
+		"viewOther": "Преглед на други сензори",
+		"browseMarketplace": "Разгледайте пазара за драйвери",
+		"advancedSettings": "Разширени настройки",
+		"comingSoon": "Очаквайте скоро",
+		"noSensorsWithDriver": "Няма сензори със драйвери"
 	},
 
 	"inbox": {

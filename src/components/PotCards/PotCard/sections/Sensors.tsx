@@ -22,28 +22,35 @@ import {
 } from "../../../ui/tooltip";
 import { Dialog, DialogContent, DialogTrigger } from "../../../ui/dialog";
 import { Marketplace } from "../../../../Pages/Marketplace/Marketplace";
+import { useTranslation } from "react-i18next";
 
 export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 	const [isEditting, setIsEditting] = useState<boolean>(false);
 	const [updateData, _, setUpdateData] = useFormData(sensors);
+	const { t } = useTranslation();
 	const [isMarketplaceDialogOpen, setIsMarketplaceDialogOpen] =
 		useState<boolean>(false);
 
-		const handleUpdateSensor = (sensorId: number, newValue: string) => {
-			// Find the index of the sensor to update
-			const sensorToUpdateIndex = updateData.findIndex((x) => x.id === sensorId);
-			if (sensorToUpdateIndex === -1) return;
-		
-			// Update the sensor in the array at the found index
-			const updatedSensor = { ...updateData[sensorToUpdateIndex], driverUrl: newValue };
-			const updatedData = [...updateData];
-			updatedData[sensorToUpdateIndex] = updatedSensor;
-		
-			// Update the state with the modified array
-			setUpdateData(updatedData);
-			setIsMarketplaceDialogOpen(false);
+	const handleUpdateSensor = (sensorId: number, newValue: string) => {
+		// Find the index of the sensor to update
+		const sensorToUpdateIndex = updateData.findIndex(
+			(x) => x.id === sensorId
+		);
+		if (sensorToUpdateIndex === -1) return;
+
+		// Update the sensor in the array at the found index
+		const updatedSensor = {
+			...updateData[sensorToUpdateIndex],
+			driverUrl: newValue,
 		};
-		
+		const updatedData = [...updateData];
+		updatedData[sensorToUpdateIndex] = updatedSensor;
+
+		// Update the state with the modified array
+		setUpdateData(updatedData);
+		setIsMarketplaceDialogOpen(false);
+	};
+
 	useEffect(() => {
 		const isModified = updateData.some((updatedSensor) => {
 			const originalSensor = sensors.find(
@@ -83,7 +90,7 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 	return (
 		<div className="md:border-r h-full md:border-gray-300 md:pr-6">
 			<h2 className="text-lg font-medium flex gap-[1%] items-center border-b pb-2 mb-4 pl-2">
-				Sensors
+				{t("potCard.sensors")}
 			</h2>
 			<div className="h-full flex flex-col gap-4">
 				<div className="h-max">
@@ -92,7 +99,7 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 
 				<div>
 					<h2 className="text-lg font-medium border-b mb-2">
-						Sensors, with no provided driver
+						{t("potCard.sensorsNoDriver")}
 					</h2>
 					<div className="flex flex-col gap-4">
 						<ul className="flex flex-col gap-2">
@@ -156,9 +163,9 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 																	</Button>
 																</TooltipTrigger>
 																<TooltipContent>
-																	Browse
-																	marketplace
-																	for drivers
+																{t(
+																				"potCard.browseMarketplace"
+																			)}
 																</TooltipContent>
 															</Tooltip>
 														</TooltipProvider>
@@ -180,14 +187,14 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 									})
 							) : (
 								<li className="text-muted-foreground">
-									No sensors without a driver.
+									{t("potCard.sensorsNoDriver")}
 								</li>
 							)}
 						</ul>
 
 						<Collapsible className="flex flex-col gap-2">
 							<CollapsibleTrigger className="text-muted-foreground flex gap-4 ">
-								View other sensors
+								{t("potCard.viewOther")}
 								<ChevronsUpDown />
 							</CollapsibleTrigger>
 							<CollapsibleContent>
@@ -264,10 +271,9 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 																			</Button>
 																		</TooltipTrigger>
 																		<TooltipContent>
-																			Browse
-																			marketplace
-																			for
-																			drivers
+																			{t(
+																				"potCard.browseMarketplace"
+																			)}
 																		</TooltipContent>
 																	</Tooltip>
 																</TooltipProvider>
@@ -289,7 +295,7 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 											})
 									) : (
 										<li className="text-muted-foreground">
-											No sensors with a driver.
+											{t("potCard.noSensorsWithDriver")}
 										</li>
 									)}
 								</ul>
