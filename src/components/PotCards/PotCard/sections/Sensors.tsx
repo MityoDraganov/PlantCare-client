@@ -307,6 +307,7 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 							saveUpdate={handleSaveUpdate}
 							cancelUpdate={cancelUpdate}
 						/>
+						{!isEditting && <Button onClick={handleSaveUpdate}>Re-upload</Button>}
 					</div>
 				</div>
 			</div>

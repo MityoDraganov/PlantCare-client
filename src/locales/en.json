@@ -56,6 +56,18 @@
 		"noSensorsWithDriver": "No sensors with a driver."
 
 	},
+	"sensorsDialog": {
+		"editSensor": "Edit Sensor",
+		"cancel": "Cancel",
+		"save": "Save"
+	},
+	"potDialog": {
+		"editPot": "Edit pot",
+		"cancel": "Cancel",
+		"save": "Save",
+		"alias": "Alias",
+		"measurementInterval": "Measurement Interval"
+	},
 
 	"inbox": {
 		"header": "Inbox",

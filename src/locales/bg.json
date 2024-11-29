@@ -57,6 +57,19 @@
 		"noSensorsWithDriver": "Няма сензори със драйвери"
 	},
 
+	"sensorsDialog": {
+		"editSensor": "Редактирай сензор",
+		"cancel": "Отказ",
+		"save": "Запази"
+	},
+	"potDialog": {
+		"editPot": "Редактирай саксия",
+		"cancel": "Отказ",
+		"save": "Запази",
+		"alias": "Псевдоним",
+		"measurementInterval": "Интервал на измерване"
+	},
+
 	"inbox": {
 		"header": "Известия",
 		"noMessages": "Няма нови известия все още"

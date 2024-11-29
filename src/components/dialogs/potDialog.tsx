@@ -6,11 +6,12 @@ import { InputGroup, orientationOpts } from "../InputGroup";
 import { useEffect, useState } from "react";
 import { CropPotResponseDto } from "../../dtos/CropPot.dto";
 import { updatePot } from "../../api/requests";
+import { useTranslation } from "react-i18next";
 
 export const PotDialog = ({ pot }: { pot: CropPotResponseDto }) => {
 	const [updateData, setPartialChange, setUpdateData] = useFormData(pot);
 	const [isEditting, setIsEditting] = useState<boolean>(false);
-
+	const { t } = useTranslation();
 	useEffect(() => {
 		setIsEditting(
 			Object.keys(pot).some(
@@ -35,7 +36,7 @@ export const PotDialog = ({ pot }: { pot: CropPotResponseDto }) => {
 			</DialogTrigger>
 			<DialogContent className="w-[95%] md:w-1/3 px-10 pt-10">
 				<div className="flex flex-col gap-4 pl-2 pb-4">
-					<h2 className="text-lg font-medium">Edit pot</h2>
+					<h2 className="text-lg font-medium">{t("potDialog.editPot")}</h2>
 					<div className="flex flex-col gap-2 ">
 						<InputGroup
 							type={"text"}
@@ -47,7 +48,7 @@ export const PotDialog = ({ pot }: { pot: CropPotResponseDto }) => {
 								})
 							}
 							id={"alias"}
-							label="Alias"
+							label={t("potDialog.alias")}
 							orientation={orientationOpts.horizontal}
 							isEditing={true}
 						/>
@@ -63,7 +64,7 @@ export const PotDialog = ({ pot }: { pot: CropPotResponseDto }) => {
 							})
 						}
 						id={"measurementInterval"}
-						label={"Measurement Interval"}
+						label={t("potDialog.measurementInterval")}
 						orientation={orientationOpts.horizontal}
 						isEditing={true}
 					/>
@@ -80,14 +81,14 @@ export const PotDialog = ({ pot }: { pot: CropPotResponseDto }) => {
 							}}
 							disabled={!isEditting}
 						>
-							Cancel
+							{t("potDialog.cancel")}
 						</Button>
 						<Button
 							variant="blue"
 							onClick={saveUpdate}
 							disabled={!isEditting}
 						>
-							Save
+							{t("potDialog.save")}
 						</Button>
 					</div>
 				</div>
