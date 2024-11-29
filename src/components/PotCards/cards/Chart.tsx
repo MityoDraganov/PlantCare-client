@@ -146,7 +146,6 @@ export const Chart = ({ sensors }: ChartProps) => {
                                                 ? sensor.alias
                                                 : sensor.serialNumber}
                                         </p>
-                                        {renderStatusWithDot(sensor.IsAttached)}
                                     </div>
                                 </SelectItem>
                             ))}
