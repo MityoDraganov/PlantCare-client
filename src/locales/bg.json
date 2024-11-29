@@ -54,7 +54,8 @@
 		"browseMarketplace": "Разгледайте пазара за драйвери",
 		"advancedSettings": "Разширени настройки",
 		"comingSoon": "Очаквайте скоро",
-		"noSensorsWithDriver": "Няма сензори със драйвери"
+		"noSensorsWithDriver": "Няма сензори със драйвери",
+		"reUpload": "Качете отново фърмуера"
 	},
 
 	"sensorsDialog": {

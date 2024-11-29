@@ -39,7 +39,7 @@ export const SensorDialog = ({ sensor }: { sensor: SensorDto }) => {
 			</DialogTrigger>
 			<DialogContent className="w-[95%] md:w-2/3 px-10 pt-10">
 				<div className="flex flex-col gap-4 pl-2 pb-4">
-					<h2 className="text-lg font-medium">{t("potDialog.editSensor")}</h2>
+					<h2 className="text-lg font-medium">{t("sensorsDialog.editSensor")}</h2>
 					<div className="flex flex-col gap-2 ">
 						{Object.entries(updateData)
 							.filter(
@@ -93,10 +93,10 @@ export const SensorDialog = ({ sensor }: { sensor: SensorDto }) => {
 								setUpdateData(sensor);
 							}}
 						>
-							{t("potDialog.cancel")}
+							{t("sensorsDialog.cancel")}
 						</Button>
 						<Button variant="blue" onClick={saveUpdate}>
-            {t("potDialog.save")}
+            {t("sensorsDialog.save")}
 						</Button>
 					</div>
 				</div>

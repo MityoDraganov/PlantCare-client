@@ -53,8 +53,8 @@
 		"browseMarketplace": "Browse marketplace for drivers",
 		"advancedSettings": "Advanced settings",
 		"comingSoon":"Coming soon",
-		"noSensorsWithDriver": "No sensors with a driver."
-
+		"noSensorsWithDriver": "No sensors with a driver.",
+		"reUpload": "Re-upload firmware"
 	},
 	"sensorsDialog": {
 		"editSensor": "Edit Sensor",
