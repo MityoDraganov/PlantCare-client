@@ -23,7 +23,7 @@ export const AddCropPot = () => {
         if (!token) {
             return;
         }
-        const result = await assignCropPot(token);
+         await assignCropPot(token);
         toast.success("Pot assigned correctly! Navigate to your dashboard!");
         navigate("/dashboard")
     };
