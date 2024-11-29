@@ -16,7 +16,7 @@ import { Marketplace } from "./Pages/Marketplace/Marketplace";
 
 function App() {
 	const token = localStorage.getItem("clerkFetchedToken");
-	useWebSocket(`ws://plantscare.sytes.net/api/v1/users/?token=${token}`);
+	useWebSocket(`wss://plantscare.sytes.net/api/v1/users/?token=${token}`);
 
 	return (
 		<ThemeProvider>
