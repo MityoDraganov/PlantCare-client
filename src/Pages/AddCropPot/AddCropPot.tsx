@@ -9,13 +9,14 @@ import { Card } from "../../components/ui/card";
 import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { Button } from "../../components/ui/button";
 import { ChevronRight } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { assignCropPot } from "../../api/requests";
 import toast from "react-hot-toast";
 
 export const AddCropPot = () => {
     const { user } = useUser();
     const currentUrl = window.location.href;
+    const navigate = useNavigate()
 
     const { token } = useParams();
     const assignPotHandler = async () => {
@@ -24,6 +25,7 @@ export const AddCropPot = () => {
         }
         const result = await assignCropPot(token);
         toast(result);
+        navigate("/dashboard")
     };
 
     return (
