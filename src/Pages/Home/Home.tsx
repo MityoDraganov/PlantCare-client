@@ -36,7 +36,7 @@ export const HomePage = () => {
 				</Suspense>
 			</section>
 
-			<div className="flex flex-col md:items-center  gap-[35dvh] md:gap-12 lg:gap-24 h-full w-full px-4 md:px-0 ">
+			<div className="flex flex-col md:items-center  gap-[20dvh] md:gap-12 lg:gap-24 h-full w-full px-4 md:px-0">
 				<section className="min-h-[45%] flex flex-col md:flex-row items-center w-full md:w-fit gap-6">
 					<div className="h-fit w-2/3 md:w-[35%]">
 						<img
@@ -63,7 +63,7 @@ export const HomePage = () => {
 							{t("home.section2Description")}
 						</p>
 					</div>
-					<div className="h-fit w-1/2 md:w-auto flex-1 order-first md:order-last">
+					<div className="h-fit w-1/2 md:w-auto order-first md:order-last">
 						<img
 							src="pot_dreemy_transparent.png"
 							className="h-full w-full object-cover"
@@ -76,7 +76,7 @@ export const HomePage = () => {
 						{t("home.betterTitle")}
 					</h2>
 
-					<ul className="flex flex-col md:flex-row gap-4">
+					<ul className="flex flex-col md:flex-row gap-4 pb-12">
 						<li className="border rounded-lg w-full md:w-fit px-4 py-2">
 							<h3 className="text-[14px] md:text-[16px]">
 								{t("home.features.modularDesign")}
