@@ -4,23 +4,57 @@
 		"signUp": "Sign Up"
 	},
 	"home": {
-		"subHeader": "Autonomous Crop Pot",
-		"headerTitle": "Plants Care",
-		"getStarted": "Get Started",
-		"dashboard": "Dashboard",
-		"section1Title": "Understanding the Impact of insufficient plant care",
-		"section1Description": "Neglecting proper plant care can lead to more than just wilted leaves. It's crucial to understand that inadequate watering, poor sunlight exposure, and lack of nutrients can severely impact plant health.",
-		"section2Title": "Revolutionize Your Gardening with the Autonomous Crop Pot",
-		"section2Description": "Say goodbye to the guesswork of gardening! The Autonomous Crop Pot is here to transform your plant care routine. This cutting-edge product is designed to automatically manage watering, lighting, and nutrients, ensuring your plants receive optimal care even when you're away.",
-		"betterTitle": "Just better.",
+		"header": {
+		  "features": "Features",
+		  "howItWorks": "How It Works",
+		  "contact": "Contact",
+		  "signIn": "Sign In",
+		  "getStarted": "Get Started"
+		},
+		"hero": {
+		  "title": "PlantsCare",
+		  "subtitle": "Autonomous plant pot for intelligent plant growth",
+		  "cta": "Dashboard"
+		},
 		"features": {
-			"modularDesign": "Modular design",
-			"precisionMonitoring": "Precision Monitoring",
-			"ecoFriendly": "Environmentally Friendly",
-			"intuitiveUsage": "Intuitive usage",
-			"futureProof": "Future-Proof"
+		  "title": "Simply better",
+		  "cards": {
+			"watering": {
+			  "title": "Precise Monitoring",
+			  "description": "Automatically track and regulate soil moisture"
+			},
+			"lighting": {
+			  "title": "Optimal Lighting",
+			  "description": "Monitor light exposure for healthy growth"
+			},
+			"airControl": {
+			  "title": "Air Control",
+			  "description": "Maintain ideal temperature and humidity"
+			}
+		  }
+		},
+		"howItWorks": {
+		  "title": "How It Works",
+		  "steps": [
+			"Sensors collect data on plant condition",
+			"Data is analyzed by our AI algorithm",
+			"System automatically adjusts growth conditions",
+			"You receive updates and advice through the mobile app"
+		  ]
+		},
+		"cta": {
+		  "title": "Are you ready to revolutionize your gardening?",
+		  "subtitle": "Join PlantsCare users",
+		  "button": "Get Started"
+		},
+		"footer": {
+		  "privacyPolicy": "Privacy Policy",
+		  "termsOfService": "Terms of Service",
+		  "contactUs": "Contact Us",
+		  "copyright": "All rights reserved."
 		}
-	},
+	  },
+	  
 
 	"dashboard": {
 		"cropPots": "Crop Pots",

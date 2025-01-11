@@ -1,7 +1,7 @@
 import { Inbox as InboxIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { InboxContext } from "../../contexts/InboxContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { markAllMessagesAsRead } from "../../api/requests";
 import { useTranslation } from "react-i18next";
 
@@ -11,16 +11,34 @@ enum bodyEntries {
 	action = "action"
 }
 
+const MESSAGES_PER_PAGE = 20;
+
 export const Inbox = () => {
 	const { messages, handleMarkAllMessagesAsRead } = useContext(InboxContext);
 	const { t } = useTranslation();
 	const handlePopoverClose = async (isOpen: boolean) => {
         if (!isOpen) {
-			await markAllMessagesAsRead();
+			markAllMessagesAsRead();
 			handleMarkAllMessagesAsRead();
         }
     };
 
+	const [page, setPage] = useState(1);
+	const [paginatedMessages, setPaginatedMessages] = useState<any[]>([]);
+
+	useEffect(() => {
+		const start = messages.length - page * MESSAGES_PER_PAGE;
+		const end = messages.length - (page - 1) * MESSAGES_PER_PAGE;
+		const nextBatch = messages.slice(Math.max(0, start), end);
+		setPaginatedMessages((prev) => [...nextBatch.reverse(), ...prev]);
+	}, [page, messages]);
+
+	const handleScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+		const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+		if (scrollTop + clientHeight >= scrollHeight - 50 && paginatedMessages.length < messages.length) {
+			setPage((prev) => prev + 1); // Load the next page
+		}
+	};
 
 	const renderValue = (value: any) => {
 		if (typeof value === "string") {
@@ -62,15 +80,15 @@ export const Inbox = () => {
 				<InboxIcon />
 			</PopoverTrigger>
 
-			<PopoverContent className="max-w-screen-sm max-h-96" align={"end"}>
+			<PopoverContent className="max-w-screen-sm max-h-96 md:min-w-[30dvw]	" align={"end"}>
 				<h2 className="h-min">{t("inbox.header")}</h2>
 
-				<div className="max-h-72 overflow-y-auto">
+				<div className="max-h-72 overflow-y-auto" onScroll={handleScroll}>
 					{!messages || messages.length === 0 ? (
 						<h2>{t("inbox.noMessages")}!</h2>
 					) : (
 						<ul className="mt-2 flex flex-col gap-4">
-							{messages.reverse().map((message, index) => {
+							{paginatedMessages.map((message, index) => {
 								const date = new Date(message.timestamp);
 								
 								// Destructure data for easier access

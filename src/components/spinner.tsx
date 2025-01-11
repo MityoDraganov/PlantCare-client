@@ -3,7 +3,7 @@ export const Spinner = ({asChild} : {asChild?: boolean}) => (
 		role="status"
 		className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center text-center gap-6"
 	>
-		{!asChild && <h2 className="text-2xl font-medium">Plant Care</h2>}
+		{!asChild && <h2 className="text-2xl font-medium">PlantsCare</h2>}
 		<svg
 			aria-hidden="true"
 			className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"

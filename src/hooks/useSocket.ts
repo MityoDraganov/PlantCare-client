@@ -3,6 +3,7 @@ import { InboxContext } from "../contexts/InboxContext";
 import { PotContext } from "../contexts/PotContext"; // Import PotContext
 import { Event, Message } from "../Interfaces/websocket.interface";
 import toast from "react-hot-toast";
+import { refreshToken } from "../lib/functions";
 
 const useWebSocket = (url: string) => {
 	const { setMessages } = useContext(InboxContext);
@@ -41,8 +42,9 @@ const useWebSocket = (url: string) => {
 			};
 
 			// Handle WebSocket errors
-			socket.onerror = (error) => {
+			socket.onerror = async (error) => {
 				console.error("WebSocket error:", error);
+				await refreshToken();
 			};
 
 			// Handle connection close
@@ -110,21 +112,6 @@ const useWebSocket = (url: string) => {
 			return;
 		}
 
-		// if (message.event && message.event === Event.AsyncPromise) {
-		// 	const asyncMessage = message.data;
-
-		// 	// Start the toast promise
-		// 	toastPromiseRef.current = toast.promise(
-		// 		new Promise(() => {}), // No-op, manually controlled
-		// 		{
-		// 			loading: "Processing...",
-		// 			success: "Operation completed!",
-		// 			error: "Error occurred!",
-		// 		}
-		// 	);
-		// 	return;
-		// }
-
 		if (message.event && message.event === Event.UpdatedPot) {
 			const updatedPotData = message.data;
 			updatePotDataHandler(updatedPotData);
@@ -145,7 +132,7 @@ const useWebSocket = (url: string) => {
 			const updatedPotData = message.data;
 			//updatePotDataHandler(updatedPotData);
 			console.log(updatedPotData);
-			
+
 			// Resolve the toast promise if the pot update is successful
 			if (toastPromiseRef.current) {
 				toastPromiseRef.current({
