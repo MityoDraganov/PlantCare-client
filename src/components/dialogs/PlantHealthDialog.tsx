@@ -1,10 +1,21 @@
+import { Camera } from "lucide-react";
 import { ImageUploader } from "../ImageUploader";
-import { Dialog, DialogContent } from "../ui/dialog";
+import { Button } from "../ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "../ui/dialog";
 
 export const PlantHealthDialog = () => {
 	return (
-		<Dialog open={false}>
-			<DialogContent className="w-[90%] md:w-[40%] h-[90%] px-1 pb-1 pt-10" >
+		<Dialog>
+			<DialogTrigger className="w-full">
+				<Button
+					//disabled={isPhotoTaken}
+					className="w-full"
+				>
+					<Camera className="mr-2 h-4 w-4" />
+					Take a Picture of Your Plant
+				</Button>
+			</DialogTrigger>
+			<DialogContent className="w-[90%] md:w-[40%] h-[90%] px-1 pb-1 pt-10">
 				<ImageUploader onImageUpload={() => {}} />
 			</DialogContent>
 		</Dialog>

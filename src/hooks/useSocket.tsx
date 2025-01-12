@@ -4,6 +4,7 @@ import { PotContext } from "../contexts/PotContext"; // Import PotContext
 import { Event, Message } from "../Interfaces/websocket.interface";
 import toast from "react-hot-toast";
 import { refreshToken } from "../lib/functions";
+import { MeasurementNotification } from "../components/notifications/MeasurementNotification";
 
 const useWebSocket = (url: string) => {
 	const { setMessages } = useContext(InboxContext);
@@ -150,7 +151,6 @@ const useWebSocket = (url: string) => {
 			return;
 		}
 
-		// Append other messages to the inbox context
 		setMessages((prevMessages) => [...prevMessages, message]);
 	};
 

@@ -4,11 +4,12 @@ import { InboxContext } from "../../contexts/InboxContext";
 import { useContext, useEffect, useState } from "react";
 import { markAllMessagesAsRead } from "../../api/requests";
 import { useTranslation } from "react-i18next";
+import { MeasurementNotification } from "../notifications/MeasurementNotification";
 
 enum bodyEntries {
 	title = "title",
 	text = "text",
-	action = "action"
+	action = "action",
 }
 
 const MESSAGES_PER_PAGE = 20;
@@ -17,25 +18,44 @@ export const Inbox = () => {
 	const { messages, handleMarkAllMessagesAsRead } = useContext(InboxContext);
 	const { t } = useTranslation();
 	const handlePopoverClose = async (isOpen: boolean) => {
-        if (!isOpen) {
+		if (!isOpen) {
 			markAllMessagesAsRead();
 			handleMarkAllMessagesAsRead();
-        }
-    };
+		}
+	};
 
 	const [page, setPage] = useState(1);
 	const [paginatedMessages, setPaginatedMessages] = useState<any[]>([]);
 
+
+
+
+
 	useEffect(() => {
-		const start = messages.length - page * MESSAGES_PER_PAGE;
-		const end = messages.length - (page - 1) * MESSAGES_PER_PAGE;
-		const nextBatch = messages.slice(Math.max(0, start), end);
-		setPaginatedMessages((prev) => [...nextBatch.reverse(), ...prev]);
+	  const start = messages.length - page * MESSAGES_PER_PAGE;
+	  const end = messages.length - (page - 1) * MESSAGES_PER_PAGE;
+	
+	  // Calculate the next batch of messages
+	  const nextBatch = messages.slice(Math.max(0, start), end);
+	
+	  // Avoid duplicate messages by resetting the paginatedMessages state for the current page
+	  setPaginatedMessages((prev) => {
+		// If the previous messages are empty, just return the next batch, otherwise concatenate
+		if (prev.length === 0 || !nextBatch.some(msg => prev.includes(msg))) {
+		  return [...nextBatch.reverse()];
+		}
+		return prev;  // Return the previous state if no update is necessary
+	  });
 	}, [page, messages]);
+	
+	
 
 	const handleScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
 		const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-		if (scrollTop + clientHeight >= scrollHeight - 50 && paginatedMessages.length < messages.length) {
+		if (
+			scrollTop + clientHeight >= scrollHeight - 50 &&
+			paginatedMessages.length < messages.length
+		) {
 			setPage((prev) => prev + 1); // Load the next page
 		}
 	};
@@ -63,8 +83,7 @@ export const Inbox = () => {
 				<div className="pl-5">
 					{Object.entries(value).map(([key, val]) => (
 						<div key={key}>
-							<span >{key}:</span>{" "}
-							{renderValue(val)}
+							<span>{key}:</span> {renderValue(val)}
 						</div>
 					))}
 				</div>
@@ -80,81 +99,127 @@ export const Inbox = () => {
 				<InboxIcon />
 			</PopoverTrigger>
 
-			<PopoverContent className="max-w-screen-sm max-h-96 md:min-w-[30dvw]	" align={"end"}>
+			<PopoverContent
+				className="max-w-screen-sm max-h-96 md:min-w-[30dvw]"
+				align={"end"}
+			>
 				<h2 className="h-min">{t("inbox.header")}</h2>
 
-				<div className="max-h-72 overflow-y-auto" onScroll={handleScroll}>
+				<div
+					className="max-h-72 overflow-y-auto"
+					onScroll={handleScroll}
+				>
 					{!messages || messages.length === 0 ? (
 						<h2>{t("inbox.noMessages")}!</h2>
 					) : (
 						<ul className="mt-2 flex flex-col gap-4">
-							{paginatedMessages.map((message, index) => {
+							{messages.reverse().map((message, index) => {
 								const date = new Date(message.timestamp);
-								
+
 								// Destructure data for easier access
-								const { data } = message;
+								const { data, event } = message;
+	
+
 								const title = data[bodyEntries.title];
-								
-								return (
-									<li
-										key={index}
-										className={`flex flex-col p-2 rounded-lg hover:bg-slate-50 ${message.isRead ? "opacity-50" : ""}`}
-									>
-										{/* Notification Box */}
-										<div className="rounded-lg border bg-card text-card-foreground shadow-sm px-4 py-2">
-											{/* Render title first if present */}
-											{title && (
-												<div className="font-bold">
-													{renderValue(title)}
-												</div>
-											)}
-											
-											{/* Render other key-value pairs */}
-											{Object.entries(data).map(([key, val], idx) => {
-												// Skip rendering the title again
-												if (key === bodyEntries.title) return null;
 
-												// Handle text rendering
-												if (key === bodyEntries.text) {
-													return (
-														<div key={idx}>
-															{renderValue(val)}
-														</div>
-													);
-												}
-
-												// For everything else (with key-value and padding)
-												return (
-													<div key={idx} className="pl-5">
-														<span className="font-semibold">
-															{key}:
-														</span>{" "}
-														{renderValue(val)}
+								if (event === "UndiagnosedMeasurement") {
+									return (
+										<MeasurementNotification
+											key={index}
+											//isRead={message.isRead}
+											isRead={false}
+											cropPotId={data.data.cropPotId}
+											measurements={data.data.measurements}
+										/>
+									);
+								} else {
+									return (
+										<li
+											key={index}
+											className={`flex flex-col p-2 rounded-lg hover:bg-slate-50 ${
+												message.isRead
+													? "opacity-50"
+													: ""
+											}`}
+										>
+											{/* Notification Box */}
+											<div className="rounded-lg border bg-card text-card-foreground shadow-sm px-4 py-2">
+												{/* Render title first if present */}
+												{title && (
+													<div className="font-bold">
+														{renderValue(title)}
 													</div>
-												);
-											})}
-										</div>
+												)}
 
-										{/* Date Information */}
-										<div className="flex w-full justify-between mt-2 text-sm text-gray-500">
-											<span>
-												{date.toLocaleString("en-US", {
-													weekday: "long",
-													hour: "numeric",
-													minute: "numeric",
-													hour12: true,
-												})}
-											</span>
-											<span>
-												{date.toLocaleString("en-US", {
-													month: "short",
-													day: "2-digit",
-													year: "2-digit",
-												})}
-											</span>
-										</div>
-									</li>
-								);
+												{/* Render other key-value pairs */}
+												{Object.entries(data).map(
+													([key, val], idx) => {
+														// Skip rendering the title again
+														if (
+															key ===
+															bodyEntries.title
+														)
+															return null;
+
+														// Handle text rendering
+														if (
+															key ===
+															bodyEntries.text
+														) {
+															return (
+																<div key={idx}>
+																	{renderValue(
+																		val
+																	)}
+																</div>
+															);
+														}
+
+														// For everything else (with key-value and padding)
+														return (
+															<div
+																key={idx}
+																className="pl-5"
+															>
+																<span className="font-semibold">
+																	{key}:
+																</span>{" "}
+																{renderValue(
+																	val
+																)}
+															</div>
+														);
+													}
+												)}
+											</div>
+
+											{/* Date Information */}
+											<div className="flex w-full justify-between mt-2 text-sm text-gray-500">
+												<span>
+													{date.toLocaleString(
+														"en-US",
+														{
+															weekday: "long",
+															hour: "numeric",
+															minute: "numeric",
+															hour12: true,
+														}
+													)}
+												</span>
+												<span>
+													{date.toLocaleString(
+														"en-US",
+														{
+															month: "short",
+															day: "2-digit",
+															year: "2-digit",
+														}
+													)}
+												</span>
+											</div>
+										</li>
+									);
+								}
 							})}
 						</ul>
 					)}

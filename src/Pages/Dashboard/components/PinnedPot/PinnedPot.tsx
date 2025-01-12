@@ -36,7 +36,6 @@ export const PinnedPots = () => {
 	const { cropPots, updatePotDataHandler } = useContext(PotContext);
 
 	const pinnedPots = cropPots ? cropPots.filter((pot) => pot.isPinned) : [];
-	console.log(pinnedPots);
 	const nonPinnedPots = cropPots
 		? cropPots.filter((pot) => !pot.isPinned)
 		: [];
@@ -136,11 +135,6 @@ export const PinnedPots = () => {
 			card.width,
 			card.height
 		);
-		console.log('here');
-		
-		console.log(rowStart, colStart);
-		
-
 		return (
 			<div
 				key={card.id}
@@ -194,7 +188,7 @@ export const PinnedPots = () => {
 							x.canvas.pinnedCards?.length > 0 ? (
 								(() => {
 									const grid: GridOccupiedMap = {};
-									console.log(x.canvas.pinnedCards);
+			
 									return x.canvas.pinnedCards.map((card) => {
 										const sensor = pinnedPots
 											.flatMap((pot) => pot.sensors)

@@ -1,13 +1,12 @@
 import { Leaf } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 
 // Footer.js
 export const Footer = () => {
 	const { t } = useTranslation();
 	return (
 		
-		<footer className="bg-gray-100 py-8">
+		<footer className="bg-gray-100 py-4 sticky bottom-0 w-full">
 		<div className="container mx-auto px-4">
 			<div className="flex flex-col md:flex-row justify-between items-center">
 				<div className="flex items-center space-x-2 mb-4 md:mb-0">

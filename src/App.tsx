@@ -13,7 +13,6 @@ import useWebSocket from "./hooks/useSocket";
 import { ThemeProvider } from "./components/theme-provider";
 import { Footer } from "./components/Footer"; // Import the Footer
 import { Marketplace } from "./Pages/Marketplace/Marketplace";
-import { PlantHealthDialog } from "./components/dialogs/PlantHealthDialog";
 
 function App() {
 	const token = localStorage.getItem("clerkFetchedToken");
@@ -25,30 +24,25 @@ function App() {
 		<ThemeProvider>
 			<div className="flex flex-col h-screen w-screen">
 				<Header />
-			
-					<PlantHealthDialog />
 
-					<Suspense fallback={<Spinner />}>
-						<Routes>
-							<Route path="/" element={<HomePage />} />
-							<Route
-								path="/cropPots/assign/:token"
-								element={<AddCropPot />}
-							/>
-							<Route path="/dashboard" element={<Layout />}>
-								<Route index element={<Dashboard />} />
-							</Route>
+				<Suspense fallback={<Spinner />}>
+					<Routes>
+						<Route path="/" element={<HomePage />} />
+						<Route
+							path="/cropPots/assign/:token"
+							element={<AddCropPot />}
+						/>
+						<Route path="/dashboard" element={<Layout />}>
+							<Route index element={<Dashboard />} />
+						</Route>
 
-							<Route
-								path="/marketplace"
-								element={<Marketplace />}
-							/>
-						</Routes>
-					</Suspense>
-				
+						<Route path="/marketplace" element={<Marketplace />} />
+					</Routes>
+				</Suspense>
+
 				<Toaster />
 			</div>
-				<Footer />
+			<Footer />
 		</ThemeProvider>
 	);
 }

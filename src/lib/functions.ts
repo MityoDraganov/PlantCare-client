@@ -33,7 +33,7 @@ export const refreshToken = async (): Promise<string | null> => {
 			if (!newToken) {
 				return null;
 			}
-			toast.success(getTranslation("apiResponses.tokenRefreshed"));
+			//toast.success(getTranslation("apiResponses.tokenRefreshed"));
             localStorage.setItem("clerkFetchedToken", newToken);
             return newToken;
         }
