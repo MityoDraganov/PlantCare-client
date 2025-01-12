@@ -28,8 +28,6 @@ export const MeasurementNotification = ({
 	if (!cropPots) return null;
 
 	const cropPot = cropPots.find((pot) => pot.id === cropPotId);
-	console.log(measurements);
-	console.log(cropPot?.sensors);
 
 	const getSensorIcon = (sensorId: number) => {
 		const sensor = cropPot?.sensors.find((x) => x.id === sensorId);

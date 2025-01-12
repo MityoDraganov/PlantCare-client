@@ -1,6 +1,6 @@
 // Define the Event enum
 export enum Event {
-	ForecastAlert = "forecastAlert",
+	ForecastNotification = "ForecastNotification",
 	SensorConnected = "SensorConnected",
 	UpdatedPot = "updatedPot",
 	PotMeasurements = "PotMeasurements",

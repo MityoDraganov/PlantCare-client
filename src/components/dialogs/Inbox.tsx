@@ -5,14 +5,13 @@ import { useContext, useEffect, useState } from "react";
 import { markAllMessagesAsRead } from "../../api/requests";
 import { useTranslation } from "react-i18next";
 import { MeasurementNotification } from "../notifications/MeasurementNotification";
+import { ForecastNotification } from "../notifications/ForecastNotification";
 
 enum bodyEntries {
 	title = "title",
 	text = "text",
 	action = "action",
 }
-
-const MESSAGES_PER_PAGE = 20;
 
 export const Inbox = () => {
 	const { messages, handleMarkAllMessagesAsRead } = useContext(InboxContext);
@@ -24,40 +23,7 @@ export const Inbox = () => {
 		}
 	};
 
-	const [page, setPage] = useState(1);
-	const [paginatedMessages, setPaginatedMessages] = useState<any[]>([]);
-
-
-
-
-
-	useEffect(() => {
-	  const start = messages.length - page * MESSAGES_PER_PAGE;
-	  const end = messages.length - (page - 1) * MESSAGES_PER_PAGE;
-	
-	  // Calculate the next batch of messages
-	  const nextBatch = messages.slice(Math.max(0, start), end);
-
-	  setPaginatedMessages((prev) => {
-		
-		if (prev.length === 0 || !nextBatch.some(msg => prev.includes(msg))) {
-		  return [...nextBatch.reverse()];
-		}
-		return prev;  // Return the previous state if no update is necessary
-	  });
-	}, [page, messages]);
-	
-	
-
-	const handleScroll = (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
-		const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
-		if (
-			scrollTop + clientHeight >= scrollHeight - 50 &&
-			paginatedMessages.length < messages.length
-		) {
-			setPage((prev) => prev + 1); // Load the next page
-		}
-	};
+	console.log(messages);
 
 	const renderValue = (value: any) => {
 		if (typeof value === "string") {
@@ -104,10 +70,7 @@ export const Inbox = () => {
 			>
 				<h2 className="h-min">{t("inbox.header")}</h2>
 
-				<div
-					className="max-h-72 overflow-y-auto"
-					onScroll={handleScroll}
-				>
+				<div className="max-h-72 overflow-y-auto">
 					{!messages || messages.length === 0 ? (
 						<h2>{t("inbox.noMessages")}!</h2>
 					) : (
@@ -117,86 +80,18 @@ export const Inbox = () => {
 
 								// Destructure data for easier access
 								const { data, event } = message;
-	
 
 								const title = data[bodyEntries.title];
-								console.log(data);
-								
 
-								if (event === "UndiagnosedMeasurement") {
+								if (event === "ForecastNotification") {
 									return (
-										<MeasurementNotification
-											key={index}
-											//isRead={message.isRead}
-											isRead={false}
-											cropPotId={data?.cropPotId}
-											measurements={data?.measurements}
-											measurementGroupId={data?.measurementGroupId}
-										/>
-									);
-								} else {
-									return (
-										<li
-											key={index}
-											className={`flex flex-col p-2 rounded-lg hover:bg-slate-50 ${
-												message.isRead
-													? "opacity-50"
-													: ""
-											}`}
-										>
-											{/* Notification Box */}
-											<div className="rounded-lg border bg-card text-card-foreground shadow-sm px-4 py-2">
-												{/* Render title first if present */}
-												{title && (
-													<div className="font-bold">
-														{renderValue(title)}
-													</div>
-												)}
-
-												{/* Render other key-value pairs */}
-												{Object.entries(data).map(
-													([key, val], idx) => {
-														// Skip rendering the title again
-														if (
-															key ===
-															bodyEntries.title
-														)
-															return null;
-
-														// Handle text rendering
-														if (
-															key ===
-															bodyEntries.text
-														) {
-															return (
-																<div key={idx}>
-																	{renderValue(
-																		val
-																	)}
-																</div>
-															);
-														}
-
-														// For everything else (with key-value and padding)
-														return (
-															<div
-																key={idx}
-																className="pl-5"
-															>
-																<span className="font-semibold">
-																	{key}:
-																</span>{" "}
-																{renderValue(
-																	val
-																)}
-															</div>
-														);
-													}
-												)}
-											</div>
-
-											{/* Date Information */}
-											<div className="flex w-full justify-between mt-2 text-sm text-gray-500">
+										<div>
+											<ForecastNotification
+												key={index}
+												isRead={message.isRead}
+												predictions={data?.Message}
+											/>
+											<div className="flex w-full justify-between text-sm text-gray-500">
 												<span>
 													{date.toLocaleString(
 														"en-US",
@@ -219,9 +114,127 @@ export const Inbox = () => {
 													)}
 												</span>
 											</div>
-										</li>
+										</div>
 									);
 								}
+
+								if (event === "UndiagnosedMeasurement") {
+									return (
+										<div>
+											<MeasurementNotification
+												key={index}
+												//isRead={message.isRead}
+												isRead={false}
+												cropPotId={data?.cropPotId}
+												measurements={
+													data?.measurements
+												}
+												measurementGroupId={
+													data?.measurementGroupId
+												}
+											/>
+											<div className="flex w-full justify-between text-sm text-gray-500">
+												<span>
+													{date.toLocaleString(
+														"en-US",
+														{
+															weekday: "long",
+															hour: "numeric",
+															minute: "numeric",
+															hour12: true,
+														}
+													)}
+												</span>
+												<span>
+													{date.toLocaleString(
+														"en-US",
+														{
+															month: "short",
+															day: "2-digit",
+															year: "2-digit",
+														}
+													)}
+												</span>
+											</div>
+										</div>
+									);
+								}
+
+								return (
+									<li
+										key={index}
+										className={`flex flex-col p-2 rounded-lg hover:bg-slate-50 ${
+											message.isRead ? "opacity-50" : ""
+										}`}
+									>
+										{/* Notification Box */}
+										<div className="rounded-lg border bg-card text-card-foreground shadow-sm px-4 py-2">
+											{/* Render title first if present */}
+											{title && (
+												<div className="font-bold">
+													{renderValue(title)}
+												</div>
+											)}
+
+											{/* Render other key-value pairs */}
+											{Object.entries(data).map(
+												([key, val], idx) => {
+													// Skip rendering the title again
+													if (
+														key ===
+														bodyEntries.title
+													)
+														return null;
+
+													// Handle text rendering
+													if (
+														key === bodyEntries.text
+													) {
+														return (
+															<div key={idx}>
+																{renderValue(
+																	val
+																)}
+															</div>
+														);
+													}
+
+													// For everything else (with key-value and padding)
+													return (
+														<div
+															key={idx}
+															className="pl-5"
+														>
+															<span className="font-semibold">
+																{key}:
+															</span>{" "}
+															{renderValue(val)}
+														</div>
+													);
+												}
+											)}
+										</div>
+
+										{/* Date Information */}
+										<div className="flex w-full justify-between mt-2 text-sm text-gray-500">
+											<span>
+												{date.toLocaleString("en-US", {
+													weekday: "long",
+													hour: "numeric",
+													minute: "numeric",
+													hour12: true,
+												})}
+											</span>
+											<span>
+												{date.toLocaleString("en-US", {
+													month: "short",
+													day: "2-digit",
+													year: "2-digit",
+												})}
+											</span>
+										</div>
+									</li>
+								);
 							})}
 						</ul>
 					)}
