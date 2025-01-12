@@ -28,6 +28,7 @@ const endPoints = {
 		driverId ? `drivers/${driverId}` : "drivers",
 
 	canvas: (canvasId?: number) => (canvasId ? `canvas/${canvasId}` : "canvas"),
+	diagnoseMeasurement: (measurementGroupId: number) => `measurements/diagnoseMeasurement/${measurementGroupId}`,
 };
 
 // --INBOX
@@ -54,6 +55,10 @@ export const updatePot = (potId: number, potData: CropPotRequestDto) => {
 
 export const measurePot = (potId: number) => {
 	return api.get(endPoints.measurePot(potId));
+}
+
+export const sendPicture = (measurementGroupId: number, picture: File) => {
+	return api.post(endPoints.diagnoseMeasurement(measurementGroupId), {picture}, "formData");
 }
 
 // --WEBHOOKS--

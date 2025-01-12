@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "./ui/button";
 import { RotateCcw } from "lucide-react";
 
@@ -54,7 +54,8 @@ export const ImageUploader = ({
 
         canvas.toBlob((blob) => {
           if (blob) {
-            const file = new File([blob], "captured-image.jpg", {
+            const timestamp = new Date().getTime();
+            const file = new File([blob], `captured-image-${timestamp}.jpg`, {
               type: "image/jpeg",
             });
             const url = URL.createObjectURL(file);

@@ -1,4 +1,4 @@
-import { Camera, Droplet, TreesIcon as Plant, Thermometer } from "lucide-react";
+import {  Droplet, TreesIcon as Plant, Thermometer } from "lucide-react";
 import {
 	Card,
 	CardContent,
@@ -6,19 +6,20 @@ import {
 	CardHeader,
 	CardTitle,
 } from "../ui/card";
-import { Button } from "../ui/button";
 import { MeasuremntDto } from "../../dtos/measurements.dto";
 import { useContext } from "react";
 import { PotContext } from "../../contexts/PotContext";
 import { PlantHealthDialog } from "../dialogs/PlantHealthDialog";
 
 interface PlantMeasurementNotificationProps {
+	measurementGroupId: number;
 	cropPotId: number;
 	isRead: boolean;
 	measurements: MeasuremntDto[];
 }
 
 export const MeasurementNotification = ({
+	measurementGroupId,
 	cropPotId,
 	isRead,
 	measurements,
@@ -89,7 +90,7 @@ export const MeasurementNotification = ({
 				</div>
 			</CardContent>
 			<CardFooter className="felx flex-col gap-2">
-					<PlantHealthDialog />
+					<PlantHealthDialog measurementGroupId={measurementGroupId}/>
 				<p className="text-xs text-center text-muted-foreground mt-2">
 					Your photos help our AI learn and provide personalized care
 					recommendations for your plant's optimal growth

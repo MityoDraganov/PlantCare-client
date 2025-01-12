@@ -4,7 +4,7 @@ import { PotContext } from "../contexts/PotContext"; // Import PotContext
 import { Event, Message } from "../Interfaces/websocket.interface";
 import toast from "react-hot-toast";
 import { refreshToken } from "../lib/functions";
-import { MeasurementNotification } from "../components/notifications/MeasurementNotification";
+
 
 const useWebSocket = (url: string) => {
 	const { setMessages } = useContext(InboxContext);
@@ -55,7 +55,7 @@ const useWebSocket = (url: string) => {
 				);
 				setIsConnected(false);
 				// Start reconnecting after a delay
-				reconnectInterval.current = setTimeout(connect, 1000); // Try to reconnect after 1 second
+				reconnectInterval.current = setTimeout(connect, 10000); // Try to reconnect after 1 second
 			};
 		};
 

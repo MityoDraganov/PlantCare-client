@@ -61,8 +61,8 @@ export const Header = () => {
 		// 	</div>
 		// </header>
 
-		<header className="border-b fixed w-full bg-white/75 z-10">
-			<div className="container mx-auto px-4 py-4 flex items-center justify-between">
+		<header className="border-b fixed w-full bg-secondary/75 z-10">
+			<div className=" mx-auto px-4 py-4 flex items-center justify-between">
 				<Link to={"/"} className="flex items-center space-x-2">
 					<Leaf className="h-6 w-6 text-green-600" />
 					<span className="text-xl font-bold">PlantsCare</span>
@@ -92,8 +92,9 @@ export const Header = () => {
 				</nav>
 				)}
 				<div className="flex items-center gap-8">
+					<ModeToggle />
 					<LanguageSelect />
-					<Suspense>
+				
 						<SignedIn>
 						
 							{location.pathname === "/" ? (
@@ -139,7 +140,7 @@ export const Header = () => {
 								</SignUpButton>
 							</ul>
 						</SignedOut>
-					</Suspense>
+					
 				</div>
 			</div>
 		</header>

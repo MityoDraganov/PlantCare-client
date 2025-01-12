@@ -37,10 +37,9 @@ export const Inbox = () => {
 	
 	  // Calculate the next batch of messages
 	  const nextBatch = messages.slice(Math.max(0, start), end);
-	
-	  // Avoid duplicate messages by resetting the paginatedMessages state for the current page
+
 	  setPaginatedMessages((prev) => {
-		// If the previous messages are empty, just return the next batch, otherwise concatenate
+		
 		if (prev.length === 0 || !nextBatch.some(msg => prev.includes(msg))) {
 		  return [...nextBatch.reverse()];
 		}
@@ -121,6 +120,8 @@ export const Inbox = () => {
 	
 
 								const title = data[bodyEntries.title];
+								console.log(data);
+								
 
 								if (event === "UndiagnosedMeasurement") {
 									return (
@@ -128,8 +129,9 @@ export const Inbox = () => {
 											key={index}
 											//isRead={message.isRead}
 											isRead={false}
-											cropPotId={data.data.cropPotId}
-											measurements={data.data.measurements}
+											cropPotId={data?.cropPotId}
+											measurements={data?.measurements}
+											measurementGroupId={data?.measurementGroupId}
 										/>
 									);
 								} else {
