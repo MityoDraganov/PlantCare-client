@@ -14,7 +14,6 @@ import { useTranslation } from "react-i18next";
 import { LanguageSelect } from "./LanguageSelect";
 import { Leaf } from "lucide-react";
 import { handleScroll } from "../lib/functions";
-import { Suspense } from "react";
 
 export const Header = () => {
 	const { t } = useTranslation();
@@ -61,7 +60,7 @@ export const Header = () => {
 		// 	</div>
 		// </header>
 
-		<header className="border-b fixed w-full bg-secondary/75 z-10">
+		<header className="border-b w-full bg-secondary/75 z-10">
 			<div className=" mx-auto px-4 py-4 flex items-center justify-between">
 				<Link to={"/"} className="flex items-center space-x-2">
 					<Leaf className="h-6 w-6 text-green-600" />
@@ -108,7 +107,7 @@ export const Header = () => {
 								</Link>
 							) : (
 								<div className="flex items-center gap-4">
-									<Inbox />
+									{/* <Inbox /> */}
 									<UserButton />
 								</div>
 							)}

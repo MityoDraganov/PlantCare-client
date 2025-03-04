@@ -8,12 +8,10 @@ import {
 	useEffect,
 	useState,
 } from "react";
-import {
-	CropPotResponseDto,
-	SensorMeasurementUpdateDto,
-} from "../dtos/cropPot.dto";
+
 import { getAllPots } from "../api/requests";
 import { AuthContext } from "./AuthContext";
+import { CropPotResponseDto, SensorMeasurementUpdateDto } from "../dtos/CropPot.dto";
 
 interface PotContextType {
 	cropPots: CropPotResponseDto[] | null;
@@ -126,6 +124,7 @@ export const PotProvider: FunctionComponent<PotProviderProps> = ({
 								value: updatedPotData.value,
 								CreatedAt: new Date().toISOString(),
 								sensorSerialNumber: sensor.serialNumber,
+								sensorId: updatedPotData.sensorId,
 							},
 						],
 					};

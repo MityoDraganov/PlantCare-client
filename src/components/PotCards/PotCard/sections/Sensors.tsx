@@ -1,19 +1,13 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { SensorDto } from "../../../../dtos/sensors.dto";
-import useFormData from "../../../../hooks/useForm";
 import { InputGroup, orientationOpts } from "../../../InputGroup";
 import { Chart } from "../../cards/Chart";
-
-import { measurePot, updateSensor } from "../../../../api/requests";
 import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from "../../../ui/collapsible";
-import { ChevronsUpDown, RefreshCcw, Store } from "lucide-react";
-import { EditBtnsComponent } from "../../../EditBtnsComponent";
-import toast from "react-hot-toast";
-import { Button } from "../../../ui/button";
+import { ChevronsUpDown, Store } from "lucide-react";
 import {
 	Tooltip,
 	TooltipContent,
@@ -22,76 +16,21 @@ import {
 } from "../../../ui/tooltip";
 import { Dialog, DialogContent, DialogTrigger } from "../../../ui/dialog";
 import { Marketplace } from "../../../../Pages/Marketplace/Marketplace";
-import { useLoading } from "../../../../contexts/LoadingContext";
+import { Button } from "../../../ui/button";
 
-export const Sensors = ({ sensors, potId }: { sensors: SensorDto[]; potId: number }) => {
-	const [isEditting, setIsEditting] = useState<boolean>(false);
-	const [updateData, _, setUpdateData] = useFormData(sensors);
-	const {isLoading, beginLoading } = useLoading();
-	const [isMarketplaceDialogOpen, setIsMarketplaceDialogOpen] =
-		useState<boolean>(false);
-
-	const handleUpdateSensor = (sensorId: number, newValue: string) => {
-		// Find the index of the sensor to update
-		const sensorToUpdateIndex = updateData.findIndex(
-			(x) => x.id === sensorId
-		);
-		if (sensorToUpdateIndex === -1) return;
-
-		// Update the sensor in the array at the found index
-		const updatedSensor = {
-			...updateData[sensorToUpdateIndex],
-			driverUrl: newValue,
-		};
-		const updatedData = [...updateData];
-		updatedData[sensorToUpdateIndex] = updatedSensor;
-
-		// Update the state with the modified array
-		setUpdateData(updatedData);
-		setIsMarketplaceDialogOpen(false);
-	};
-
-	useEffect(() => {
-		const isModified = updateData.some((updatedSensor) => {
-			const originalSensor = sensors.find(
-				(sensor) => sensor.id === updatedSensor.id
-			);
-			return originalSensor?.driverUrl !== updatedSensor.driverUrl;
-		});
-
-		setIsEditting(isModified);
-	}, [updateData, sensors]);
-
-	const handleSaveUpdate = async () => {
-		try {
-			await updateSensor(updateData); // Save the updates to the server or backend
-
-			// After saving, filter the sensors again to move updated sensors
-			const updatedSensors = updateData.map((sensor) => {
-				return sensor.driverUrl
-					? { ...sensor, driverUrl: sensor.driverUrl }
-					: sensor;
-			});
-
-			setUpdateData(updatedSensors);
-			setIsEditting(false);
-
-			toast.success("Update saved");
-		} catch (error) {
-			console.error("Error saving the update:", error);
-		}
-	};
-
-	const cancelUpdate = () => {
-		setUpdateData(sensors); // Reset to the original sensor data if update is canceled
-		setIsEditting(false); // Disable editing mode
-	};
-
-	const handleSensorsManualUpdate = async () => {
-		measurePot(potId);
-		beginLoading();
-	};
-
+export const Sensors = ({
+	sensors,
+	updateData,
+	handleUpdateSensor,
+	isMarketplaceDialogOpen, 
+	setIsMarketplaceDialogOpen
+}: {
+	sensors: SensorDto[];
+	updateData: SensorDto[];
+	handleUpdateSensor: (sensorId: number, newValue: string) => void;
+	isMarketplaceDialogOpen: boolean;
+	setIsMarketplaceDialogOpen: Dispatch<SetStateAction<boolean>>;
+}) => {
 	return (
 		<div className="md:border-r h-full md:border-gray-300 md:pr-6">
 			<h2 className="text-lg font-medium flex gap-[1%] items-center border-b pb-2 mb-4 pl-2 justify-between">
@@ -314,12 +253,6 @@ export const Sensors = ({ sensors, potId }: { sensors: SensorDto[]; potId: numbe
 								</ul>
 							</CollapsibleContent>
 						</Collapsible>
-
-						<EditBtnsComponent
-							isEditing={isEditting}
-							saveUpdate={handleSaveUpdate}
-							cancelUpdate={cancelUpdate}
-						/>
 					</div>
 				</div>
 			</div>

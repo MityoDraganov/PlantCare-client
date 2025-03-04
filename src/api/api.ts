@@ -6,7 +6,7 @@ import { refreshToken } from "../lib/functions";
 
 
 const host =
-	process.env.NODE_ENV === "production" ? "" : "http://192.168.0.171:8000/api/v1/";
+	process.env.NODE_ENV === "production" ? "" : "http://localhost:8000/api/v1/";
 
 interface RequestOptions {
 	method: string;

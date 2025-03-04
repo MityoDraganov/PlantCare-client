@@ -1,23 +1,36 @@
-import { ConditionDto } from "./condition.dto";
 
 export interface ControlDto {
 	serialNumber: string;
 	alias: string;
 	description: string;
 	isofficial: boolean;
-	condition: ConditionDto;
-	activePeriod: ActivePeriodDto;
+	isAttached: boolean;
+	driverUrl: string;
+	minValue: number;
+	maxValue: number;
+	dependantSensor: number | null;
+}
+
+export interface ControlRequestDto {
+	alias: string;
+	description: string;
+	isofficial: boolean;
+	isAttached: boolean;
+	driverUrl: string;
+	minValue: number;
+	maxValue: number;
+	dependantSensorSerial: string | null;
 }
 
 export interface Update {}
 
-export interface ActivePeriodDto {
-	controlId: number;
-	id: number;
-	start: string;
-	end: string;
-	days: Days[];
-}
+// export interface ActivePeriodDto {
+// 	controlId: number;
+// 	id: number;
+// 	start: string;
+// 	end: string;
+// 	days: Days[];
+// }
 
 export enum Days {
 	Monday = 1,

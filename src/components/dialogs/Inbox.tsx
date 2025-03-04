@@ -81,7 +81,7 @@ export const Inbox = () => {
 								// Destructure data for easier access
 								const { data, event } = message;
 
-								const title = data[bodyEntries.title];
+								const title = data?[bodyEntries?.title] : null;
 
 								if (event === "ForecastNotification") {
 									return (
@@ -182,7 +182,7 @@ export const Inbox = () => {
 													// Skip rendering the title again
 													if (
 														key ===
-														bodyEntries.title
+														bodyEntries?.title
 													)
 														return null;
 

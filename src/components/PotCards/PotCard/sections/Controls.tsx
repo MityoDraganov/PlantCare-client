@@ -2,24 +2,23 @@ import { Dispatch, SetStateAction } from "react";
 //import { updateControllSetting } from "../../../../api/requests";
 import { tabOptions } from "../PotCard";
 import { ControlDtoWithEditing } from "../tabs/InfoTab";
+import { ControlCard } from "../../components/ControlCard";
 
 export const Controls = ({
-	//updateData,
-	//setUpdateData,
+	updateData,
+	handleUpdateControl,
 	setTab,
 }: {
 	updateData: ControlDtoWithEditing[];
-	setUpdateData: (newData: ControlDtoWithEditing[]) => void;
+	handleUpdateControl: <K extends keyof ControlDtoWithEditing>(
+		serialNumber: string,
+		path: string[],
+		value: ControlDtoWithEditing[K]
+	) => void;
+	
 	cancelUpdate: () => void;
 	setTab: Dispatch<SetStateAction<tabOptions>>;
 }) => {
-	// const saveUpdate = async () => {
-	// 	await updateControllSetting(updateData);
-
-	// 	const newData = updateData.map((x) => ({ ...x, isEditing: false }));
-
-	// 	setUpdateData(newData);
-	// };
 
 	// const editStateHandler = (serialNumber: string) => {
 	// 	const newData = updateData.map((control) =>
@@ -37,7 +36,7 @@ export const Controls = ({
 	// ) => {
 	// 	const newData = updateData.map((control) => {
 	// 		if (control.serialNumber === serialNumber) {
-	// 			let updatedControl = { ...control };
+	// 			let updatedControl = { ..</div>.control };
 	// 			let currentLevel: any = updatedControl;
 	
 	// 			for (let i = 0; i < path.length - 1; i++) {
@@ -75,19 +74,19 @@ export const Controls = ({
 					Controls
 				</h2>
 
-				{/* <ul className="py-4 pr-4 h-full overflow-auto mb-1">
+				<ul className="py-4 pr-4 h-full overflow-auto mb-1">
 					{updateData?.map((x) => (
 						<ControlCard
 							control={x}
 							key={x.serialNumber}
 							isEditing={x.isEditing}
-							editStateHandler={editStateHandler}
-							updateControlValue={updateControlValue}
+							//editStateHandler={editStateHandler}
+							updateControlValue={handleUpdateControl}
 						/>
 					))}
-				</ul> */}
+				</ul>
 
-				<p className="text-muted-foreground m-auto">coming soon...</p>
+				{/* <p className="text-muted-foreground m-auto">coming soon...</p> */}
 
 			</div>
 

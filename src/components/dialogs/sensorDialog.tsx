@@ -26,7 +26,7 @@ export const SensorDialog = ({ sensor }: { sensor: SensorDto }) => {
   }, [updateData]);
 
   const saveUpdate = async () => {
-    await updateSensor([updateData], sensor.id);
+    await updateSensor({ sensorDtos: [updateData], controlDtos: [] });
     setIsEditing(false);
   };
 

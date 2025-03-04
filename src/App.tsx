@@ -15,7 +15,7 @@ import { Marketplace } from "./Pages/Marketplace/Marketplace";
 function App() {
 	const token = localStorage.getItem("clerkFetchedToken");
 	if (token) {
-		useWebSocket(`ws://192.168.0.171:8000/api/v1/users/?token=${token}`);
+		useWebSocket(`ws://localhost:8000/api/v1/users/?token=${token}`);
 	}
 
 	return (
