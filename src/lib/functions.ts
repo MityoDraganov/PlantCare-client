@@ -1,6 +1,4 @@
 import { Clerk } from "@clerk/clerk-js";
-import toast from "react-hot-toast";
-import { getTranslation } from "../lib/translation";
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 export const handleScroll = (

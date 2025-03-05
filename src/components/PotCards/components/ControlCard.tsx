@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { HTMLInputTypeAttribute } from "react";
 import { ControlDto } from "../../../dtos/controls.dto";
 import { InputGroup, orientationOpts } from "../../InputGroup";
@@ -14,12 +14,10 @@ import { PotContext } from "../../../contexts/PotContext";
 
 export const ControlCard = ({
 	control,
-	isEditing,
 	//editStateHandler,
 	updateControlValue,
 }: {
 	control: ControlDto;
-	isEditing: boolean;
 	//editStateHandler: (serialNumber: string) => void;
 	updateControlValue: <K extends keyof ControlDtoWithEditing>(
 		serialNumber: string,

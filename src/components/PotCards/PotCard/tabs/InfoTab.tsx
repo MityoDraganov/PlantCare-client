@@ -47,7 +47,6 @@ export const InfoTab = ({
 		sensorDtos: pot.sensors,
 		controlDtos: initialControls,
 	});
-	const { isLoading, beginLoading } = useLoading();
 	const [isMarketplaceDialogOpen, setIsMarketplaceDialogOpen] =
 		useState<boolean>(false);
 
@@ -177,10 +176,10 @@ export const InfoTab = ({
 		setIsEditting(false); // Disable editing mode
 	};
 
-	const handleSensorsManualUpdate = async () => {
-		measurePot(pot.id);
-		beginLoading();
-	};
+	// const handleSensorsManualUpdate = async () => {
+	// 	measurePot(pot.id);
+	// 	beginLoading();
+	// };
 
 	useEffect(() => {
 		console.log(updateData);

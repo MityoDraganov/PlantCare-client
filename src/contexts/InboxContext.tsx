@@ -18,7 +18,7 @@ interface InboxContextType {
 export const InboxContext = createContext<InboxContextType>({
 	messages: [],
 	setMessages: () => {},
-	AddMessage: (message: Message) => {},
+	AddMessage: () => {},
 	handleMarkAllMessagesAsRead: () => {},
 });
 

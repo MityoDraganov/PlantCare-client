@@ -1,9 +1,7 @@
-import { handleScroll } from "../../lib/functions";
-import { Leaf, Droplet, Sun, Wind, Zap } from "lucide-react";
+import { Droplet, Sun, Wind } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
 import { useTranslation } from "react-i18next";
-import { LanguageSelect } from "../../components/LanguageSelect";
 
 import {
 	SignedIn,

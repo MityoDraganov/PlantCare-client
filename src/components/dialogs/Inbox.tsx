@@ -1,7 +1,7 @@
 import { Inbox as InboxIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { InboxContext } from "../../contexts/InboxContext";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { markAllMessagesAsRead } from "../../api/requests";
 import { useTranslation } from "react-i18next";
 import { MeasurementNotification } from "../notifications/MeasurementNotification";
