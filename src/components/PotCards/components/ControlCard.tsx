@@ -27,21 +27,13 @@ export const ControlCard = ({
 		value: ControlDtoWithEditing[K]
 	) => void;
 }) => {
-	const [tempValue, setTempValue] = useState<{ [key: string]: string }>({});
 	const { selectedPot } = useContext(PotContext);
 
 	if (!selectedPot) {
 		return null;
 	}
 
-	const handleChange = (
-		key: string,
-		value: string,
-		inputType: HTMLInputTypeAttribute,
-		path: string[]
-	) => {
-		setTempValue((prev) => ({ ...prev, [key]: value }));
-
+	const handleChange = (value: string, path: string[]) => {
 		updateControlValue(control.serialNumber, path, value);
 	};
 
@@ -70,25 +62,11 @@ export const ControlCard = ({
 					</h5>
 					<Select
 						onValueChange={(value) => {
-							if (value === "none") {
-								updateControlValue(
-									control.serialNumber,
-									["dependantSensor"],
-									null
-								);
-							} else {
-								const selectedSensor =
-									selectedPot?.sensors.find(
-										(sensor) => sensor.id === Number(value)
-									);
-								if (selectedSensor) {
-									updateControlValue(
-										control.serialNumber,
-										["dependantSensor"],
-										selectedSensor.id
-									);
-								}
-							}
+							updateControlValue(
+								control.serialNumber,
+								["dependantSensor"],
+								value
+							);
 						}}
 						defaultValue={
 							control.dependantSensor
@@ -114,7 +92,7 @@ export const ControlCard = ({
 								return (
 									<SelectItem
 										key={sensor.id}
-										value={sensor.id.toString()}
+										value={sensor.serialNumber}
 									>
 										{sensor.alias
 											? sensor.alias
@@ -186,9 +164,7 @@ export const ControlCard = ({
 					}
 					onChange={(e) =>
 						handleChange(
-							key as string,
 							e.target.value,
-							typeof e.target.value,
 							path
 						)
 					}

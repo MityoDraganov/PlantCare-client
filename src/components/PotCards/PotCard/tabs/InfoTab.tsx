@@ -10,6 +10,7 @@ import { useLoading } from "../../../../contexts/LoadingContext";
 import { measurePot, updateSensor } from "../../../../api/requests";
 import { SensorDto, SensorRequestDto } from "../../../../dtos/sensors.dto";
 import { CropPotResponseDto } from "../../../../dtos/CropPot.dto";
+import { Button } from "../../../ui/button";
 
 export interface ControlDtoWithEditing extends ControlDto {
 	isEditing: boolean;
@@ -142,7 +143,7 @@ export const InfoTab = ({
 				})),
 				controlDtos: updateData.controlDtos.map((control) => {
 					const { isEditing, serialNumber, ...rest } = control;
-					return {...rest, maxValue: Number(rest.maxValue), minValue: Number(rest.minValue), dependantSensorSerial: serialNumber};
+					return {...rest, maxValue: Number(rest.maxValue), minValue: Number(rest.minValue), dependantSensorSerial: rest.dependantSensor ? rest.dependantSensor.toString() : null};
 				}),
 			};
 	
@@ -202,12 +203,17 @@ export const InfoTab = ({
 				/>
 			</div>
 
-			<div className="mr-2 ml-auto">
+			<div className="mr-2 pb-2 ml-auto">
 				<EditBtnsComponent
 					isEditing={isEditting}
 					saveUpdate={handleSaveUpdate}
 					cancelUpdate={cancelUpdate}
 				/>
+
+				{!isEditting && (
+					<Button onClick={handleSaveUpdate}>
+						Re-Upload Drivers
+					</Button>)}
 			</div>
 		</div>
 	);
