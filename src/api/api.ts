@@ -5,7 +5,7 @@ import { refreshToken } from "../lib/functions";
 
 
 
-const host = "http://plantscare.sytes.net/api/v1/";
+const host = "//plantscare.sytes.net/api/v1/";
 
 interface RequestOptions {
 	method: string;
