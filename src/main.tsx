@@ -6,13 +6,14 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import App from "./App";
 import "./index.css";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+
+import { enUS, bgBG } from "@clerk/localizations";
+import "./lib/translation";
+import { useTranslation } from "react-i18next";
 import { AuthProvider } from "./contexts/AuthContext";
 import { InboxProvider } from "./contexts/InboxContext";
 import { PotProvider } from "./contexts/PotContext";
 import { LoadingProvider } from "./contexts/LoadingContext";
-import { enUS, bgBG } from "@clerk/localizations";
-import "./lib/translation";
-import { useTranslation } from "react-i18next";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 

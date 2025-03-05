@@ -3,7 +3,6 @@ import { CanvasDto } from "../dtos/canvas.dto";
 import { ControlDto } from "../dtos/controls.dto";
 import { CropPotRequestDto } from "../dtos/CropPot.dto";
 import { UploadDriverDto } from "../dtos/driver.dto";
-import { PotAttachmentsDto, SensorDto } from "../dtos/sensors.dto";
 import { WebhookDto } from "../dtos/webhooks.dto";
 import * as api from "./api";
 

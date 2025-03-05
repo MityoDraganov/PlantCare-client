@@ -79,7 +79,6 @@ export const Controls = ({
 						<ControlCard
 							control={x}
 							key={x.serialNumber}
-							isEditing={x.isEditing}
 							//editStateHandler={editStateHandler}
 							updateControlValue={handleUpdateControl}
 						/>
