@@ -27,3 +27,8 @@ export interface CropPotRequestDto {
 	isPinned?: boolean;
 	measurementInterval?: string;
 }
+
+export interface SensorMeasurementUpdateDto {
+	sensorId: number;
+	value: number
+}

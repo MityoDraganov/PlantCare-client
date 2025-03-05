@@ -1,3 +1,4 @@
+import { ControlDto } from "./controls.dto";
 import { MeasuremntDto } from "./measurements.dto";
 
 export interface SensorDto {
@@ -9,4 +10,19 @@ export interface SensorDto {
 	IsOfficial: boolean;
 	IsAttached:   boolean;
 	driverUrl: string;
+}
+
+export interface SensorRequestDto {
+	id: number;
+	alias?: string;
+	description?: string;
+	IsOfficial: boolean;
+	IsAttached:   boolean;
+	driverUrl: string;
+}
+
+
+export interface PotAttachmentsDto {
+	sensorDtos: SensorRequestDto[];
+	controlDtos: ControlDto[];
 }

@@ -1,13 +1,16 @@
 // Define the Event enum
 export enum Event {
-	ForecastAlert = "forecastAlert",
+	ForecastNotification = "ForecastNotification",
 	SensorConnected = "SensorConnected",
 	UpdatedPot = "updatedPot",
+	PotMeasurements = "PotMeasurements",
 
 	NotificationAlert = "notificationAlert",
 
 	AsyncError = "asyncError",
-	AsyncPromise = "asyncPromise"
+	AsyncPromise = "asyncPromise",
+
+	UndiagnosedMeasurement = "UndiagnosedMeasurement",
 }
 
 export interface Message {

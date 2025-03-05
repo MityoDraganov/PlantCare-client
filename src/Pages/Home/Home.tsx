@@ -1,110 +1,210 @@
-import { Link } from "react-router-dom";
+import { handleScroll } from "../../lib/functions";
+import { Leaf, Droplet, Sun, Wind, Zap } from "lucide-react";
 import { Button } from "../../components/ui/button";
-import { SignedIn, SignedOut, SignUpButton } from "@clerk/clerk-react";
-import { Suspense } from "react";
+import { Card, CardContent } from "../../components/ui/card";
 import { useTranslation } from "react-i18next";
+import { LanguageSelect } from "../../components/LanguageSelect";
+
+import {
+	SignedIn,
+	SignedOut,
+	SignInButton,
+	SignUpButton,
+} from "@clerk/clerk-react";
+import { Suspense } from "react";
+import { Link } from "react-router-dom";
 
 export const HomePage = () => {
 	const { t } = useTranslation();
-
+	const howItWorksSteps = [
+		t("home.howItWorks.steps.0"),
+		t("home.howItWorks.steps.1"),
+		t("home.howItWorks.steps.2"),
+		t("home.howItWorks.steps.3"),
+	];
 	return (
-		<div className="flex flex-col items-center md:gap-12 lg:gap-6 h-full w-full overflow-scroll ">
-			<section className="sticky top-0 bg-primary-foreground/80 z-10 flex flex-col items-center gap-6 py-3 w-full border-b shadow-md backdrop-blur-sm ">
-				<div className="text-center">
-					<h2 className="text-4xl font-mono font-semibold">
-						{t("home.headerTitle")}
-					</h2>
-					<h4>{t("home.subHeader")}</h4>
-				</div>
+		<div className="relative flex flex-col min-h-screen overflow-y-scroll pt-[5%]">
 
-				<Suspense>
-					<SignedOut>
-						<SignUpButton
-							mode="modal"
-							forceRedirectUrl="/"
-							signInForceRedirectUrl="/"
+			<main className="flex-grow">
+				<section className="bg-gradient-to-b from-green-50 to-white py-20">
+					<div className="container mx-auto px-4">
+						<div className="flex flex-col md:flex-row items-center">
+							<div className="md:w-1/2 mb-10 md:mb-0">
+								<h1 className="text-4xl md:text-5xl font-bold mb-6">
+									{t("home.hero.title")}
+								</h1>
+								<p className="text-xl mb-6 text-gray-600">
+									{t("home.hero.subtitle")}
+								</p>
+								<Suspense>
+									<SignedIn>
+										<Link to="/dashboard">
+											<Button
+												size="lg"
+												className="bg-green-600 hover:bg-green-700"
+											>
+												{t("home.hero.cta")}
+											</Button>
+										</Link>
+									</SignedIn>
+									<SignedOut>
+										<ul className="flex gap-2 items-center">
+											<SignInButton
+												mode="modal"
+												forceRedirectUrl={
+													window.location.href
+												}
+												signUpForceRedirectUrl={
+													window.location.href
+												}
+											>
+												<Button variant="secondary">
+													{t("home.header.signIn")}
+												</Button>
+											</SignInButton>
+											<SignUpButton
+												mode="modal"
+												forceRedirectUrl={
+													window.location.href
+												}
+												signInForceRedirectUrl={
+													window.location.href
+												}
+											>
+												<Button className="bg-green-600 hover:bg-green-700">
+													{t(
+														"home.header.getStarted"
+													)}
+												</Button>
+											</SignUpButton>
+										</ul>
+									</SignedOut>
+								</Suspense>
+							</div>
+							<div className="md:w-1/2">
+								<img
+									src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-01-11%20at%200.57.43-ihGpCwvdLu8lcRe9OaP3M0idzdYRVA.png"
+									alt="PlantsCare Smart Pot"
+									width={600}
+									height={400}
+									className="rounded-lg shadow-lg"
+								/>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="features" className="py-20">
+					<div className="container mx-auto px-4">
+						<h2 className="text-3xl font-bold text-center mb-12">
+							{t("home.features.title")}
+						</h2>
+						<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+							<FeatureCard
+								icon={
+									<Droplet className="h-8 w-8 text-blue-500" />
+								}
+								title={t("home.features.cards.watering.title")}
+								description={t(
+									"home.features.cards.watering.description"
+								)}
+							/>
+							<FeatureCard
+								icon={
+									<Sun className="h-8 w-8 text-yellow-500" />
+								}
+								title={t("home.features.cards.lighting.title")}
+								description={t(
+									"home.features.cards.lighting.description"
+								)}
+							/>
+							<FeatureCard
+								icon={
+									<Wind className="h-8 w-8 text-green-500" />
+								}
+								title={t(
+									"home.features.cards.airControl.title"
+								)}
+								description={t(
+									"home.features.cards.airControl.description"
+								)}
+							/>
+						</div>
+					</div>
+				</section>
+
+				<section id="how-it-works" className="bg-green-50 py-20">
+					<div className="container mx-auto px-4">
+						<h2 className="text-3xl font-bold text-center mb-12">
+							{t("home.howItWorks.title")}
+						</h2>
+						<div className="flex flex-col md:flex-row items-center justify-between">
+							<div className="md:w-1/2 mb-10 md:mb-0">
+								<img
+									src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Screenshot%202025-01-11%20at%200.57.40-s3laLqPdIxcVECd3SJIiaJNelsIhyh.png"
+									alt="PlantsCare System Diagram"
+									width={600}
+									height={400}
+									className="rounded-lg shadow-lg"
+								/>
+							</div>
+							<div className="md:w-1/2 md:pl-10">
+								<ol className="space-y-4">
+									{howItWorksSteps.map((step, index) => (
+										<li
+											key={index}
+											className="flex items-center space-x-3"
+										>
+											<div className="flex-shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-green-500 text-white font-bold">
+												{index + 1}
+											</div>
+											<span>{step}</span>
+										</li>
+									))}
+								</ol>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section id="contact" className="py-20">
+					<div className="container mx-auto px-4 text-center">
+						<h2 className="text-3xl font-bold mb-8">
+							{t("home.cta.title")}
+						</h2>
+						<p className="text-xl mb-8">{t("home.cta.subtitle")}</p>
+						<Button
+							size="lg"
+							className="bg-green-600 hover:bg-green-700 mx-auto"
 						>
-							<Button>{t("home.getStarted")}</Button>
-						</SignUpButton>
-					</SignedOut>
-
-					<SignedIn>
-						<Link to="/dashboard">
-							<Button>{t("home.dashboard")}</Button>
-						</Link>
-					</SignedIn>
-				</Suspense>
-			</section>
-
-			<div className="flex flex-col md:items-center  gap-[20dvh] md:gap-12 lg:gap-24 h-full w-full px-4 md:px-0">
-				<section className="min-h-[45%] flex flex-col md:flex-row items-center w-full md:w-fit gap-6">
-					<div className="h-fit w-2/3 md:w-[35%]">
-						<img
-							src="dyingPlant_1-transparent.png"
-							className="h-full w-full object-cover"
-						/>
-					</div>
-					<div className="flex flex-col gap-4 w-full md:w-1/3">
-						<h2 className="text-[20px] md:text-[26px]">
-							{t("home.section1Title")}
-						</h2>
-						<p className="text-[12px] md:text-[14px]">
-							{t("home.section1Description")}
-						</p>
+							{t("home.cta.button")}
+						</Button>
 					</div>
 				</section>
+			</main>
 
-				<section className="min-h-[45%] flex flex-col md:flex-row items-center justify-between w-full md:w-3/4">
-					<div className="flex flex-col gap-4 w-full md:w-[40%] text-balance text">
-						<h2 className="text-[20px] md:text-[26px]">
-							{t("home.section2Title")}
-						</h2>
-						<p className="text-[12px] md:text-[14px]">
-							{t("home.section2Description")}
-						</p>
-					</div>
-					<div className="h-fit w-1/2 md:w-auto order-first md:order-last">
-						<img
-							src="pot_dreemy_transparent.png"
-							className="h-full w-full object-cover"
-						/>
-					</div>
-				</section>
-
-				<section className="min-h-[30%] flex flex-col w-full md:w-[90%]">
-					<h2 className="text-[28px] md:text-[36px]">
-						{t("home.betterTitle")}
-					</h2>
-
-					<ul className="flex flex-col md:flex-row gap-4 pb-12">
-						<li className="border rounded-lg w-full md:w-fit px-4 py-2">
-							<h3 className="text-[14px] md:text-[16px]">
-								{t("home.features.modularDesign")}
-							</h3>
-						</li>
-						<li className="border rounded-lg w-full md:w-fit px-4 py-2">
-							<h3 className="text-[14px] md:text-[16px]">
-								{t("home.features.precisionMonitoring")}
-							</h3>
-						</li>
-						<li className="border rounded-lg w-full md:w-fit px-4 py-2">
-							<h3 className="text-[14px] md:text-[16px]">
-								{t("home.features.ecoFriendly")}
-							</h3>
-						</li>
-						<li className="border rounded-lg w-full md:w-fit px-4 py-2">
-							<h3 className="text-[14px] md:text-[16px]">
-								{t("home.features.intuitiveUsage")}
-							</h3>
-						</li>
-						<li className="border rounded-lg w-full md:w-fit px-4 py-2">
-							<h3 className="text-[14px] md:text-[16px]">
-								{t("home.features.futureProof")}
-							</h3>
-						</li>
-					</ul>
-				</section>
-			</div>
 		</div>
 	);
 };
+
+function FeatureCard({
+	icon,
+	title,
+	description,
+}: {
+	icon: React.ReactNode;
+	title: string;
+	description: string;
+}) {
+	return (
+		<Card>
+			<CardContent className="p-6">
+				<div className="flex items-center space-x-4 mb-4">
+					{icon}
+					<h3 className="text-xl font-semibold">{title}</h3>
+				</div>
+				<p className="text-gray-600">{description}</p>
+			</CardContent>
+		</Card>
+	);
+}

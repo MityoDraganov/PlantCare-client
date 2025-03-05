@@ -1,8 +1,9 @@
 import toast from "react-hot-toast";
 import { getTranslation } from "../lib/translation";
-import { Clerk } from "@clerk/clerk-js";
+import { endLoadingWithoutHook } from "../contexts/LoadingContext";
+import { refreshToken } from "../lib/functions";
 
-const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+
 
 const host = "http://plantscare.sytes.net/api/v1/";
 
@@ -15,26 +16,6 @@ interface RequestOptions {
 	body?: string | FormData;
 }
 
-const refreshToken = async (): Promise<string | null> => {
-    try {
-        const clerk = new Clerk(PUBLISHABLE_KEY);
-        await clerk.load();
-        const session = clerk.session;
-        if (session) {
-            const newToken = await session.getToken();
-			if (!newToken) {
-				return null;
-			}
-			toast.success(getTranslation("apiResponses.tokenRefreshed"));
-            localStorage.setItem("clerkFetchedToken", newToken);
-            return newToken;
-        }
-        return null;
-    } catch (error) {
-        console.error("Token refresh failed", error);
-        return null;
-    }
-};
 
 const request = async (
 	method: string,
@@ -103,6 +84,7 @@ const request = async (
                 ? responseData.error.join(", ")
                 : responseData.error || "An unexpected error occurred.";
             toast.error(errorMessage);
+			endLoadingWithoutHook();
 
             if (res.status === 401 && retry) {
                 const newToken = await refreshToken();

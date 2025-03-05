@@ -8,9 +8,9 @@ import {
 	useEffect,
 	useState,
 } from "react";
-import { CropPotResponseDto } from "../dtos/CropPot.dto";
 import { getAllPots } from "../api/requests";
 import { AuthContext } from "./AuthContext";
+import { CropPotResponseDto, SensorMeasurementUpdateDto } from "../dtos/CropPot.dto";
 
 interface PotContextType {
 	cropPots: CropPotResponseDto[] | null;
@@ -18,6 +18,7 @@ interface PotContextType {
 	selectedPot: CropPotResponseDto | null;
 	setSelectedPot: Dispatch<SetStateAction<CropPotResponseDto | null>>;
 	updatePotDataHandler: (updatedPotData: CropPotResponseDto) => void;
+	updatePotMeasurements: (updatedPotData: SensorMeasurementUpdateDto) => void;
 }
 
 export const PotContext = createContext<PotContextType>({
@@ -26,6 +27,7 @@ export const PotContext = createContext<PotContextType>({
 	selectedPot: null,
 	setSelectedPot: () => null,
 	updatePotDataHandler: () => null,
+	updatePotMeasurements: () => null,
 });
 
 interface PotProviderProps {
@@ -71,19 +73,21 @@ export const PotProvider: FunctionComponent<PotProviderProps> = ({
 		if (!cropPots) {
 			return;
 		}
-	
+
 		// Use findIndex to find the pot by its id
-		const updatedPotIndex = cropPots.findIndex((pot) => pot.id === updatedPotData.id);
-		
+		const updatedPotIndex = cropPots.findIndex(
+			(pot) => pot.id === updatedPotData.id
+		);
+
 		if (updatedPotIndex !== -1) {
 			const updatedCropPots = [...cropPots];
 			updatedCropPots[updatedPotIndex] = {
 				...updatedCropPots[updatedPotIndex],
 				...updatedPotData,
 			};
-	
+
 			setCropPots(updatedCropPots);
-	
+
 			if (selectedPot?.id === updatedPotData.id) {
 				setSelectedPot({
 					...selectedPot,
@@ -92,7 +96,59 @@ export const PotProvider: FunctionComponent<PotProviderProps> = ({
 			}
 		}
 	};
+
+	const updatePotMeasurements = (updatedPotData: SensorMeasurementUpdateDto) => {
+		if (!cropPots) {
+			return;
+		}
 	
+		// Find the pot that contains the sensor with the given sensorId
+		const updatedPotIndex = cropPots.findIndex((pot) =>
+			pot.sensors.some((sensor) => sensor.id === updatedPotData.sensorId)
+		);
+	
+		if (updatedPotIndex !== -1) {
+			// Find the pot
+			const updatedCropPots = [...cropPots];
+			const potToUpdate = updatedCropPots[updatedPotIndex];
+	
+			// Find the specific sensor within the pot
+			const updatedSensors = potToUpdate.sensors.map((sensor) => {
+				if (sensor.id === updatedPotData.sensorId) {
+					return {
+						...sensor,
+						measurements: [
+							...sensor.measurements,
+							{
+								value: updatedPotData.value,
+								CreatedAt: new Date().toISOString(),
+								sensorSerialNumber: sensor.serialNumber,
+								sensorId: updatedPotData.sensorId,
+							},
+						],
+					};
+				}
+				return sensor;
+			});
+	
+			// Update the pot with the new sensor data
+			updatedCropPots[updatedPotIndex] = {
+				...potToUpdate,
+				sensors: updatedSensors,
+			};
+	
+			// Set the new cropPots state
+			setCropPots(updatedCropPots);
+	
+			// If the selected pot is the one being updated, update it as well
+			if (selectedPot?.id === potToUpdate.id) {
+				setSelectedPot({
+					...selectedPot,
+					sensors: updatedSensors,
+				});
+			}
+		}
+	};
 	return (
 		<PotContext.Provider
 			value={{
@@ -101,6 +157,7 @@ export const PotProvider: FunctionComponent<PotProviderProps> = ({
 				selectedPot,
 				setSelectedPot,
 				updatePotDataHandler,
+				updatePotMeasurements,
 			}}
 		>
 			{children}

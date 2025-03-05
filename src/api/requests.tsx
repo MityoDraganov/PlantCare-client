@@ -1,14 +1,16 @@
+import { PotAttachmentsRequest } from "../components/PotCards/PotCard/tabs/InfoTab";
 import { CanvasDto } from "../dtos/canvas.dto";
 import { ControlDto } from "../dtos/controls.dto";
 import { CropPotRequestDto } from "../dtos/CropPot.dto";
 import { UploadDriverDto } from "../dtos/driver.dto";
-import { SensorDto } from "../dtos/sensors.dto";
+import { PotAttachmentsDto, SensorDto } from "../dtos/sensors.dto";
 import { WebhookDto } from "../dtos/webhooks.dto";
 import * as api from "./api";
 
 const endPoints = {
 	assignPot: (token: string) => `cropPots/assign/${token}`,
 	cropPots: (id?: number) => (id ? `cropPots/${id}` : "cropPots"),
+	measurePot: (id: number) => `cropPots/measure/${id}`,
 	inbox: "inbox",
 	webhooks: (routeData?: { potId: number; webhookId?: number }) =>
 		!routeData
@@ -21,11 +23,14 @@ const endPoints = {
 		controlId ? `controls/${controlId}` : "controls",
 	sensors: (sensorId?: number) =>
 		sensorId ? `sensors/${sensorId}` : "sensors",
-
+	sensorsWithPotId: (sensorId?: number) =>
+		sensorId ? `sensors/${sensorId}` : "sensors",
 	drivers: (driverId?: number) =>
 		driverId ? `drivers/${driverId}` : "drivers",
 
 	canvas: (canvasId?: number) => (canvasId ? `canvas/${canvasId}` : "canvas"),
+	diagnoseMeasurement: (measurementGroupId: number) =>
+		`measurements/diagnoseMeasurement/${measurementGroupId}`,
 };
 
 // --INBOX
@@ -48,6 +53,18 @@ export const getAllPots = () => {
 
 export const updatePot = (potId: number, potData: CropPotRequestDto) => {
 	return api.put(endPoints.cropPots(potId), potData);
+};
+
+export const measurePot = (potId: number) => {
+	return api.get(endPoints.measurePot(potId));
+};
+
+export const sendPicture = (measurementGroupId: number, picture: File) => {
+	return api.post(
+		endPoints.diagnoseMeasurement(measurementGroupId),
+		{ picture },
+		"formData"
+	);
 };
 
 // --WEBHOOKS--
@@ -73,14 +90,8 @@ export const updateControllSetting = (updateData: ControlDto[]) => {
 };
 
 //	--SENSORS--
-export const updateSensor = (
-	updateData: SensorDto | SensorDto[],
-	sensorId?: number
-) => {
-	return api.put(
-		sensorId ? endPoints.sensors(sensorId) : endPoints.sensors(),
-		updateData
-	);
+export const updateSensor = (updateData: PotAttachmentsRequest) => {
+	return api.put(endPoints.sensors(), updateData);
 };
 
 // --DRIVERS--
@@ -103,8 +114,8 @@ export const deleteDriver = (driverId: number) => {
 // --CANVASES
 
 export const getAllCanvases = () => {
-	return api.get(endPoints.canvas())
-}
+	return api.get(endPoints.canvas());
+};
 export const createCanvas = (canvasData: CanvasDto) => {
 	return api.post(endPoints.canvas(), canvasData);
 };

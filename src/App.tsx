@@ -7,8 +7,6 @@ import { Toaster } from "react-hot-toast";
 import { Header } from "./components/Header";
 import { Dashboard } from "./Pages/Dashboard/Dashboard";
 import { Layout } from "./Pages/Dashboard/Layout";
-import { Suspense } from "react";
-import { Spinner } from "./components/spinner";
 import useWebSocket from "./hooks/useSocket";
 import { ThemeProvider } from "./components/theme-provider";
 import { Footer } from "./components/Footer"; // Import the Footer
@@ -23,7 +21,7 @@ function App() {
 			<div className="flex flex-col h-screen w-screen">
 				<Header />
 
-				<Suspense fallback={<Spinner />}>
+				{/* <Suspense fallback={<Spinner />}> */}
 					<Routes>
 						<Route path="/" element={<HomePage />} />
 						<Route
@@ -32,16 +30,15 @@ function App() {
 						/>
 						<Route path="/dashboard" element={<Layout />}>
 							<Route index element={<Dashboard />} />
-							
 						</Route>
 
 						<Route path="/marketplace" element={<Marketplace />} />
 					</Routes>
-				</Suspense>
+				{/* </Suspense> */}
 
 				<Toaster />
-				<Footer />
 			</div>
+			<Footer />
 		</ThemeProvider>
 	);
 }

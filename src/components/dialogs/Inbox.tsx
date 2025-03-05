@@ -1,26 +1,29 @@
 import { Inbox as InboxIcon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { InboxContext } from "../../contexts/InboxContext";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { markAllMessagesAsRead } from "../../api/requests";
 import { useTranslation } from "react-i18next";
+import { MeasurementNotification } from "../notifications/MeasurementNotification";
+import { ForecastNotification } from "../notifications/ForecastNotification";
 
 enum bodyEntries {
 	title = "title",
 	text = "text",
-	action = "action"
+	action = "action",
 }
 
 export const Inbox = () => {
 	const { messages, handleMarkAllMessagesAsRead } = useContext(InboxContext);
 	const { t } = useTranslation();
 	const handlePopoverClose = async (isOpen: boolean) => {
-        if (!isOpen) {
-			await markAllMessagesAsRead();
+		if (!isOpen) {
+			markAllMessagesAsRead();
 			handleMarkAllMessagesAsRead();
-        }
-    };
+		}
+	};
 
+	console.log(messages);
 
 	const renderValue = (value: any) => {
 		if (typeof value === "string") {
@@ -45,8 +48,7 @@ export const Inbox = () => {
 				<div className="pl-5">
 					{Object.entries(value).map(([key, val]) => (
 						<div key={key}>
-							<span >{key}:</span>{" "}
-							{renderValue(val)}
+							<span>{key}:</span> {renderValue(val)}
 						</div>
 					))}
 				</div>
@@ -62,7 +64,10 @@ export const Inbox = () => {
 				<InboxIcon />
 			</PopoverTrigger>
 
-			<PopoverContent className="max-w-screen-sm max-h-96" align={"end"}>
+			<PopoverContent
+				className="max-w-screen-sm max-h-96 md:min-w-[30dvw]"
+				align={"end"}
+			>
 				<h2 className="h-min">{t("inbox.header")}</h2>
 
 				<div className="max-h-72 overflow-y-auto">
@@ -72,15 +77,95 @@ export const Inbox = () => {
 						<ul className="mt-2 flex flex-col gap-4">
 							{messages.reverse().map((message, index) => {
 								const date = new Date(message.timestamp);
-								
+
 								// Destructure data for easier access
-								const { data } = message;
-								const title = data[bodyEntries.title];
-								
+								const { data, event } = message;
+
+								const title = data?[bodyEntries?.title] : null;
+
+								if (event === "ForecastNotification") {
+									return (
+										<div>
+											<ForecastNotification
+												key={index}
+												isRead={message.isRead}
+												predictions={data?.Message}
+											/>
+											<div className="flex w-full justify-between text-sm text-gray-500">
+												<span>
+													{date.toLocaleString(
+														"en-US",
+														{
+															weekday: "long",
+															hour: "numeric",
+															minute: "numeric",
+															hour12: true,
+														}
+													)}
+												</span>
+												<span>
+													{date.toLocaleString(
+														"en-US",
+														{
+															month: "short",
+															day: "2-digit",
+															year: "2-digit",
+														}
+													)}
+												</span>
+											</div>
+										</div>
+									);
+								}
+
+								if (event === "UndiagnosedMeasurement") {
+									return (
+										<div>
+											<MeasurementNotification
+												key={index}
+												//isRead={message.isRead}
+												isRead={false}
+												cropPotId={data?.cropPotId}
+												measurements={
+													data?.measurements
+												}
+												measurementGroupId={
+													data?.measurementGroupId
+												}
+											/>
+											<div className="flex w-full justify-between text-sm text-gray-500">
+												<span>
+													{date.toLocaleString(
+														"en-US",
+														{
+															weekday: "long",
+															hour: "numeric",
+															minute: "numeric",
+															hour12: true,
+														}
+													)}
+												</span>
+												<span>
+													{date.toLocaleString(
+														"en-US",
+														{
+															month: "short",
+															day: "2-digit",
+															year: "2-digit",
+														}
+													)}
+												</span>
+											</div>
+										</div>
+									);
+								}
+
 								return (
 									<li
 										key={index}
-										className={`flex flex-col p-2 rounded-lg hover:bg-slate-50 ${message.isRead ? "opacity-50" : ""}`}
+										className={`flex flex-col p-2 rounded-lg hover:bg-slate-50 ${
+											message.isRead ? "opacity-50" : ""
+										}`}
 									>
 										{/* Notification Box */}
 										<div className="rounded-lg border bg-card text-card-foreground shadow-sm px-4 py-2">
@@ -90,31 +175,44 @@ export const Inbox = () => {
 													{renderValue(title)}
 												</div>
 											)}
-											
-											{/* Render other key-value pairs */}
-											{Object.entries(data).map(([key, val], idx) => {
-												// Skip rendering the title again
-												if (key === bodyEntries.title) return null;
 
-												// Handle text rendering
-												if (key === bodyEntries.text) {
+											{/* Render other key-value pairs */}
+											{Object.entries(data).map(
+												([key, val], idx) => {
+													// Skip rendering the title again
+													if (
+														key ===
+														bodyEntries?.title
+													)
+														return null;
+
+													// Handle text rendering
+													if (
+														key === bodyEntries.text
+													) {
+														return (
+															<div key={idx}>
+																{renderValue(
+																	val
+																)}
+															</div>
+														);
+													}
+
+													// For everything else (with key-value and padding)
 													return (
-														<div key={idx}>
+														<div
+															key={idx}
+															className="pl-5"
+														>
+															<span className="font-semibold">
+																{key}:
+															</span>{" "}
 															{renderValue(val)}
 														</div>
 													);
 												}
-
-												// For everything else (with key-value and padding)
-												return (
-													<div key={idx} className="pl-5">
-														<span className="font-semibold">
-															{key}:
-														</span>{" "}
-														{renderValue(val)}
-													</div>
-												);
-											})}
+											)}
 										</div>
 
 										{/* Date Information */}

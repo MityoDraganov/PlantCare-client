@@ -28,9 +28,9 @@ export const SensorDialog = ({ sensor }: { sensor: SensorDto }) => {
 	}, [updateData]);
 
 	const saveUpdate = async () => {
-		await updateSensor([updateData], sensor.id);
+		await updateSensor({ sensorDtos: [updateData], controlDtos: [] });
 		setIsEditing(false);
-	};
+	  };
 
 	return (
 		<Dialog>
@@ -81,6 +81,7 @@ export const SensorDialog = ({ sensor }: { sensor: SensorDto }) => {
 								/>
 							))}
 					</div>
+
 
 					<div
 						className={`flex gap-2 transition-opacity duration-300 mr-2 ml-auto ${

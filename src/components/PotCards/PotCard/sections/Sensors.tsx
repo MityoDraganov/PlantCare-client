@@ -1,19 +1,13 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { SensorDto } from "../../../../dtos/sensors.dto";
-import useFormData from "../../../../hooks/useForm";
 import { InputGroup, orientationOpts } from "../../../InputGroup";
 import { Chart } from "../../cards/Chart";
-
-import { updateSensor } from "../../../../api/requests";
 import {
 	Collapsible,
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from "../../../ui/collapsible";
 import { ChevronsUpDown, Store } from "lucide-react";
-import { EditBtnsComponent } from "../../../EditBtnsComponent";
-import toast from "react-hot-toast";
-import { Button } from "../../../ui/button";
 import {
 	Tooltip,
 	TooltipContent,
@@ -22,75 +16,32 @@ import {
 } from "../../../ui/tooltip";
 import { Dialog, DialogContent, DialogTrigger } from "../../../ui/dialog";
 import { Marketplace } from "../../../../Pages/Marketplace/Marketplace";
-import { useTranslation } from "react-i18next";
+import { Button } from "../../../ui/button";
 
-export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
-	const [isEditting, setIsEditting] = useState<boolean>(false);
-	const [updateData, _, setUpdateData] = useFormData(sensors);
-	const { t } = useTranslation();
-	const [isMarketplaceDialogOpen, setIsMarketplaceDialogOpen] =
-		useState<boolean>(false);
-
-	const handleUpdateSensor = (sensorId: number, newValue: string) => {
-		// Find the index of the sensor to update
-		const sensorToUpdateIndex = updateData.findIndex(
-			(x) => x.id === sensorId
-		);
-		if (sensorToUpdateIndex === -1) return;
-
-		// Update the sensor in the array at the found index
-		const updatedSensor = {
-			...updateData[sensorToUpdateIndex],
-			driverUrl: newValue,
-		};
-		const updatedData = [...updateData];
-		updatedData[sensorToUpdateIndex] = updatedSensor;
-
-		// Update the state with the modified array
-		setUpdateData(updatedData);
-		setIsMarketplaceDialogOpen(false);
-	};
-
-	useEffect(() => {
-		const isModified = updateData.some((updatedSensor) => {
-			const originalSensor = sensors.find(
-				(sensor) => sensor.id === updatedSensor.id
-			);
-			return originalSensor?.driverUrl !== updatedSensor.driverUrl;
-		});
-
-		setIsEditting(isModified);
-	}, [updateData, sensors]);
-
-	const handleSaveUpdate = async () => {
-		try {
-			await updateSensor(updateData); // Save the updates to the server or backend
-
-			// After saving, filter the sensors again to move updated sensors
-			const updatedSensors = updateData.map((sensor) => {
-				return sensor.driverUrl
-					? { ...sensor, driverUrl: sensor.driverUrl }
-					: sensor;
-			});
-
-			setUpdateData(updatedSensors);
-			setIsEditting(false);
-
-			toast.success("Update saved");
-		} catch (error) {
-			console.error("Error saving the update:", error);
-		}
-	};
-
-	const cancelUpdate = () => {
-		setUpdateData(sensors); // Reset to the original sensor data if update is canceled
-		setIsEditting(false); // Disable editing mode
-	};
-
+export const Sensors = ({
+	sensors,
+	updateData,
+	handleUpdateSensor,
+	isMarketplaceDialogOpen, 
+	setIsMarketplaceDialogOpen
+}: {
+	sensors: SensorDto[];
+	updateData: SensorDto[];
+	handleUpdateSensor: (sensorId: number, newValue: string) => void;
+	isMarketplaceDialogOpen: boolean;
+	setIsMarketplaceDialogOpen: Dispatch<SetStateAction<boolean>>;
+}) => {
 	return (
 		<div className="md:border-r h-full md:border-gray-300 md:pr-6">
-			<h2 className="text-lg font-medium flex gap-[1%] items-center border-b pb-2 mb-4 pl-2">
-				{t("potCard.sensors")}
+			<h2 className="text-lg font-medium flex gap-[1%] items-center border-b pb-2 mb-4 pl-2 justify-between">
+				<p>Sensors</p>
+				{/* <Button
+					size="icon"
+					onClick={handleSensorsManualUpdate}
+					disabled={isLoading}
+				>
+					<RefreshCcw className={`${isLoading ? "animate-spin" : ""}`}/>
+				</Button> */}
 			</h2>
 			<div className="h-full flex flex-col gap-4">
 				<div className="h-max">
@@ -99,7 +50,7 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 
 				<div>
 					<h2 className="text-lg font-medium border-b mb-2">
-						{t("potCard.sensorsNoDriver")}
+						Sensors, with no provided driver
 					</h2>
 					<div className="flex flex-col gap-4">
 						<ul className="flex flex-col gap-2">
@@ -163,9 +114,9 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 																	</Button>
 																</TooltipTrigger>
 																<TooltipContent>
-																{t(
-																				"potCard.browseMarketplace"
-																			)}
+																	Browse
+																	marketplace
+																	for drivers
 																</TooltipContent>
 															</Tooltip>
 														</TooltipProvider>
@@ -187,14 +138,14 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 									})
 							) : (
 								<li className="text-muted-foreground">
-									{t("potCard.sensorsNoDriver")}
+									No sensors without a driver.
 								</li>
 							)}
 						</ul>
 
 						<Collapsible className="flex flex-col gap-2">
 							<CollapsibleTrigger className="text-muted-foreground flex gap-4 ">
-								{t("potCard.viewOther")}
+								View other sensors
 								<ChevronsUpDown />
 							</CollapsibleTrigger>
 							<CollapsibleContent>
@@ -271,9 +222,10 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 																			</Button>
 																		</TooltipTrigger>
 																		<TooltipContent>
-																			{t(
-																				"potCard.browseMarketplace"
-																			)}
+																			Browse
+																			marketplace
+																			for
+																			drivers
 																		</TooltipContent>
 																	</Tooltip>
 																</TooltipProvider>
@@ -295,19 +247,12 @@ export const Sensors = ({ sensors }: { sensors: SensorDto[] }) => {
 											})
 									) : (
 										<li className="text-muted-foreground">
-											{t("potCard.noSensorsWithDriver")}
+											No sensors with a driver.
 										</li>
 									)}
 								</ul>
 							</CollapsibleContent>
 						</Collapsible>
-
-						<EditBtnsComponent
-							isEditing={isEditting}
-							saveUpdate={handleSaveUpdate}
-							cancelUpdate={cancelUpdate}
-						/>
-						{!isEditting && <Button onClick={handleSaveUpdate}>	{t("potCard.reUpload")}</Button>}
 					</div>
 				</div>
 			</div>

@@ -18,6 +18,6 @@ export interface CardType {
 	icon?: string;
 	sensorId?: number;
 	sensor?: SensorDto;
-	type: CardID;
+	//type: CardID;
 }
 

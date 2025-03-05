@@ -23,7 +23,7 @@ export const CropPots = ({
 			{layout === layoutOptions.page && (
 				<h2 className="text-xl pl-2 font-medium">{t("dashboard.cropPots")}:</h2>
 			)}
-			<ul className=" h-full w-full flex flex-col sm:flex-row gap-2 md:gap-6 overflow-x-scroll md:overflow-y-hidden">
+			<ul className="h-full w-full flex flex-col sm:flex-row gap-2 md:gap-6 overflow-x-auto">
 				{cropPots?.length ? (
 					// Repeat the map multiple times to create an overflow effect
 					<>
