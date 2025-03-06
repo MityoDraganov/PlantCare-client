@@ -16,14 +16,13 @@ enum bodyEntries {
 export const Inbox = () => {
 	const { messages, handleMarkAllMessagesAsRead } = useContext(InboxContext);
 	const { t } = useTranslation();
+
 	const handlePopoverClose = async (isOpen: boolean) => {
 		if (!isOpen) {
 			markAllMessagesAsRead();
 			handleMarkAllMessagesAsRead();
 		}
 	};
-
-	console.log(messages);
 
 	const renderValue = (value: any) => {
 		if (typeof value === "string") {
@@ -76,42 +75,37 @@ export const Inbox = () => {
 					) : (
 						<ul className="mt-2 flex flex-col gap-4">
 							{messages.reverse().map((message, index) => {
-								const date = new Date(message.timestamp);
+								const date = new Date(message?.timestamp);
 
-								// Destructure data for easier access
-								const { data, event } = message;
+								// Destructure data for easier access (with null/undefined safety)
+								const { data, event } = message || {};
 
-								const title = data?[bodyEntries?.title] : null;
+								// Safely access title in data (make sure data exists)
+								const title = data?.[bodyEntries?.title] || null;
 
+								// Check event type and render accordingly
 								if (event === "ForecastNotification") {
 									return (
-										<div>
+										<div key={index}>
 											<ForecastNotification
-												key={index}
-												isRead={message.isRead}
+												isRead={message?.isRead ?? false} // Default to false if not provided
 												predictions={data?.Message}
 											/>
 											<div className="flex w-full justify-between text-sm text-gray-500">
 												<span>
-													{date.toLocaleString(
-														"en-US",
-														{
-															weekday: "long",
-															hour: "numeric",
-															minute: "numeric",
-															hour12: true,
-														}
-													)}
+													{date.toLocaleString("en-US", {
+														weekday: "long",
+														hour: "numeric",
+														minute: "numeric",
+														hour12: true,
+													})}
 												</span>
 												<span>
-													{date.toLocaleString(
-														"en-US",
-														{
-															month: "short",
-															day: "2-digit",
-															year: "2-digit",
-														}
-													)}
+													{date.toLocaleString("en-US", {
+														month: "short",
+														day: "2-digit",
+														year: "2-digit",
+													})}
 												</span>
 											</div>
 										</div>
@@ -120,40 +114,28 @@ export const Inbox = () => {
 
 								if (event === "UndiagnosedMeasurement") {
 									return (
-										<div>
+										<div key={index}>
 											<MeasurementNotification
-												key={index}
-												//isRead={message.isRead}
-												isRead={false}
+												isRead={message?.isRead ?? false}
 												cropPotId={data?.cropPotId}
-												measurements={
-													data?.measurements
-												}
-												measurementGroupId={
-													data?.measurementGroupId
-												}
+												measurements={data?.measurements || []}
+												measurementGroupId={data?.measurementGroupId}
 											/>
 											<div className="flex w-full justify-between text-sm text-gray-500">
 												<span>
-													{date.toLocaleString(
-														"en-US",
-														{
-															weekday: "long",
-															hour: "numeric",
-															minute: "numeric",
-															hour12: true,
-														}
-													)}
+													{date.toLocaleString("en-US", {
+														weekday: "long",
+														hour: "numeric",
+														minute: "numeric",
+														hour12: true,
+													})}
 												</span>
 												<span>
-													{date.toLocaleString(
-														"en-US",
-														{
-															month: "short",
-															day: "2-digit",
-															year: "2-digit",
-														}
-													)}
+													{date.toLocaleString("en-US", {
+														month: "short",
+														day: "2-digit",
+														year: "2-digit",
+													})}
 												</span>
 											</div>
 										</div>
@@ -164,7 +146,7 @@ export const Inbox = () => {
 									<li
 										key={index}
 										className={`flex flex-col p-2 rounded-lg hover:bg-slate-50 ${
-											message.isRead ? "opacity-50" : ""
+											message?.isRead ? "opacity-50" : ""
 										}`}
 									>
 										{/* Notification Box */}
@@ -177,42 +159,29 @@ export const Inbox = () => {
 											)}
 
 											{/* Render other key-value pairs */}
-											{Object.entries(data)?.map(
-												([key, val], idx) => {
-													// Skip rendering the title again
-													if (
-														key ===
-														bodyEntries?.title
-													)
-														return null;
+											{Object.entries(data || {}).map(([key, val], idx) => {
+												// Skip rendering the title again
+												if (key === bodyEntries?.title) return null;
 
-													// Handle text rendering
-													if (
-														key === bodyEntries.text
-													) {
-														return (
-															<div key={idx}>
-																{renderValue(
-																	val
-																)}
-															</div>
-														);
-													}
-
-													// For everything else (with key-value and padding)
+												// Handle text rendering
+												if (key === bodyEntries.text) {
 													return (
-														<div
-															key={idx}
-															className="pl-5"
-														>
-															<span className="font-semibold">
-																{key}:
-															</span>{" "}
+														<div key={idx}>
 															{renderValue(val)}
 														</div>
 													);
 												}
-											)}
+
+												// For everything else (with key-value and padding)
+												return (
+													<div key={idx} className="pl-5">
+														<span className="font-semibold">
+															{key}:
+														</span>{" "}
+														{renderValue(val)}
+													</div>
+												);
+											})}
 										</div>
 
 										{/* Date Information */}
