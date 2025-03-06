@@ -46,7 +46,7 @@ export const Inbox = () => {
 		} else if (typeof value === "object" && value !== null) {
 			return (
 				<div className="pl-5">
-					{Object.entries(value).map(([key, val]) => (
+					{Object.entries(value)?.map(([key, val]) => (
 						<div key={key}>
 							<span>{key}:</span> {renderValue(val)}
 						</div>
@@ -177,7 +177,7 @@ export const Inbox = () => {
 											)}
 
 											{/* Render other key-value pairs */}
-											{Object.entries(data).map(
+											{Object.entries(data)?.map(
 												([key, val], idx) => {
 													// Skip rendering the title again
 													if (
