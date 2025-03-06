@@ -91,11 +91,11 @@ const useWebSocket = (url: string) => {
 				toastPromiseRef.current({
 					isLoading: false,
 					success: false,
-					error: errorMessage.error.toString(),
+					error: errorMessage?.error?.toString(),
 				});
 				toastPromiseRef.current = null;
 			} else {
-				toast.error(errorMessage.error.toString());
+				toast.error(errorMessage?.error?.toString());
 			}
 			return;
 		}
